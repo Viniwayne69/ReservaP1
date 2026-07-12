@@ -1,0 +1,23 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /p1_appointments/{appointmentId} {
+      allow read: if true;
+      allow create: if
+        request.resource.data.keys().hasOnly([
+          'clientName',
+          'date',
+          'time',
+          'status',
+          'createdAt'
+        ]) &&
+        request.resource.data.clientName is string &&
+        request.resource.data.date is string &&
+        request.resource.data.time is string &&
+        request.resource.data.status == 'confirmado';
+      allow delete: if true;
+      allow update: if false;
+    }
+  }
+}

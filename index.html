@@ -6,23 +6,26 @@
   <title>P1 Auto Recife | Agendamento</title>
   <meta name="description" content="Agende sua visita presencial na P1 Auto Recife escolhendo apenas dia e horário.">
   <meta name="theme-color" content="#9da39b">
+  <link rel="icon" type="image/png" href="assets/logop1veiculos.png">
+  <link rel="apple-touch-icon" href="assets/logop1veiculos.png">
+  <link rel="manifest" href="site.webmanifest">
   <link rel="canonical" href="https://agendamentop1.vercel.app/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://agendamentop1.vercel.app/">
   <meta property="og:site_name" content="P1 Auto Recife">
   <meta property="og:title" content="Agende sua visita | P1 Auto Recife">
   <meta property="og:description" content="Reserve seu dia e horário para visitar a P1 Auto Recife.">
-  <meta property="og:image" content="https://agendamentop1.vercel.app/assets/agenda-preview.png">
-  <meta property="og:image:secure_url" content="https://agendamentop1.vercel.app/assets/agenda-preview.png">
+  <meta property="og:image" content="https://agendamentop1.vercel.app/assets/agenda-preview-wide.png">
+  <meta property="og:image:secure_url" content="https://agendamentop1.vercel.app/assets/agenda-preview-wide.png">
   <meta property="og:image:type" content="image/png">
-  <meta property="og:image:width" content="1536">
-  <meta property="og:image:height" content="1024">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Agende sua visita na P1 Auto Recife">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Agende sua visita | P1 Auto Recife">
   <meta name="twitter:description" content="Reserve seu dia e horário para visitar a P1 Auto Recife.">
-  <meta name="twitter:image" content="https://agendamentop1.vercel.app/assets/agenda-preview.png">
-  <link rel="image_src" href="https://agendamentop1.vercel.app/assets/agenda-preview.png">
+  <meta name="twitter:image" content="https://agendamentop1.vercel.app/assets/agenda-preview-wide.png">
+  <link rel="image_src" href="https://agendamentop1.vercel.app/assets/agenda-preview-wide.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -128,6 +131,16 @@
       background: #111311;
       border: 2px solid rgba(190, 255, 0, 0.62);
       box-shadow: 0 0 0 8px rgba(190, 255, 0, 0.06), 0 18px 48px rgba(0, 0, 0, 0.55);
+    }
+
+    .brand-logo.admin-trigger {
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .brand-logo.admin-trigger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 8px rgba(190, 255, 0, 0.09), 0 22px 58px rgba(0, 0, 0, 0.48);
     }
 
     .brand-title {
@@ -479,16 +492,6 @@
       text-align: right;
     }
 
-    .admin-link {
-      position: fixed;
-      right: 1rem;
-      bottom: 1rem;
-      z-index: 20;
-      min-height: 2.65rem;
-      padding: 0.62rem 0.8rem;
-      opacity: 0.82;
-    }
-
     .appointments-list,
     .admin-list {
       display: grid;
@@ -505,6 +508,52 @@
       border: 1px solid rgba(190, 255, 0, 0.14);
       border-radius: 16px;
       background: rgba(198, 203, 194, 0.72);
+    }
+
+    .admin-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.7rem;
+    }
+
+    .danger-button {
+      min-height: 2.6rem;
+      padding: 0.62rem 0.85rem;
+      color: #3c1616;
+      border-color: rgba(92, 28, 28, 0.18);
+      background: rgba(224, 188, 184, 0.5);
+      font-size: 0.82rem;
+    }
+
+    .danger-button:hover {
+      border-color: rgba(92, 28, 28, 0.32);
+      background: rgba(224, 170, 164, 0.68);
+    }
+
+    .admin-login-card {
+      min-height: min(38rem, calc(100vh - 2rem));
+      align-content: center;
+      text-align: center;
+    }
+
+    .admin-login-logo {
+      width: min(120px, 34vw);
+      margin: 0 auto 0.4rem;
+    }
+
+    .admin-login-form {
+      display: grid;
+      gap: 0.9rem;
+      margin-top: 0.4rem;
+    }
+
+    .admin-error {
+      min-height: 1.2rem;
+      margin: 0;
+      color: #5c1c1c;
+      font-size: 0.86rem;
+      font-weight: 800;
     }
 
     .date-badge {
@@ -567,7 +616,7 @@
     <section class="screen" id="loginScreen">
       <div class="card login-card">
         <div class="logo-wrap">
-          <img class="brand-logo" src="assets/logop1veiculos.png" alt="Logo P1 Auto Recife">
+          <img class="brand-logo admin-trigger" id="adminLogoButton" src="assets/logop1veiculos.png" alt="Logo P1 Auto Recife" role="button" tabindex="0">
           <div>
             <h1 class="brand-title">P1</h1>
             <p class="brand-subtitle">Auto Recife</p>
@@ -637,7 +686,7 @@
             </div>
             <h1>Agenda da loja</h1>
           </div>
-          <button class="button button-soft" type="button" data-go="calendar">
+          <button class="button button-soft" type="button" data-go="login">
             <i data-lucide="arrow-left"></i>
             Voltar
           </button>
@@ -645,18 +694,40 @@
         <div class="admin-list" id="adminList"></div>
       </div>
     </section>
-  </main>
 
-  <button class="button button-soft admin-link" id="adminButton" type="button">
-    <i data-lucide="lock-keyhole"></i>
-    Painel
-  </button>
+    <section class="screen hidden" id="adminLoginScreen">
+      <div class="card login-card admin-login-card">
+        <img class="brand-logo admin-login-logo" src="assets/logop1veiculos.png" alt="Logo P1 Auto Recife">
+        <div>
+          <p class="section-brand" style="justify-content: center;">Acesso reservado</p>
+          <h1>Painel da loja</h1>
+          <p class="lead">Digite o PIN para acompanhar e organizar as visitas agendadas.</p>
+        </div>
+        <form class="admin-login-form" id="adminLoginForm">
+          <div class="field">
+            <label for="adminPinInput">PIN de acesso</label>
+            <input id="adminPinInput" inputmode="numeric" autocomplete="off" type="password" placeholder="Digite o PIN" required>
+          </div>
+          <p class="admin-error" id="adminLoginError"></p>
+          <button class="button button-primary" type="submit">
+            <i data-lucide="lock-keyhole-open"></i>
+            Entrar no painel
+          </button>
+          <button class="button button-soft" type="button" data-go="login">
+            Voltar
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
     import {
       addDoc,
       collection,
+      deleteDoc,
+      doc,
       getDocs,
       getFirestore,
       query,
@@ -699,14 +770,18 @@
     const bookingScreen = document.querySelector("#bookingScreen");
     const appointmentsScreen = document.querySelector("#appointmentsScreen");
     const adminScreen = document.querySelector("#adminScreen");
+    const adminLoginScreen = document.querySelector("#adminLoginScreen");
     const loginForm = document.querySelector("#loginForm");
+    const adminLoginForm = document.querySelector("#adminLoginForm");
+    const adminPinInput = document.querySelector("#adminPinInput");
+    const adminLoginError = document.querySelector("#adminLoginError");
+    const adminLogoButton = document.querySelector("#adminLogoButton");
     const clientNameInput = document.querySelector("#clientNameInput");
     const stepTitle = document.querySelector("#stepTitle");
     const progress = document.querySelector("#progress");
     const stepContent = document.querySelector("#stepContent");
     const appointmentsList = document.querySelector("#appointmentsList");
     const adminList = document.querySelector("#adminList");
-    const adminButton = document.querySelector("#adminButton");
 
     clientNameInput.value = localStorage.getItem(clientKey) || "";
 
@@ -847,8 +922,18 @@
       }
     }
 
+    async function deleteAppointment(id) {
+      if (!firestoreDb) {
+        const items = readLocalAppointments().filter(item => item.id !== id);
+        writeLocalAppointments(items);
+        return;
+      }
+
+      await deleteDoc(doc(firestoreDb, appointmentsCollection, id));
+    }
+
     function showOnly(screen) {
-      [loginScreen, bookingScreen, appointmentsScreen, adminScreen].forEach(item => item.classList.add("hidden"));
+      [loginScreen, bookingScreen, appointmentsScreen, adminScreen, adminLoginScreen].forEach(item => item.classList.add("hidden"));
       screen.classList.remove("hidden");
       refreshIcons();
     }
@@ -1062,11 +1147,6 @@
     }
 
     async function renderAdmin() {
-      const pin = prompt("Digite o PIN do painel");
-      if (pin !== adminPin) {
-        return;
-      }
-
       showOnly(adminScreen);
       const items = (await readAppointments()).sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
 
@@ -1083,6 +1163,12 @@
             <div>
               <strong>${item.time}, ${item.clientName}</strong>
               <p style="margin: 0.25rem 0 0; color: #596254;">${friendlyDate(item.date)}</p>
+              <div class="admin-actions">
+                <button class="button danger-button" type="button" data-delete-appointment="${item.id}">
+                  <i data-lucide="trash-2"></i>
+                  Excluir reserva
+                </button>
+              </div>
             </div>
           </article>
         `;
@@ -1103,6 +1189,33 @@
       state.date = "";
       state.time = "";
       renderStep();
+    });
+
+    adminLogoButton.addEventListener("click", () => {
+      adminPinInput.value = "";
+      adminLoginError.textContent = "";
+      showOnly(adminLoginScreen);
+      adminPinInput.focus();
+    });
+
+    adminLogoButton.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        adminLogoButton.click();
+      }
+    });
+
+    adminLoginForm.addEventListener("submit", event => {
+      event.preventDefault();
+
+      if (adminPinInput.value.trim() !== adminPin) {
+        adminLoginError.textContent = "PIN incorreto. Tente novamente.";
+        adminPinInput.select();
+        return;
+      }
+
+      adminLoginError.textContent = "";
+      renderAdmin();
     });
 
     stepContent.addEventListener("click", event => {
@@ -1133,9 +1246,29 @@
     });
 
     document.addEventListener("click", event => {
+      const deleteButton = event.target.closest("[data-delete-appointment]");
+      if (deleteButton) {
+        const confirmed = confirm("Excluir esta reserva da agenda?");
+        if (!confirmed) {
+          return;
+        }
+
+        deleteAppointment(deleteButton.dataset.deleteAppointment)
+          .then(renderAdmin)
+          .catch(error => {
+            console.error("Erro ao excluir reserva:", error);
+            alert("Não foi possível excluir esta reserva agora.");
+          });
+        return;
+      }
+
       const go = event.target.closest("[data-go]");
       if (!go) {
         return;
+      }
+
+      if (go.dataset.go === "login") {
+        showOnly(loginScreen);
       }
 
       if (go.dataset.go === "calendar") {
@@ -1143,8 +1276,6 @@
         renderStep();
       }
     });
-
-    adminButton.addEventListener("click", renderAdmin);
 
     showOnly(loginScreen);
     refreshIcons();
