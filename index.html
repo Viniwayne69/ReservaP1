@@ -1,0 +1,1139 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>P1 Auto Recife | Agendamento</title>
+  <meta name="description" content="Agende sua visita presencial na P1 Auto Recife escolhendo apenas dia e horário.">
+  <meta name="theme-color" content="#9da39b">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #20231f;
+      font-family: "Open Sans", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 50% 0, rgba(190, 255, 0, 0.08), transparent 18rem),
+        linear-gradient(135deg, #b8bdb6 0%, #9da39b 48%, #7f867d 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.38;
+      background:
+        repeating-linear-gradient(115deg, transparent 0 32px, rgba(31, 35, 30, 0.12) 33px, transparent 35px),
+        radial-gradient(circle at 50% 50%, rgba(35, 39, 34, 0.16), transparent 30rem);
+      pointer-events: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: clamp(1rem, 3vw, 2rem);
+    }
+
+    .screen {
+      width: min(760px, 100%);
+    }
+
+    .card {
+      border: 1px solid rgba(28, 32, 27, 0.16);
+      border-radius: 20px;
+      background:
+        linear-gradient(145deg, rgba(212, 216, 208, 0.96), rgba(181, 187, 178, 0.98)),
+        radial-gradient(circle at 88% 0, rgba(190, 255, 0, 0.09), transparent 16rem);
+      box-shadow: 0 26px 70px rgba(33, 38, 31, 0.26), inset 0 1px rgba(255, 255, 255, 0.24);
+      backdrop-filter: blur(16px);
+    }
+
+    .login-card,
+    .step-card,
+    .success-card,
+    .admin-card {
+      display: grid;
+      gap: 1.05rem;
+      min-height: min(42rem, calc(100vh - 2rem));
+      align-content: center;
+      padding: clamp(1.25rem, 4vw, 2.4rem);
+    }
+
+    .login-card {
+      text-align: center;
+    }
+
+    .logo-wrap {
+      display: grid;
+      justify-items: center;
+      gap: 0.85rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .brand-logo {
+      width: min(190px, 48vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      padding: 0.45rem;
+      object-fit: cover;
+      background: #111311;
+      border: 2px solid rgba(190, 255, 0, 0.62);
+      box-shadow: 0 0 0 8px rgba(190, 255, 0, 0.06), 0 18px 48px rgba(0, 0, 0, 0.55);
+    }
+
+    .brand-title {
+      margin: 0;
+      color: #1a1d19;
+      font-size: clamp(2.6rem, 10vw, 4.6rem);
+      font-weight: 900;
+      letter-spacing: 0;
+      line-height: 0.92;
+      text-transform: uppercase;
+    }
+
+    .brand-title span,
+    .neon {
+      color: #c7ff00;
+    }
+
+    .brand-subtitle {
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+      color: #c7ff00;
+      font-size: clamp(1.35rem, 5vw, 2.1rem);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      text-transform: uppercase;
+      paint-order: stroke fill;
+      -webkit-text-stroke: 0.45px #111311;
+      text-shadow:
+        0 1px 1px rgba(17, 19, 17, 0.8),
+        0 0 1px rgba(17, 19, 17, 0.9);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    .login-card h1 {
+      margin-bottom: 0.3rem;
+      color: #1a1d19;
+      font-size: clamp(2rem, 6vw, 3rem);
+      line-height: 1.05;
+      font-weight: 900;
+    }
+
+    .step-card h1,
+    .success-card h1,
+    .admin-card h1 {
+      margin-bottom: 0.15rem;
+      color: #1a1d19;
+      font-size: clamp(1.85rem, 4.5vw, 2.7rem);
+      line-height: 1.05;
+      font-weight: 900;
+    }
+
+    .lead {
+      max-width: 34rem;
+      margin: 0 auto;
+      color: #454c43;
+      font-size: 1rem;
+      font-weight: 650;
+      line-height: 1.62;
+    }
+
+    .field {
+      display: grid;
+      gap: 0.45rem;
+      text-align: left;
+    }
+
+    .field label {
+      color: #324022;
+      font-size: 0.82rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    input {
+      width: 100%;
+      min-height: 3.25rem;
+      padding: 0.85rem 1rem;
+      color: #20231f;
+      border: 1px solid rgba(49, 55, 47, 0.22);
+      border-radius: 14px;
+      background: rgba(224, 228, 219, 0.74);
+      outline: none;
+      transition: border 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+    input:focus {
+      border-color: rgba(162, 219, 0, 0.75);
+      background: rgba(235, 239, 230, 0.96);
+      box-shadow: 0 0 0 4px rgba(190, 255, 0, 0.13);
+    }
+
+    input::placeholder {
+      color: #8f9789;
+    }
+
+    .button {
+      min-height: 3.2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      padding: 0.82rem 1.05rem;
+      border: 1px solid rgba(49, 55, 47, 0.2);
+      border-radius: 14px;
+      color: #20231f;
+      background: rgba(197, 202, 193, 0.72);
+      font-weight: 900;
+      text-decoration: none;
+      transition: transform 180ms ease, border 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      border-color: rgba(63, 70, 59, 0.32);
+      background: rgba(211, 216, 207, 0.9);
+    }
+
+    .button-primary {
+      color: #111311;
+      border: 0;
+      background: linear-gradient(135deg, #d9ff2e, #a8e600);
+      box-shadow: 0 18px 42px rgba(190, 255, 0, 0.22);
+    }
+
+    .button-primary:hover {
+      box-shadow: 0 22px 52px rgba(190, 255, 0, 0.28);
+    }
+
+    .button-soft {
+      color: #2f3828;
+      background: rgba(168, 174, 162, 0.45);
+    }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-brand {
+      display: inline-flex;
+      gap: 0.55rem;
+      align-items: center;
+      margin-bottom: 0.55rem;
+      color: #1a1d19;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section-logo {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #111311;
+      border: 1px solid rgba(190, 255, 0, 0.46);
+      box-shadow: 0 6px 18px rgba(17, 19, 17, 0.18);
+    }
+
+    .progress {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.45rem;
+      margin: 0.15rem 0 0.45rem;
+    }
+
+    .progress-item {
+      display: grid;
+      gap: 0.4rem;
+      justify-items: center;
+      color: #5f675c;
+      font-size: 0.68rem;
+      font-weight: 900;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .progress-item span {
+      display: grid;
+      width: 2rem;
+      height: 2rem;
+      place-items: center;
+      color: #5d6658;
+      border: 1px solid rgba(60, 67, 56, 0.16);
+      border-radius: 50%;
+      background: rgba(171, 177, 166, 0.52);
+    }
+
+    .progress-item.active,
+    .progress-item.done {
+      color: #20231f;
+    }
+
+    .progress-item.active span,
+    .progress-item.done span {
+      color: #111311;
+      border-color: transparent;
+      background: linear-gradient(135deg, #d9ff2e, #a8e600);
+    }
+
+    .calendar-box {
+      overflow: hidden;
+      border: 1px solid rgba(49, 55, 47, 0.14);
+      border-radius: 16px;
+      background: rgba(190, 196, 185, 0.62);
+    }
+
+    .calendar-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.9rem;
+      border-bottom: 1px solid rgba(49, 55, 47, 0.12);
+      background: rgba(167, 174, 163, 0.42);
+    }
+
+    .calendar-title {
+      color: #20231f;
+      font-weight: 900;
+      text-transform: none;
+    }
+
+    .icon-button {
+      display: inline-grid;
+      width: 2.45rem;
+      height: 2.45rem;
+      place-items: center;
+      color: #2f3828;
+      border: 1px solid rgba(49, 55, 47, 0.16);
+      border-radius: 12px;
+      background: rgba(205, 211, 199, 0.58);
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.35rem;
+      padding: 0.85rem;
+    }
+
+    .weekday,
+    .day-button {
+      display: grid;
+      min-height: 2.45rem;
+      place-items: center;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 900;
+    }
+
+    .weekday {
+      color: #687064;
+      text-transform: uppercase;
+    }
+
+    .day-button {
+      color: #2d322b;
+      border: 1px solid transparent;
+      background: transparent;
+    }
+
+    .day-button.available {
+      color: #1f261d;
+      border-color: rgba(50, 58, 47, 0.16);
+      background: rgba(207, 213, 201, 0.72);
+    }
+
+    .day-button.selected,
+    .day-button.available:hover {
+      color: #111311;
+      border-color: transparent;
+      background: #c7ff00;
+      box-shadow: 0 8px 20px rgba(137, 185, 0, 0.18);
+    }
+
+    .day-button.disabled {
+      color: rgba(70, 77, 65, 0.45);
+    }
+
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.65rem;
+    }
+
+    .time-button {
+      min-height: 3.15rem;
+      color: #222a1f;
+      border: 1px solid rgba(50, 58, 47, 0.16);
+      border-radius: 14px;
+      background: rgba(207, 213, 201, 0.7);
+      font-weight: 900;
+    }
+
+    .time-button:hover,
+    .time-button.selected {
+      color: #111311;
+      border-color: transparent;
+      background: #c7ff00;
+    }
+
+    .time-button.busy {
+      color: rgba(70, 77, 65, 0.36);
+      border-color: rgba(73, 80, 68, 0.14);
+      background: rgba(168, 174, 162, 0.48);
+      text-decoration: line-through;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 0.7rem;
+      padding: 0;
+      margin: 0.3rem 0 0;
+      list-style: none;
+    }
+
+    .summary-list li {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem;
+      border: 1px solid rgba(190, 255, 0, 0.14);
+      border-radius: 14px;
+      background: rgba(198, 203, 194, 0.72);
+    }
+
+    .summary-list span {
+      color: #596254;
+      font-size: 0.84rem;
+      font-weight: 750;
+    }
+
+    .summary-list strong {
+      color: #20231f;
+      text-align: right;
+    }
+
+    .admin-link {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 20;
+      min-height: 2.65rem;
+      padding: 0.62rem 0.8rem;
+      opacity: 0.82;
+    }
+
+    .appointments-list,
+    .admin-list {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 0.35rem;
+    }
+
+    .appointment-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.85rem;
+      align-items: center;
+      padding: 0.85rem;
+      border: 1px solid rgba(190, 255, 0, 0.14);
+      border-radius: 16px;
+      background: rgba(198, 203, 194, 0.72);
+    }
+
+    .date-badge {
+      display: grid;
+      width: 4.2rem;
+      min-height: 4.2rem;
+      place-items: center;
+      color: #111311;
+      border-radius: 14px;
+      background: #c7ff00;
+      text-align: center;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .date-badge small {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+    }
+
+    .empty-state {
+      padding: 1.1rem;
+      color: #596254;
+      border: 1px dashed rgba(190, 255, 0, 0.22);
+      border-radius: 16px;
+      background: rgba(188, 194, 183, 0.62);
+      text-align: center;
+    }
+
+    @media (max-width: 620px) {
+      .app {
+        padding: 0.75rem;
+        align-items: stretch;
+      }
+
+      .login-card,
+      .step-card,
+      .success-card,
+      .admin-card {
+        min-height: calc(100vh - 1.5rem);
+        border-radius: 20px;
+      }
+
+      .time-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .progress-item {
+        font-size: 0.6rem;
+      }
+
+      .brand-logo {
+        width: min(160px, 52vw);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="screen" id="loginScreen">
+      <div class="card login-card">
+        <div class="logo-wrap">
+          <img class="brand-logo" src="assets/logop1veiculos.png" alt="Logo P1 Auto Recife">
+          <div>
+            <h1 class="brand-title">P1</h1>
+            <p class="brand-subtitle">Auto Recife</p>
+          </div>
+        </div>
+        <div>
+          <h1>Reserve sua visita</h1>
+          <p class="lead">O carro dos seus sonhos está mais perto do que você imagina.</p>
+        </div>
+        <form id="loginForm">
+          <div class="field">
+            <label for="clientNameInput">Me informa seu nome e sobrenome</label>
+            <div class="input-wrap">
+              <input id="clientNameInput" autocomplete="name" placeholder="Digite seu nome" required>
+            </div>
+          </div>
+          <button class="button button-primary" type="submit" style="width: 100%; margin-top: 1rem;">
+            <i data-lucide="log-in"></i>
+            Entrar
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section class="screen hidden" id="bookingScreen">
+      <div class="card step-card">
+        <div class="top-actions">
+          <div>
+            <div class="section-brand">
+              <img class="section-logo" src="assets/logop1veiculos.png" alt="">
+              <span>P1 Auto Recife</span>
+            </div>
+            <h1 id="stepTitle">Escolha o dia da visita</h1>
+          </div>
+        </div>
+        <div class="progress" id="progress"></div>
+        <div id="stepContent"></div>
+      </div>
+    </section>
+
+    <section class="screen hidden" id="appointmentsScreen">
+      <div class="card step-card">
+        <div class="top-actions">
+          <div>
+            <div class="section-brand">
+              <img class="section-logo" src="assets/logop1veiculos.png" alt="">
+              <span>P1 Auto Recife</span>
+            </div>
+            <h1>Minhas visitas</h1>
+          </div>
+          <button class="button button-soft" type="button" data-go="calendar">
+            <i data-lucide="arrow-left"></i>
+            Voltar
+          </button>
+        </div>
+        <div class="appointments-list" id="appointmentsList"></div>
+      </div>
+    </section>
+
+    <section class="screen hidden" id="adminScreen">
+      <div class="card admin-card">
+        <div class="top-actions">
+          <div>
+            <div class="section-brand">
+              <img class="section-logo" src="assets/logop1veiculos.png" alt="">
+              <span>Painel P1</span>
+            </div>
+            <h1>Agenda da loja</h1>
+          </div>
+          <button class="button button-soft" type="button" data-go="calendar">
+            <i data-lucide="arrow-left"></i>
+            Voltar
+          </button>
+        </div>
+        <div class="admin-list" id="adminList"></div>
+      </div>
+    </section>
+  </main>
+
+  <button class="button button-soft admin-link" id="adminButton" type="button">
+    <i data-lucide="lock-keyhole"></i>
+    Painel
+  </button>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import {
+      addDoc,
+      collection,
+      getDocs,
+      getFirestore,
+      orderBy,
+      query,
+      serverTimestamp,
+      where
+    } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+    const clientKey = "p1Agenda_clientName";
+    const appointmentKey = "p1Agenda_appointments";
+    const adminPin = "1234";
+    const firebaseConfig = {
+      apiKey: "AIzaSyAdYi5G-PhDWzD9anZZL_76asUpcCzJg9Y",
+      authDomain: "agendamentop1.firebaseapp.com",
+      projectId: "agendamentop1",
+      storageBucket: "agendamentop1.firebasestorage.app",
+      messagingSenderId: "105298128598",
+      appId: "1:105298128598:web:06f19fb3e6eaa2c44d2377"
+    };
+    const firebaseReady = !Object.values(firebaseConfig).some(value => value.includes("COLE_"));
+    const firebaseApp = firebaseReady ? initializeApp(firebaseConfig) : null;
+    const firestoreDb = firebaseReady ? getFirestore(firebaseApp) : null;
+    const appointmentsCollection = "p1_appointments";
+
+    const times = [
+      "08:30", "09:00", "09:30", "10:00", "10:30", "11:00",
+      "11:30", "13:30", "14:00", "14:30", "15:00", "15:30",
+      "16:00", "16:30", "17:00", "17:30"
+    ];
+
+    const state = {
+      clientName: "",
+      step: 1,
+      date: "",
+      time: "",
+      calendar: new Date(),
+      occupied: new Set()
+    };
+
+    const loginScreen = document.querySelector("#loginScreen");
+    const bookingScreen = document.querySelector("#bookingScreen");
+    const appointmentsScreen = document.querySelector("#appointmentsScreen");
+    const adminScreen = document.querySelector("#adminScreen");
+    const loginForm = document.querySelector("#loginForm");
+    const clientNameInput = document.querySelector("#clientNameInput");
+    const stepTitle = document.querySelector("#stepTitle");
+    const progress = document.querySelector("#progress");
+    const stepContent = document.querySelector("#stepContent");
+    const appointmentsList = document.querySelector("#appointmentsList");
+    const adminList = document.querySelector("#adminList");
+    const adminButton = document.querySelector("#adminButton");
+
+    clientNameInput.value = localStorage.getItem(clientKey) || "";
+
+    function refreshIcons() {
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    }
+
+    function dateKey(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function fromDateKey(value) {
+      const parts = value.split("-").map(Number);
+      return new Date(parts[0], parts[1] - 1, parts[2]);
+    }
+
+    function friendlyDate(value) {
+      return fromDateKey(value).toLocaleDateString("pt-BR", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long"
+      });
+    }
+
+    function firstName(name) {
+      return name.trim().split(/\s+/)[0] || name;
+    }
+
+    function shortDate(value) {
+      const date = fromDateKey(value);
+      return {
+        day: String(date.getDate()).padStart(2, "0"),
+        month: date.toLocaleDateString("pt-BR", { month: "short" }).replace(".", "").toUpperCase()
+      };
+    }
+
+    function isPastDate(date) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const target = new Date(date);
+      target.setHours(0, 0, 0, 0);
+      return target < today;
+    }
+
+    function isWorkingDay(date) {
+      const day = date.getDay();
+      return day >= 1 && day <= 6;
+    }
+
+    function isPastTime(day, time) {
+      const parts = time.split(":").map(Number);
+      const target = fromDateKey(day);
+      target.setHours(parts[0], parts[1], 0, 0);
+      return target < new Date();
+    }
+
+    function readLocalAppointments() {
+      try {
+        return JSON.parse(localStorage.getItem(appointmentKey) || "[]").map(normalizeAppointment);
+      } catch {
+        return [];
+      }
+    }
+
+    function writeLocalAppointments(items) {
+      localStorage.setItem(appointmentKey, JSON.stringify(items));
+    }
+
+    function normalizeAppointment(item) {
+      return {
+        id: item.id,
+        clientName: item.clientName,
+        date: item.date,
+        time: item.time,
+        status: item.status || "confirmado",
+        createdAt: item.createdAt || item.created_at || item.createdAt
+      };
+    }
+
+    async function readAppointments() {
+      if (!firestoreDb) {
+        return readLocalAppointments();
+      }
+
+      try {
+        const snapshot = await getDocs(query(
+          collection(firestoreDb, appointmentsCollection),
+          orderBy("date", "asc"),
+          orderBy("time", "asc")
+        ));
+
+        return snapshot.docs.map(doc => normalizeAppointment({ id: doc.id, ...doc.data() }));
+      } catch (error) {
+        console.error("Erro ao buscar agendamentos no Firebase:", error);
+        return readLocalAppointments();
+      }
+    }
+
+    async function createAppointment(item) {
+      if (!firestoreDb) {
+        const items = readLocalAppointments();
+        items.push(item);
+        writeLocalAppointments(items);
+        return item;
+      }
+
+      try {
+        const conflict = await getDocs(query(
+          collection(firestoreDb, appointmentsCollection),
+          where("date", "==", item.date),
+          where("time", "==", item.time),
+          where("status", "==", "confirmado")
+        ));
+
+        if (!conflict.empty) {
+          alert("Esse horário acabou de ser reservado. Escolha outro horário para continuar.");
+          throw new Error("Horário indisponível");
+        }
+
+        const docRef = await addDoc(collection(firestoreDb, appointmentsCollection), {
+          clientName: item.clientName,
+          date: item.date,
+          time: item.time,
+          status: item.status,
+          createdAt: serverTimestamp()
+        });
+
+        return { ...item, id: docRef.id };
+      } catch (error) {
+        console.error("Erro ao salvar agendamento no Firebase:", error);
+        if (error.message !== "Horário indisponível") {
+          alert("Não foi possível salvar esse agendamento agora. Tente novamente em alguns instantes.");
+        }
+        throw error;
+      }
+    }
+
+    function showOnly(screen) {
+      [loginScreen, bookingScreen, appointmentsScreen, adminScreen].forEach(item => item.classList.add("hidden"));
+      screen.classList.remove("hidden");
+      refreshIcons();
+    }
+
+    function renderProgress() {
+      const labels = ["Dia", "Horário", "Confirmação"];
+      progress.innerHTML = labels.map((label, index) => {
+        const number = index + 1;
+        const active = number === state.step ? "active" : number < state.step ? "done" : "";
+        return `<div class="progress-item ${active}"><span>${number}</span>${label}</div>`;
+      }).join("");
+    }
+
+    async function renderStep() {
+      showOnly(bookingScreen);
+      renderProgress();
+
+      if (state.step === 1) {
+        renderCalendar();
+      }
+
+      if (state.step === 2) {
+        await renderTimes();
+      }
+
+      if (state.step === 3) {
+        renderConfirmation();
+      }
+
+      refreshIcons();
+    }
+
+    function renderCalendar() {
+      stepTitle.textContent = "Escolha o dia";
+      const current = new Date(state.calendar.getFullYear(), state.calendar.getMonth(), 1);
+      const firstWeekday = current.getDay();
+      const days = new Date(current.getFullYear(), current.getMonth() + 1, 0).getDate();
+      const cells = [];
+
+      for (let index = 0; index < firstWeekday; index += 1) {
+        cells.push(`<span class="day-button disabled"></span>`);
+      }
+
+      for (let day = 1; day <= days; day += 1) {
+        const date = new Date(current.getFullYear(), current.getMonth(), day);
+        const key = dateKey(date);
+        const available = !isPastDate(date) && isWorkingDay(date);
+        const selected = state.date === key;
+        cells.push(`
+          <button class="day-button ${available ? "available" : "disabled"} ${selected ? "selected" : ""}" type="button" ${available ? "" : "disabled"} data-day="${key}">
+            ${day}
+          </button>
+        `);
+      }
+
+      stepContent.innerHTML = `
+        <p class="lead" style="margin-bottom: 1rem;">Olá ${firstName(state.clientName)}! Escolha o melhor dia para visitar a P1 Auto Recife</p>
+        <div class="calendar-box">
+          <div class="calendar-head">
+            <button class="icon-button" type="button" data-month="-1" aria-label="Mês anterior"><i data-lucide="chevron-left"></i></button>
+            <strong class="calendar-title">${current.toLocaleDateString("pt-BR", { month: "long", year: "numeric" })}</strong>
+            <button class="icon-button" type="button" data-month="1" aria-label="Próximo mês"><i data-lucide="chevron-right"></i></button>
+          </div>
+          <div class="calendar-grid">
+            ${["D", "S", "T", "Q", "Q", "S", "S"].map(day => `<span class="weekday">${day}</span>`).join("")}
+            ${cells.join("")}
+          </div>
+        </div>
+        <button class="button button-soft" type="button" data-view-appointments style="width: 100%; margin-top: 1rem;">
+          <i data-lucide="calendar-days"></i>
+          Ver minhas visitas
+        </button>
+      `;
+
+      stepContent.querySelectorAll("[data-month]").forEach(button => {
+        button.addEventListener("click", () => {
+          state.calendar = new Date(state.calendar.getFullYear(), state.calendar.getMonth() + Number(button.dataset.month), 1);
+          renderStep();
+        });
+      });
+
+      stepContent.querySelectorAll("[data-day]").forEach(button => {
+        button.addEventListener("click", () => {
+          state.date = button.dataset.day;
+          state.step = 2;
+          renderStep();
+        });
+      });
+    }
+
+    async function loadOccupiedTimes() {
+      const items = await readAppointments();
+      state.occupied = new Set(items.filter(item => item.date === state.date && item.status !== "cancelado").map(item => item.time));
+    }
+
+    async function renderTimes() {
+      stepTitle.textContent = "Escolha o horário";
+      await loadOccupiedTimes();
+      stepContent.innerHTML = `
+        <p class="lead" style="margin-bottom: 1rem;">${friendlyDate(state.date)} está reservado para você escolher o melhor horário.</p>
+        <div class="time-grid">
+          ${times.map(time => {
+            const busy = state.occupied.has(time) || isPastTime(state.date, time);
+            const selected = state.time === time;
+            return `<button class="time-button ${busy ? "busy" : ""} ${selected ? "selected" : ""}" type="button" ${busy ? "disabled" : ""} data-time="${time}">${time}</button>`;
+          }).join("")}
+        </div>
+        <button class="button button-soft" type="button" data-back="1" style="width: 100%; margin-top: 1rem;">
+          <i data-lucide="arrow-left"></i>
+          Voltar para o dia
+        </button>
+      `;
+
+      stepContent.querySelectorAll("[data-time]").forEach(button => {
+        button.addEventListener("click", () => {
+          state.time = button.dataset.time;
+          state.step = 3;
+          renderStep();
+        });
+      });
+    }
+
+    function renderConfirmation() {
+      stepTitle.textContent = "Confirme sua visita";
+      stepContent.innerHTML = `
+        <p class="lead" style="margin-bottom: 1rem;">Confira os dados antes de confirmar sua visita na P1 Auto Recife.</p>
+        <ul class="summary-list">
+          <li><span>Cliente</span><strong>${firstName(state.clientName)}</strong></li>
+          <li><span>Data</span><strong>${friendlyDate(state.date)}</strong></li>
+          <li><span>Horário</span><strong>${state.time}</strong></li>
+          <li><span>Local</span><strong>Av. Visconde de Albuquerque, 422</strong></li>
+        </ul>
+        <button class="button button-primary" type="button" data-confirm style="width: 100%; margin-top: 1rem;">
+          <i data-lucide="check"></i>
+          Confirmar visita
+        </button>
+        <button class="button button-soft" type="button" data-back="2" style="width: 100%; margin-top: 0.7rem;">
+          <i data-lucide="arrow-left"></i>
+          Voltar para horário
+        </button>
+      `;
+    }
+
+    async function confirmAppointment() {
+      await loadOccupiedTimes();
+
+      if (state.occupied.has(state.time)) {
+        state.step = 3;
+        renderStep();
+        return;
+      }
+
+      try {
+        await createAppointment({
+          id: crypto.randomUUID(),
+          clientName: state.clientName,
+          date: state.date,
+          time: state.time,
+          status: "confirmado",
+          createdAt: new Date().toISOString()
+        });
+        renderSuccess();
+      } catch {
+        state.step = 2;
+        renderStep();
+      }
+    }
+
+    function renderSuccess() {
+      progress.innerHTML = ["Dia", "Horário", "Confirmação"].map((label, index) => `<div class="progress-item done"><span>${index + 1}</span>${label}</div>`).join("");
+      stepTitle.textContent = "Visita confirmada";
+      stepContent.innerHTML = `
+        <ul class="summary-list">
+          <li><span>Cliente</span><strong>${firstName(state.clientName)}</strong></li>
+          <li><span>Data</span><strong>${friendlyDate(state.date)}</strong></li>
+          <li><span>Horário</span><strong>${state.time}</strong></li>
+        </ul>
+        <button class="button button-primary" type="button" data-new style="width: 100%; margin-top: 1rem;">
+          <i data-lucide="calendar-plus"></i>
+          Refazer Agendamento
+        </button>
+      `;
+      refreshIcons();
+    }
+
+    async function renderAppointments() {
+      showOnly(appointmentsScreen);
+      const today = dateKey(new Date());
+      const items = (await readAppointments())
+        .filter(item => item.clientName.toLowerCase() === state.clientName.toLowerCase() && item.date >= today)
+        .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+
+      if (!items.length) {
+        appointmentsList.innerHTML = `<div class="empty-state">Você ainda não possui visitas marcadas.</div>`;
+        return;
+      }
+
+      appointmentsList.innerHTML = items.map(item => {
+        const date = shortDate(item.date);
+        return `
+          <article class="appointment-card">
+            <div class="date-badge">${date.day}<small>${date.month}</small></div>
+            <div>
+              <strong>${item.time}</strong>
+              <p style="margin: 0.25rem 0 0; color: #596254;">${friendlyDate(item.date)}</p>
+            </div>
+          </article>
+        `;
+      }).join("");
+      refreshIcons();
+    }
+
+    async function renderAdmin() {
+      const pin = prompt("Digite o PIN do painel");
+      if (pin !== adminPin) {
+        return;
+      }
+
+      showOnly(adminScreen);
+      const items = (await readAppointments()).sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+
+      if (!items.length) {
+        adminList.innerHTML = `<div class="empty-state">Nenhuma visita marcada ainda.</div>`;
+        return;
+      }
+
+      adminList.innerHTML = items.map(item => {
+        const date = shortDate(item.date);
+        return `
+          <article class="appointment-card">
+            <div class="date-badge">${date.day}<small>${date.month}</small></div>
+            <div>
+              <strong>${item.time}, ${item.clientName}</strong>
+              <p style="margin: 0.25rem 0 0; color: #596254;">${friendlyDate(item.date)}</p>
+            </div>
+          </article>
+        `;
+      }).join("");
+      refreshIcons();
+    }
+
+    loginForm.addEventListener("submit", event => {
+      event.preventDefault();
+      const name = clientNameInput.value.trim();
+      if (!name) {
+        return;
+      }
+
+      state.clientName = name;
+      localStorage.setItem(clientKey, name);
+      state.step = 1;
+      state.date = "";
+      state.time = "";
+      renderStep();
+    });
+
+    stepContent.addEventListener("click", event => {
+      const back = event.target.closest("[data-back]");
+      const confirm = event.target.closest("[data-confirm]");
+      const viewAppointments = event.target.closest("[data-view-appointments]");
+      const newButton = event.target.closest("[data-new]");
+
+      if (back) {
+        state.step = Number(back.dataset.back);
+        renderStep();
+      }
+
+      if (confirm) {
+        confirmAppointment();
+      }
+
+      if (viewAppointments) {
+        renderAppointments();
+      }
+
+      if (newButton) {
+        state.step = 1;
+        state.date = "";
+        state.time = "";
+        renderStep();
+      }
+    });
+
+    document.addEventListener("click", event => {
+      const go = event.target.closest("[data-go]");
+      if (!go) {
+        return;
+      }
+
+      if (go.dataset.go === "calendar") {
+        state.step = 1;
+        renderStep();
+      }
+    });
+
+    adminButton.addEventListener("click", renderAdmin);
+
+    showOnly(loginScreen);
+    refreshIcons();
+  </script>
+</body>
+</html>
