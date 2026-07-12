@@ -659,7 +659,6 @@
       collection,
       getDocs,
       getFirestore,
-      orderBy,
       query,
       serverTimestamp,
       where
@@ -798,13 +797,11 @@
       }
 
       try {
-        const snapshot = await getDocs(query(
-          collection(firestoreDb, appointmentsCollection),
-          orderBy("date", "asc"),
-          orderBy("time", "asc")
-        ));
+        const snapshot = await getDocs(collection(firestoreDb, appointmentsCollection));
 
-        return snapshot.docs.map(doc => normalizeAppointment({ id: doc.id, ...doc.data() }));
+        return snapshot.docs
+          .map(doc => normalizeAppointment({ id: doc.id, ...doc.data() }))
+          .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
       } catch (error) {
         console.error("Erro ao buscar agendamentos no Firebase:", error);
         return readLocalAppointments();
