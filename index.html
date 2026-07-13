@@ -1236,7 +1236,6 @@
       progress.innerHTML = ["Dia", "Horário", "Confirmação"].map((label, index) => `<div class="progress-item done"><span>${index + 1}</span>${label}</div>`).join("");
       stepTitle.textContent = "Visita reservada";
       stepContent.innerHTML = `
-        <p class="lead" style="margin-bottom: 1rem;">Tudo certo, ${firstName(state.clientName)}! Agora falta pouco para conhecer de perto as oportunidades da P1.</p>
         <ul class="summary-list">
           <li><span>Cliente</span><strong>${firstName(state.clientName)}</strong></li>
           <li><span>Data</span><strong>${friendlyDate(state.date)}</strong></li>
