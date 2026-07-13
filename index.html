@@ -454,29 +454,85 @@
 
     #stepContent.step-exit-forward {
       opacity: 0;
-      transform: translateX(-18px) scale(0.985);
-      filter: blur(2px);
+      transform: translateX(-26px) scale(0.975);
+      filter: blur(3px);
     }
 
     #stepContent.step-exit-back {
       opacity: 0;
-      transform: translateX(18px) scale(0.985);
-      filter: blur(2px);
+      transform: translateX(26px) scale(0.975);
+      filter: blur(3px);
     }
 
     #stepContent.step-enter-forward {
-      animation: stepEnterForward 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation: stepEnterForward 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     #stepContent.step-enter-back {
-      animation: stepEnterBack 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation: stepEnterBack 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    #stepContent.step-enter-forward .lead,
+    #stepContent.step-enter-forward .calendar-box,
+    #stepContent.step-enter-forward .time-button,
+    #stepContent.step-enter-forward .summary-list li,
+    #stepContent.step-enter-forward .button,
+    #stepContent.step-enter-back .lead,
+    #stepContent.step-enter-back .calendar-box,
+    #stepContent.step-enter-back .time-button,
+    #stepContent.step-enter-back .summary-list li,
+    #stepContent.step-enter-back .button {
+      animation: cardDetailEnter 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    #stepContent.step-enter-forward .calendar-box,
+    #stepContent.step-enter-back .calendar-box {
+      animation-delay: 90ms;
+    }
+
+    #stepContent.step-enter-forward .time-button:nth-child(1),
+    #stepContent.step-enter-back .time-button:nth-child(1),
+    #stepContent.step-enter-forward .summary-list li:nth-child(1),
+    #stepContent.step-enter-back .summary-list li:nth-child(1) {
+      animation-delay: 90ms;
+    }
+
+    #stepContent.step-enter-forward .time-button:nth-child(2),
+    #stepContent.step-enter-back .time-button:nth-child(2),
+    #stepContent.step-enter-forward .summary-list li:nth-child(2),
+    #stepContent.step-enter-back .summary-list li:nth-child(2) {
+      animation-delay: 135ms;
+    }
+
+    #stepContent.step-enter-forward .time-button:nth-child(3),
+    #stepContent.step-enter-back .time-button:nth-child(3),
+    #stepContent.step-enter-forward .summary-list li:nth-child(3),
+    #stepContent.step-enter-back .summary-list li:nth-child(3) {
+      animation-delay: 180ms;
+    }
+
+    #stepContent.step-enter-forward .time-button:nth-child(4),
+    #stepContent.step-enter-back .time-button:nth-child(4),
+    #stepContent.step-enter-forward .summary-list li:nth-child(4),
+    #stepContent.step-enter-back .summary-list li:nth-child(4) {
+      animation-delay: 225ms;
+    }
+
+    #stepContent.step-enter-forward .time-button:nth-child(n+5),
+    #stepContent.step-enter-back .time-button:nth-child(n+5) {
+      animation-delay: 270ms;
+    }
+
+    #stepContent.step-enter-forward .button,
+    #stepContent.step-enter-back .button {
+      animation-delay: 320ms;
     }
 
     @keyframes stepEnterForward {
       from {
         opacity: 0;
-        transform: translateX(22px) scale(0.985);
-        filter: blur(2px);
+        transform: translateX(34px) scale(0.975);
+        filter: blur(3px);
       }
 
       to {
@@ -489,13 +545,27 @@
     @keyframes stepEnterBack {
       from {
         opacity: 0;
-        transform: translateX(-22px) scale(0.985);
-        filter: blur(2px);
+        transform: translateX(-34px) scale(0.975);
+        filter: blur(3px);
       }
 
       to {
         opacity: 1;
         transform: translateX(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes cardDetailEnter {
+      from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+        filter: blur(2px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
         filter: blur(0);
       }
     }
@@ -1176,10 +1246,10 @@
       stepContent.classList.remove("step-enter-forward", "step-enter-back", "step-exit-forward", "step-exit-back");
       stepContent.classList.add(direction === "forward" ? "step-exit-forward" : "step-exit-back");
 
-      await delay(240);
+      await delay(360);
       state.step = nextStep;
       await renderStep({ direction });
-      await delay(460);
+      await delay(720);
       stepContent.classList.remove("step-enter-forward", "step-enter-back");
       bookingCard.classList.remove("is-transitioning");
       isStepTransitioning = false;
