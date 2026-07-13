@@ -43,8 +43,8 @@
       --carbon: #111411;
       --lime: #c8ff00;
       --lime-deep: #93c900;
-      --glow: rgba(200, 255, 0, 0.24);
-      --shadow: 0 24px 70px rgba(19, 23, 18, 0.24);
+      --glow: rgba(180, 232, 0, 0.18);
+      --shadow: 0 18px 44px rgba(19, 23, 18, 0.18);
     }
 
     * {
@@ -62,9 +62,7 @@
       color: var(--ink);
       font-family: "Open Sans", Arial, sans-serif;
       background:
-        radial-gradient(circle at 22% 12%, rgba(255, 255, 255, 0.36), transparent 18rem),
-        radial-gradient(circle at 82% 78%, rgba(200, 255, 0, 0.12), transparent 20rem),
-        linear-gradient(135deg, #b7bdb5 0%, #9fa79d 48%, #848d83 100%);
+        linear-gradient(135deg, #b5bbb2 0%, #a5aca2 48%, #939b91 100%);
       overflow-x: hidden;
     }
 
@@ -73,11 +71,10 @@
       position: fixed;
       inset: 0;
       z-index: -1;
-      opacity: 0.5;
+      opacity: 0.28;
       background:
-        linear-gradient(115deg, rgba(255, 255, 255, 0.18), transparent 28%),
-        repeating-linear-gradient(112deg, transparent 0 38px, rgba(31, 35, 30, 0.08) 39px, transparent 41px),
-        radial-gradient(circle at 50% 50%, rgba(15, 18, 14, 0.16), transparent 32rem);
+        linear-gradient(115deg, rgba(255, 255, 255, 0.14), transparent 30%),
+        repeating-linear-gradient(112deg, transparent 0 42px, rgba(31, 35, 30, 0.055) 43px, transparent 45px);
       pointer-events: none;
     }
 
@@ -86,8 +83,8 @@
       position: fixed;
       inset: auto 0 0;
       z-index: -1;
-      height: 30vh;
-      background: linear-gradient(0deg, rgba(22, 27, 21, 0.18), transparent);
+      height: 24vh;
+      background: linear-gradient(0deg, rgba(22, 27, 21, 0.11), transparent);
       pointer-events: none;
     }
 
@@ -125,13 +122,11 @@
     .card {
       position: relative;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.34);
-      border-radius: 22px;
-      background:
-        linear-gradient(145deg, rgba(232, 236, 228, 0.94), rgba(196, 204, 193, 0.98)),
-        radial-gradient(circle at 88% 0, rgba(200, 255, 0, 0.08), transparent 16rem);
-      box-shadow: var(--shadow), inset 0 1px rgba(255, 255, 255, 0.56);
-      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: 20px;
+      background: linear-gradient(145deg, rgba(228, 232, 224, 0.96), rgba(205, 212, 201, 0.98));
+      box-shadow: var(--shadow), inset 0 1px rgba(255, 255, 255, 0.52);
+      backdrop-filter: blur(12px);
     }
 
     .card::before {
@@ -139,9 +134,7 @@
       position: absolute;
       inset: 0;
       z-index: 0;
-      background:
-        linear-gradient(112deg, transparent 0 62%, rgba(17, 20, 17, 0.06) 62.2% 63%, transparent 63.2%),
-        radial-gradient(circle at 84% 18%, rgba(200, 255, 0, 0.12), transparent 12rem);
+      background: none;
       pointer-events: none;
     }
 
@@ -163,24 +156,26 @@
 
     .login-card {
       text-align: center;
+      min-height: auto;
+      padding-block: clamp(2rem, 5vw, 3.1rem);
     }
 
     .logo-wrap {
       display: grid;
       justify-items: center;
-      gap: 0.72rem;
-      margin-bottom: 0.55rem;
+      gap: 0.55rem;
+      margin-bottom: 0.35rem;
     }
 
     .brand-logo {
-      width: min(152px, 40vw);
+      width: min(128px, 34vw);
       aspect-ratio: 1;
       border-radius: 50%;
       padding: 0.45rem;
       object-fit: cover;
       background: var(--carbon);
-      border: 1px solid rgba(200, 255, 0, 0.62);
-      box-shadow: 0 0 0 7px rgba(200, 255, 0, 0.05), 0 20px 44px rgba(0, 0, 0, 0.38);
+      border: 1px solid rgba(180, 232, 0, 0.54);
+      box-shadow: 0 0 0 5px rgba(200, 255, 0, 0.035), 0 14px 30px rgba(0, 0, 0, 0.28);
     }
 
     .brand-logo.admin-trigger {
@@ -190,7 +185,7 @@
 
     .brand-logo.admin-trigger:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 0 8px rgba(200, 255, 0, 0.08), 0 24px 54px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 0 6px rgba(200, 255, 0, 0.055), 0 16px 34px rgba(0, 0, 0, 0.32);
     }
 
     .brand-title {
@@ -212,7 +207,7 @@
       display: inline-block;
       margin: 0;
       padding: 0;
-      color: var(--lime);
+      color: #b8ee00;
       font-size: clamp(1.05rem, 4vw, 1.55rem);
       font-weight: 900;
       letter-spacing: 0.08em;
@@ -220,9 +215,7 @@
       text-transform: uppercase;
       paint-order: stroke fill;
       -webkit-text-stroke: 0.4px var(--carbon);
-      text-shadow:
-        0 1px 1px rgba(17, 20, 17, 0.72),
-        0 0 1px rgba(17, 20, 17, 0.8);
+      text-shadow: 0 1px 1px rgba(17, 20, 17, 0.48);
     }
 
     h1,
@@ -239,7 +232,7 @@
       font-size: clamp(1.95rem, 5vw, 2.65rem);
       line-height: 1.04;
       font-weight: 900;
-      letter-spacing: -0.02em;
+      letter-spacing: 0;
     }
 
     .step-card h1,
@@ -250,7 +243,7 @@
       font-size: clamp(1.85rem, 4.5vw, 2.7rem);
       line-height: 1.05;
       font-weight: 900;
-      letter-spacing: -0.018em;
+      letter-spacing: 0;
     }
 
     .lead {
@@ -281,9 +274,9 @@
       min-height: 3.35rem;
       padding: 0.85rem 1rem;
       color: var(--ink);
-      border: 1px solid rgba(49, 55, 47, 0.18);
-      border-radius: 14px;
-      background: rgba(238, 241, 234, 0.82);
+      border: 1px solid rgba(49, 55, 47, 0.16);
+      border-radius: 12px;
+      background: rgba(241, 244, 238, 0.82);
       outline: none;
       transition: border 180ms ease, box-shadow 180ms ease, background 180ms ease;
     }
@@ -291,7 +284,7 @@
     input:focus {
       border-color: rgba(147, 201, 0, 0.72);
       background: rgba(248, 250, 245, 0.96);
-      box-shadow: 0 0 0 4px rgba(200, 255, 0, 0.12);
+      box-shadow: 0 0 0 3px rgba(179, 230, 0, 0.14);
     }
 
     input::placeholder {
@@ -306,9 +299,9 @@
       gap: 0.55rem;
       padding: 0.82rem 1.05rem;
       border: 1px solid rgba(49, 55, 47, 0.17);
-      border-radius: 14px;
+      border-radius: 12px;
       color: var(--ink-soft);
-      background: rgba(225, 229, 220, 0.74);
+      background: rgba(224, 229, 221, 0.7);
       font-weight: 900;
       text-decoration: none;
       transition: transform 180ms ease, border 180ms ease, background 180ms ease, box-shadow 180ms ease;
@@ -322,28 +315,28 @@
 
     .button-primary {
       color: #f5f8f1;
-      border: 1px solid rgba(200, 255, 0, 0.44);
-      background:
-        linear-gradient(135deg, rgba(200, 255, 0, 0.16), transparent 34%),
-        linear-gradient(135deg, #171b16, #2a3028);
-      box-shadow: 0 18px 42px rgba(17, 20, 17, 0.26), 0 0 0 4px rgba(200, 255, 0, 0.04);
+      border: 1px solid rgba(176, 226, 0, 0.44);
+      background: linear-gradient(135deg, #151914, #242b22);
+      box-shadow: 0 10px 22px rgba(17, 20, 17, 0.18);
     }
 
     .button-primary i {
       color: var(--lime);
     }
 
+    .button.is-loading i {
+      animation: spin 780ms linear infinite;
+    }
+
     .button-primary:hover {
       border-color: rgba(200, 255, 0, 0.62);
-      background:
-        linear-gradient(135deg, rgba(200, 255, 0, 0.22), transparent 34%),
-        linear-gradient(135deg, #111411, #262d24);
-      box-shadow: 0 22px 52px rgba(17, 20, 17, 0.3), 0 0 0 5px rgba(200, 255, 0, 0.06);
+      background: linear-gradient(135deg, #10130f, #222920);
+      box-shadow: 0 12px 26px rgba(17, 20, 17, 0.2);
     }
 
     .button-soft {
       color: var(--ink-soft);
-      background: rgba(218, 223, 214, 0.56);
+      background: rgba(218, 223, 214, 0.5);
     }
 
     .top-actions {
@@ -373,7 +366,7 @@
       object-fit: cover;
       background: #111311;
       border: 1px solid rgba(200, 255, 0, 0.46);
-      box-shadow: 0 6px 18px rgba(17, 20, 17, 0.18);
+      box-shadow: 0 5px 14px rgba(17, 20, 17, 0.14);
     }
 
     .progress {
@@ -381,7 +374,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 0.45rem;
-      margin: 0.25rem 0 0.6rem;
+      margin: 0.15rem 0 0.7rem;
       padding: 0.25rem 0;
     }
 
@@ -416,7 +409,7 @@
       border: 1px solid rgba(60, 67, 56, 0.18);
       border-radius: 50%;
       background: #dfe4da;
-      box-shadow: 0 0 0 5px rgba(224, 229, 220, 0.82);
+      box-shadow: 0 0 0 4px rgba(224, 229, 220, 0.72);
     }
 
     .progress-item.active,
@@ -426,16 +419,16 @@
 
     .progress-item.active span,
     .progress-item.done span {
-      color: var(--lime);
+      color: #d8ff37;
       border-color: rgba(200, 255, 0, 0.48);
       background: var(--carbon);
-      box-shadow: 0 0 0 5px rgba(200, 255, 0, 0.08), 0 8px 18px rgba(17, 20, 17, 0.16);
+      box-shadow: 0 0 0 4px rgba(200, 255, 0, 0.06), 0 6px 14px rgba(17, 20, 17, 0.14);
     }
 
     #stepTitle,
     .progress,
     #stepContent {
-      transition: opacity 220ms ease, transform 220ms ease, filter 220ms ease;
+      transition: opacity 180ms ease, transform 180ms ease;
     }
 
     .step-card.is-transitioning {
@@ -444,32 +437,29 @@
 
     .step-card.is-transitioning #stepTitle,
     .step-card.is-transitioning .progress {
-      opacity: 0.68;
-      transform: translateY(-2px);
+      opacity: 0.86;
     }
 
     #stepContent {
-      will-change: opacity, transform, filter;
+      will-change: opacity, transform;
     }
 
     #stepContent.step-exit-forward {
       opacity: 0;
-      transform: translateX(-26px) scale(0.975);
-      filter: blur(3px);
+      transform: translateY(10px);
     }
 
     #stepContent.step-exit-back {
       opacity: 0;
-      transform: translateX(26px) scale(0.975);
-      filter: blur(3px);
+      transform: translateY(10px);
     }
 
     #stepContent.step-enter-forward {
-      animation: stepEnterForward 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: stepEnter 420ms cubic-bezier(0.2, 0.82, 0.2, 1) both;
     }
 
     #stepContent.step-enter-back {
-      animation: stepEnterBack 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: stepEnter 420ms cubic-bezier(0.2, 0.82, 0.2, 1) both;
     }
 
     #stepContent.step-enter-forward .lead,
@@ -482,7 +472,7 @@
     #stepContent.step-enter-back .time-button,
     #stepContent.step-enter-back .summary-list li,
     #stepContent.step-enter-back .button {
-      animation: cardDetailEnter 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: cardDetailEnter 420ms cubic-bezier(0.2, 0.82, 0.2, 1) both;
     }
 
     #stepContent.step-enter-forward .calendar-box,
@@ -528,54 +518,42 @@
       animation-delay: 320ms;
     }
 
-    @keyframes stepEnterForward {
+    @keyframes stepEnter {
       from {
         opacity: 0;
-        transform: translateX(34px) scale(0.975);
-        filter: blur(3px);
+        transform: translateY(14px);
       }
 
       to {
         opacity: 1;
-        transform: translateX(0) scale(1);
-        filter: blur(0);
-      }
-    }
-
-    @keyframes stepEnterBack {
-      from {
-        opacity: 0;
-        transform: translateX(-34px) scale(0.975);
-        filter: blur(3px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-        filter: blur(0);
+        transform: translateY(0);
       }
     }
 
     @keyframes cardDetailEnter {
       from {
         opacity: 0;
-        transform: translateY(16px) scale(0.98);
-        filter: blur(2px);
+        transform: translateY(10px);
       }
 
       to {
         opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
       }
     }
 
     .calendar-box {
       overflow: hidden;
       border: 1px solid rgba(49, 55, 47, 0.12);
-      border-radius: 18px;
-      background: rgba(232, 236, 228, 0.56);
-      box-shadow: inset 0 1px rgba(255, 255, 255, 0.34);
+      border-radius: 16px;
+      background: rgba(236, 240, 232, 0.5);
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.32);
     }
 
     .calendar-head {
@@ -585,7 +563,7 @@
       gap: 1rem;
       padding: 0.9rem;
       border-bottom: 1px solid rgba(49, 55, 47, 0.12);
-      background: rgba(214, 220, 210, 0.62);
+      background: rgba(218, 224, 214, 0.56);
     }
 
     .calendar-title {
@@ -601,23 +579,23 @@
       place-items: center;
       color: var(--ink-soft);
       border: 1px solid rgba(49, 55, 47, 0.16);
-      border-radius: 12px;
-      background: rgba(237, 241, 233, 0.62);
+      border-radius: 10px;
+      background: rgba(237, 241, 233, 0.58);
     }
 
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 0.35rem;
+      gap: 0.4rem;
       padding: 0.85rem;
     }
 
     .weekday,
     .day-button {
       display: grid;
-      min-height: 2.45rem;
+      min-height: 2.5rem;
       place-items: center;
-      border-radius: 12px;
+      border-radius: 10px;
       font-size: 0.8rem;
       font-weight: 900;
     }
@@ -636,15 +614,15 @@
     .day-button.available {
       color: #20271e;
       border-color: rgba(50, 58, 47, 0.12);
-      background: rgba(238, 241, 234, 0.7);
+      background: rgba(240, 243, 237, 0.72);
     }
 
     .day-button.selected,
     .day-button.available:hover {
-      color: var(--lime);
-      border-color: rgba(200, 255, 0, 0.54);
+      color: #d8ff37;
+      border-color: rgba(176, 226, 0, 0.52);
       background: var(--carbon);
-      box-shadow: 0 8px 20px rgba(17, 20, 17, 0.18), 0 0 0 4px rgba(200, 255, 0, 0.07);
+      box-shadow: 0 7px 16px rgba(17, 20, 17, 0.16);
     }
 
     .day-button.disabled {
@@ -654,30 +632,30 @@
     .time-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 0.65rem;
+      gap: 0.7rem;
     }
 
     .time-button {
       min-height: 3.15rem;
       color: var(--ink-soft);
       border: 1px solid rgba(50, 58, 47, 0.16);
-      border-radius: 14px;
-      background: rgba(238, 241, 234, 0.7);
+      border-radius: 12px;
+      background: rgba(240, 243, 237, 0.72);
       font-weight: 900;
     }
 
     .time-button:hover,
     .time-button.selected {
-      color: var(--lime);
-      border-color: rgba(200, 255, 0, 0.54);
+      color: #d8ff37;
+      border-color: rgba(176, 226, 0, 0.52);
       background: var(--carbon);
-      box-shadow: 0 8px 20px rgba(17, 20, 17, 0.18), 0 0 0 4px rgba(200, 255, 0, 0.07);
+      box-shadow: 0 7px 16px rgba(17, 20, 17, 0.16);
     }
 
     .time-button.busy {
-      color: rgba(70, 77, 65, 0.36);
+      color: rgba(70, 77, 65, 0.48);
       border-color: rgba(73, 80, 68, 0.14);
-      background: rgba(168, 174, 162, 0.48);
+      background: rgba(188, 195, 183, 0.5);
       text-decoration: line-through;
     }
 
@@ -696,8 +674,8 @@
       justify-content: space-between;
       padding: 0.9rem;
       border: 1px solid rgba(49, 55, 47, 0.11);
-      border-radius: 14px;
-      background: rgba(238, 241, 234, 0.68);
+      border-radius: 12px;
+      background: rgba(240, 243, 237, 0.68);
     }
 
     .summary-list span {
@@ -725,8 +703,8 @@
       align-items: center;
       padding: 0.85rem;
       border: 1px solid rgba(49, 55, 47, 0.11);
-      border-radius: 16px;
-      background: rgba(238, 241, 234, 0.68);
+      border-radius: 14px;
+      background: rgba(240, 243, 237, 0.68);
     }
 
     .admin-actions {
@@ -815,7 +793,7 @@
 
       .app {
         padding: 0.75rem;
-        align-items: stretch;
+        align-items: center;
       }
 
       .screen {
@@ -827,8 +805,13 @@
       .success-card,
       .admin-card {
         min-height: calc(100dvh - 1.5rem);
-        border-radius: 20px;
+        border-radius: 18px;
         padding: 1rem;
+      }
+
+      .login-card {
+        min-height: auto;
+        padding-block: 1.75rem;
       }
 
       .time-grid {
@@ -840,31 +823,31 @@
       }
 
       .brand-logo {
-        width: min(132px, 42vw);
+        width: min(112px, 34vw);
       }
 
       .brand-title {
-        font-size: clamp(2rem, 12vw, 3rem);
+        font-size: clamp(1.9rem, 11vw, 2.75rem);
       }
 
       .brand-subtitle {
-        font-size: clamp(1rem, 5vw, 1.35rem);
+        font-size: clamp(0.95rem, 4.5vw, 1.2rem);
       }
 
       .hero-title,
       .admin-login-card h1 {
-        font-size: clamp(1.9rem, 7.6vw, 2.32rem);
+        font-size: clamp(1.85rem, 7vw, 2.2rem);
       }
 
       .calendar-grid {
-        gap: 0.28rem;
-        padding: 0.62rem;
+        gap: 0.26rem;
+        padding: 0.58rem;
       }
 
       .weekday,
       .day-button {
-        min-height: 2.18rem;
-        border-radius: 10px;
+        min-height: 2.15rem;
+        border-radius: 9px;
       }
 
       .summary-list li {
@@ -1061,6 +1044,7 @@
     const appointmentsList = document.querySelector("#appointmentsList");
     const adminList = document.querySelector("#adminList");
     let isStepTransitioning = false;
+    let isConfirmingAppointment = false;
 
     clientNameInput.value = localStorage.getItem(clientKey) || "";
 
@@ -1122,6 +1106,15 @@
       return target < new Date();
     }
 
+    function hasRemainingTime(date) {
+      const key = dateKey(date);
+      return times.some(time => !isPastTime(key, time));
+    }
+
+    function hasOpenTime(day, occupiedForDate) {
+      return times.some(time => !isPastTime(day, time) && !occupiedForDate.has(time));
+    }
+
     function readLocalAppointments() {
       try {
         return JSON.parse(localStorage.getItem(appointmentKey) || "[]").map(normalizeAppointment);
@@ -1151,7 +1144,11 @@
       }
 
       try {
-        const snapshot = await getDocs(collection(firestoreDb, appointmentsCollection));
+        const snapshot = await withTimeout(
+          getDocs(collection(firestoreDb, appointmentsCollection)),
+          3500,
+          "Tempo esgotado ao buscar agendamentos"
+        );
 
         return snapshot.docs
           .map(doc => normalizeAppointment({ id: doc.id, ...doc.data() }))
@@ -1230,6 +1227,15 @@
       return new Promise(resolve => setTimeout(resolve, ms));
     }
 
+    function withTimeout(promise, ms, message) {
+      return Promise.race([
+        promise,
+        new Promise((_, reject) => {
+          setTimeout(() => reject(new Error(message)), ms);
+        })
+      ]);
+    }
+
     async function transitionToStep(nextStep) {
       if (isStepTransitioning) {
         return;
@@ -1246,10 +1252,10 @@
       stepContent.classList.remove("step-enter-forward", "step-enter-back", "step-exit-forward", "step-exit-back");
       stepContent.classList.add(direction === "forward" ? "step-exit-forward" : "step-exit-back");
 
-      await delay(360);
+      await delay(180);
       state.step = nextStep;
       await renderStep({ direction });
-      await delay(720);
+      await delay(520);
       stepContent.classList.remove("step-enter-forward", "step-enter-back");
       bookingCard.classList.remove("is-transitioning");
       isStepTransitioning = false;
@@ -1260,7 +1266,7 @@
       renderProgress();
 
       if (state.step === 1) {
-        renderCalendar();
+        await renderCalendar();
       }
 
       if (state.step === 2) {
@@ -1279,8 +1285,27 @@
       }
     }
 
-    function renderCalendar() {
+    async function renderCalendar(options = {}) {
       stepTitle.textContent = "Escolha seu dia";
+      stepContent.innerHTML = `
+        <p class="lead" style="margin-bottom: 1rem;">Olá ${firstName(state.clientName)}! Vamos reservar o melhor dia para sua visita.</p>
+        <div class="empty-state">Carregando dias disponíveis...</div>
+      `;
+      refreshIcons();
+
+      const appointments = options.appointments || readLocalAppointments();
+      const occupiedByDate = appointments.reduce((map, item) => {
+        if (item.status === "cancelado") {
+          return map;
+        }
+
+        if (!map.has(item.date)) {
+          map.set(item.date, new Set());
+        }
+
+        map.get(item.date).add(item.time);
+        return map;
+      }, new Map());
       const current = new Date(state.calendar.getFullYear(), state.calendar.getMonth(), 1);
       const firstWeekday = current.getDay();
       const days = new Date(current.getFullYear(), current.getMonth() + 1, 0).getDate();
@@ -1293,7 +1318,8 @@
       for (let day = 1; day <= days; day += 1) {
         const date = new Date(current.getFullYear(), current.getMonth(), day);
         const key = dateKey(date);
-        const available = !isPastDate(date) && isWorkingDay(date);
+        const occupiedForDate = occupiedByDate.get(key) || new Set();
+        const available = !isPastDate(date) && isWorkingDay(date) && hasOpenTime(key, occupiedForDate);
         const selected = state.date === key;
         cells.push(`
           <button class="day-button ${available ? "available" : "disabled"} ${selected ? "selected" : ""}" type="button" ${available ? "" : "disabled"} data-day="${key}">
@@ -1321,6 +1347,8 @@
         </button>
       `;
 
+      refreshIcons();
+
       stepContent.querySelectorAll("[data-month]").forEach(button => {
         button.addEventListener("click", () => {
           state.calendar = new Date(state.calendar.getFullYear(), state.calendar.getMonth() + Number(button.dataset.month), 1);
@@ -1332,6 +1360,21 @@
         button.addEventListener("click", () => {
           state.date = button.dataset.day;
           transitionToStep(2);
+        });
+      });
+
+      if (options.refreshRemote === false || !firestoreDb) {
+        return;
+      }
+
+      readAppointments().then(remoteAppointments => {
+        if (state.step !== 1) {
+          return;
+        }
+
+        renderCalendar({
+          appointments: remoteAppointments,
+          refreshRemote: false
         });
       });
     }
@@ -1368,6 +1411,7 @@
     }
 
     function renderConfirmation() {
+      isConfirmingAppointment = false;
       stepTitle.textContent = "Sua visita está quase reservada";
       stepContent.innerHTML = `
         <p class="lead" style="margin-bottom: 1rem;">Confira os detalhes e deixe sua visita reservada.</p>
@@ -1389,11 +1433,22 @@
     }
 
     async function confirmAppointment() {
-      await loadOccupiedTimes();
+      if (isConfirmingAppointment) {
+        return;
+      }
 
       if (state.occupied.has(state.time)) {
         transitionToStep(3);
         return;
+      }
+
+      const confirmButton = stepContent.querySelector("[data-confirm]");
+      isConfirmingAppointment = true;
+
+      if (confirmButton) {
+        confirmButton.disabled = true;
+        confirmButton.innerHTML = `<i data-lucide="loader-circle"></i> Reservando...`;
+        refreshIcons();
       }
 
       try {
@@ -1405,8 +1460,10 @@
           status: "confirmado",
           createdAt: new Date().toISOString()
         });
+        isConfirmingAppointment = false;
         renderSuccess();
       } catch {
+        isConfirmingAppointment = false;
         transitionToStep(2);
       }
     }
