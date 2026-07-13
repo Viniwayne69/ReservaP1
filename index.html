@@ -432,6 +432,74 @@
       box-shadow: 0 0 0 5px rgba(200, 255, 0, 0.08), 0 8px 18px rgba(17, 20, 17, 0.16);
     }
 
+    #stepTitle,
+    .progress,
+    #stepContent {
+      transition: opacity 220ms ease, transform 220ms ease, filter 220ms ease;
+    }
+
+    .step-card.is-transitioning {
+      pointer-events: none;
+    }
+
+    .step-card.is-transitioning #stepTitle,
+    .step-card.is-transitioning .progress {
+      opacity: 0.68;
+      transform: translateY(-2px);
+    }
+
+    #stepContent {
+      will-change: opacity, transform, filter;
+    }
+
+    #stepContent.step-exit-forward {
+      opacity: 0;
+      transform: translateX(-18px) scale(0.985);
+      filter: blur(2px);
+    }
+
+    #stepContent.step-exit-back {
+      opacity: 0;
+      transform: translateX(18px) scale(0.985);
+      filter: blur(2px);
+    }
+
+    #stepContent.step-enter-forward {
+      animation: stepEnterForward 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    #stepContent.step-enter-back {
+      animation: stepEnterBack 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes stepEnterForward {
+      from {
+        opacity: 0;
+        transform: translateX(22px) scale(0.985);
+        filter: blur(2px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes stepEnterBack {
+      from {
+        opacity: 0;
+        transform: translateX(-22px) scale(0.985);
+        filter: blur(2px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
     .calendar-box {
       overflow: hidden;
       border: 1px solid rgba(49, 55, 47, 0.12);
@@ -739,6 +807,16 @@
         text-align: left;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -909,8 +987,10 @@
     const stepTitle = document.querySelector("#stepTitle");
     const progress = document.querySelector("#progress");
     const stepContent = document.querySelector("#stepContent");
+    const bookingCard = document.querySelector("#bookingScreen .step-card");
     const appointmentsList = document.querySelector("#appointmentsList");
     const adminList = document.querySelector("#adminList");
+    let isStepTransitioning = false;
 
     clientNameInput.value = localStorage.getItem(clientKey) || "";
 
@@ -1076,7 +1156,36 @@
       }).join("");
     }
 
-    async function renderStep() {
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function transitionToStep(nextStep) {
+      if (isStepTransitioning) {
+        return;
+      }
+
+      if (nextStep === state.step) {
+        await renderStep();
+        return;
+      }
+
+      const direction = nextStep > state.step ? "forward" : "back";
+      isStepTransitioning = true;
+      bookingCard.classList.add("is-transitioning");
+      stepContent.classList.remove("step-enter-forward", "step-enter-back", "step-exit-forward", "step-exit-back");
+      stepContent.classList.add(direction === "forward" ? "step-exit-forward" : "step-exit-back");
+
+      await delay(240);
+      state.step = nextStep;
+      await renderStep({ direction });
+      await delay(460);
+      stepContent.classList.remove("step-enter-forward", "step-enter-back");
+      bookingCard.classList.remove("is-transitioning");
+      isStepTransitioning = false;
+    }
+
+    async function renderStep(options = {}) {
       showOnly(bookingScreen);
       renderProgress();
 
@@ -1093,6 +1202,11 @@
       }
 
       refreshIcons();
+
+      if (options.direction) {
+        stepContent.classList.remove("step-exit-forward", "step-exit-back");
+        stepContent.classList.add(options.direction === "forward" ? "step-enter-forward" : "step-enter-back");
+      }
     }
 
     function renderCalendar() {
@@ -1147,8 +1261,7 @@
       stepContent.querySelectorAll("[data-day]").forEach(button => {
         button.addEventListener("click", () => {
           state.date = button.dataset.day;
-          state.step = 2;
-          renderStep();
+          transitionToStep(2);
         });
       });
     }
@@ -1179,8 +1292,7 @@
       stepContent.querySelectorAll("[data-time]").forEach(button => {
         button.addEventListener("click", () => {
           state.time = button.dataset.time;
-          state.step = 3;
-          renderStep();
+          transitionToStep(3);
         });
       });
     }
@@ -1210,8 +1322,7 @@
       await loadOccupiedTimes();
 
       if (state.occupied.has(state.time)) {
-        state.step = 3;
-        renderStep();
+        transitionToStep(3);
         return;
       }
 
@@ -1226,8 +1337,7 @@
         });
         renderSuccess();
       } catch {
-        state.step = 2;
-        renderStep();
+        transitionToStep(2);
       }
     }
 
@@ -1354,8 +1464,7 @@
       const newButton = event.target.closest("[data-new]");
 
       if (back) {
-        state.step = Number(back.dataset.back);
-        renderStep();
+        transitionToStep(Number(back.dataset.back));
       }
 
       if (confirm) {
@@ -1367,10 +1476,9 @@
       }
 
       if (newButton) {
-        state.step = 1;
         state.date = "";
         state.time = "";
-        renderStep();
+        transitionToStep(1);
       }
     });
 
