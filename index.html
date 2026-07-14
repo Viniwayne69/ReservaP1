@@ -119,6 +119,10 @@
       max-width: 100%;
     }
 
+    #adminScreen {
+      width: min(1120px, 100%);
+    }
+
     .card {
       position: relative;
       overflow: hidden;
@@ -372,7 +376,7 @@
     .progress {
       position: relative;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 0.45rem;
       margin: 0.15rem 0 0.7rem;
       padding: 0.25rem 0;
@@ -382,8 +386,8 @@
       content: "";
       position: absolute;
       top: 1.2rem;
-      left: 10%;
-      right: 10%;
+      left: 8%;
+      right: 8%;
       height: 1px;
       background: rgba(49, 55, 47, 0.16);
     }
@@ -394,7 +398,7 @@
       gap: 0.4rem;
       justify-items: center;
       color: #687166;
-      font-size: 0.68rem;
+      font-size: 0.62rem;
       font-weight: 900;
       text-align: center;
       text-transform: uppercase;
@@ -402,8 +406,8 @@
 
     .progress-item span {
       display: grid;
-      width: 1.9rem;
-      height: 1.9rem;
+      width: 1.75rem;
+      height: 1.75rem;
       place-items: center;
       color: #596255;
       border: 1px solid rgba(60, 67, 56, 0.18);
@@ -696,6 +700,140 @@
       margin-top: 0.35rem;
     }
 
+    .admin-dashboard {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .admin-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.7rem;
+    }
+
+    .metric-card {
+      padding: 0.9rem;
+      border: 1px solid rgba(49, 55, 47, 0.11);
+      border-radius: 14px;
+      background: rgba(240, 243, 237, 0.68);
+    }
+
+    .metric-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .metric-card strong {
+      display: block;
+      margin-top: 0.25rem;
+      color: var(--ink);
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    .admin-toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .admin-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      justify-content: flex-end;
+    }
+
+    .filter-button {
+      min-height: 2.5rem;
+      padding: 0.55rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+    }
+
+    .filter-button.active {
+      color: #d8ff37;
+      border-color: rgba(176, 226, 0, 0.52);
+      background: var(--carbon);
+    }
+
+    .admin-appointment-card {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1rem;
+      align-items: start;
+      padding: 1rem;
+      border: 1px solid rgba(49, 55, 47, 0.11);
+      border-radius: 14px;
+      background: rgba(240, 243, 237, 0.72);
+    }
+
+    .appointment-main {
+      display: grid;
+      gap: 0.7rem;
+      min-width: 0;
+    }
+
+    .appointment-title {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 0.7rem;
+      align-items: center;
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    .appointment-title strong {
+      font-size: 1rem;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 1.5rem;
+      padding: 0.25rem 0.5rem;
+      color: #d8ff37;
+      border-radius: 999px;
+      background: var(--carbon);
+      font-size: 0.66rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .appointment-details {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+
+    .detail-item {
+      display: grid;
+      gap: 0.15rem;
+      min-width: 0;
+      padding: 0.62rem;
+      border: 1px solid rgba(49, 55, 47, 0.09);
+      border-radius: 12px;
+      background: rgba(248, 250, 245, 0.45);
+    }
+
+    .detail-item span {
+      color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .detail-item strong {
+      overflow-wrap: anywhere;
+      color: var(--ink);
+      font-size: 0.9rem;
+      line-height: 1.25;
+    }
+
     .appointment-card {
       display: grid;
       grid-template-columns: auto 1fr;
@@ -818,8 +956,28 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
+      .admin-metrics {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .admin-toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-filters {
+        justify-content: flex-start;
+      }
+
+      .admin-appointment-card {
+        grid-template-columns: 1fr;
+      }
+
+      .appointment-details {
+        grid-template-columns: 1fr;
+      }
+
       .progress-item {
-        font-size: 0.6rem;
+        font-size: 0.5rem;
       }
 
       .brand-logo {
@@ -990,9 +1148,7 @@
       doc,
       getDocs,
       getFirestore,
-      query,
       serverTimestamp,
-      where
     } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
     const clientKey = "p1Agenda_clientName";
@@ -1022,6 +1178,8 @@
       step: 1,
       date: "",
       time: "",
+      whatsapp: "",
+      carPreference: "",
       calendar: new Date(),
       occupied: new Set()
     };
@@ -1045,6 +1203,9 @@
     const adminList = document.querySelector("#adminList");
     let isStepTransitioning = false;
     let isConfirmingAppointment = false;
+    let adminFilter = "all";
+    let adminSearch = "";
+    let adminSearchTimer = null;
 
     clientNameInput.value = localStorage.getItem(clientKey) || "";
 
@@ -1131,6 +1292,8 @@
       return {
         id: item.id,
         clientName: item.clientName,
+        whatsapp: item.whatsapp || "",
+        carPreference: item.carPreference || "",
         date: item.date,
         time: item.time,
         status: item.status || "confirmado",
@@ -1168,20 +1331,10 @@
       }
 
       try {
-        const conflict = await getDocs(query(
-          collection(firestoreDb, appointmentsCollection),
-          where("date", "==", item.date),
-          where("time", "==", item.time),
-          where("status", "==", "confirmado")
-        ));
-
-        if (!conflict.empty) {
-          alert("Esse horário acabou de ser reservado. Escolha outro horário para continuar.");
-          throw new Error("Horário indisponível");
-        }
-
         const docRef = await addDoc(collection(firestoreDb, appointmentsCollection), {
           clientName: item.clientName,
+          whatsapp: item.whatsapp,
+          carPreference: item.carPreference,
           date: item.date,
           time: item.time,
           status: item.status,
@@ -1199,13 +1352,21 @@
     }
 
     async function deleteAppointment(id) {
+      if (!id) {
+        throw new Error("Reserva sem identificador");
+      }
+
       if (!firestoreDb) {
         const items = readLocalAppointments().filter(item => item.id !== id);
         writeLocalAppointments(items);
         return;
       }
 
-      await deleteDoc(doc(firestoreDb, appointmentsCollection, id));
+      await withTimeout(
+        deleteDoc(doc(firestoreDb, appointmentsCollection, id)),
+        3500,
+        "Tempo esgotado ao excluir reserva"
+      );
     }
 
     function showOnly(screen) {
@@ -1215,7 +1376,7 @@
     }
 
     function renderProgress() {
-      const labels = ["Dia", "Horário", "Confirmação"];
+      const labels = ["Dia", "Horário", "WhatsApp", "Carro", "Confirmação"];
       progress.innerHTML = labels.map((label, index) => {
         const number = index + 1;
         const active = number === state.step ? "active" : number < state.step ? "done" : "";
@@ -1274,6 +1435,14 @@
       }
 
       if (state.step === 3) {
+        renderWhatsApp();
+      }
+
+      if (state.step === 4) {
+        renderCarPreference();
+      }
+
+      if (state.step === 5) {
         renderConfirmation();
       }
 
@@ -1287,12 +1456,6 @@
 
     async function renderCalendar(options = {}) {
       stepTitle.textContent = "Escolha seu dia";
-      stepContent.innerHTML = `
-        <p class="lead" style="margin-bottom: 1rem;">Olá ${firstName(state.clientName)}! Vamos reservar o melhor dia para sua visita.</p>
-        <div class="empty-state">Carregando dias disponíveis...</div>
-      `;
-      refreshIcons();
-
       const appointments = options.appointments || readLocalAppointments();
       const occupiedByDate = appointments.reduce((map, item) => {
         if (item.status === "cancelado") {
@@ -1410,6 +1573,75 @@
       });
     }
 
+    function renderWhatsApp() {
+      stepTitle.textContent = "Informe seu WhatsApp";
+      stepContent.innerHTML = `
+        <p class="lead" style="margin-bottom: 1rem;">Informe o número que a equipe da P1 pode usar para confirmar sua visita.</p>
+        <form id="whatsappForm" class="field">
+          <label for="whatsappInput">WhatsApp</label>
+          <input id="whatsappInput" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ex: 81 99999-9999" value="${state.whatsapp}" required>
+          <button class="button button-primary" type="submit" style="width: 100%; margin-top: 1rem;">
+            <i data-lucide="arrow-right"></i>
+            Continuar
+          </button>
+          <button class="button button-soft" type="button" data-back="2" style="width: 100%; margin-top: 0.7rem;">
+            <i data-lucide="arrow-left"></i>
+            Voltar para horário
+          </button>
+        </form>
+      `;
+
+      const whatsappForm = stepContent.querySelector("#whatsappForm");
+      const whatsappInput = stepContent.querySelector("#whatsappInput");
+      whatsappForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const value = whatsappInput.value.trim();
+        const digits = value.replace(/\D/g, "");
+
+        if (digits.length < 10) {
+          whatsappInput.focus();
+          return;
+        }
+
+        state.whatsapp = value;
+        transitionToStep(4);
+      });
+    }
+
+    function renderCarPreference() {
+      stepTitle.textContent = "Carro de preferência";
+      stepContent.innerHTML = `
+        <p class="lead" style="margin-bottom: 1rem;">Conte qual carro você quer ver, pode ser modelo, estilo, faixa de valor ou uma ideia do que procura.</p>
+        <form id="carPreferenceForm" class="field">
+          <label for="carPreferenceInput">Carro de preferência</label>
+          <input id="carPreferenceInput" autocomplete="off" placeholder="Ex: Corolla, Onix, SUV, automático" value="${state.carPreference}" required>
+          <button class="button button-primary" type="submit" style="width: 100%; margin-top: 1rem;">
+            <i data-lucide="arrow-right"></i>
+            Continuar
+          </button>
+          <button class="button button-soft" type="button" data-back="3" style="width: 100%; margin-top: 0.7rem;">
+            <i data-lucide="arrow-left"></i>
+            Voltar para WhatsApp
+          </button>
+        </form>
+      `;
+
+      const carPreferenceForm = stepContent.querySelector("#carPreferenceForm");
+      const carPreferenceInput = stepContent.querySelector("#carPreferenceInput");
+      carPreferenceForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const value = carPreferenceInput.value.trim();
+
+        if (!value) {
+          carPreferenceInput.focus();
+          return;
+        }
+
+        state.carPreference = value;
+        transitionToStep(5);
+      });
+    }
+
     function renderConfirmation() {
       isConfirmingAppointment = false;
       stepTitle.textContent = "Sua visita está quase reservada";
@@ -1417,6 +1649,8 @@
         <p class="lead" style="margin-bottom: 1rem;">Confira os detalhes e deixe sua visita reservada.</p>
         <ul class="summary-list">
           <li><span>Cliente</span><strong>${firstName(state.clientName)}</strong></li>
+          <li><span>WhatsApp</span><strong>${state.whatsapp}</strong></li>
+          <li><span>Carro</span><strong>${state.carPreference}</strong></li>
           <li><span>Data</span><strong>${friendlyDate(state.date)}</strong></li>
           <li><span>Horário</span><strong>${state.time}</strong></li>
           <li><span>Local</span><strong>Av. Visconde de Albuquerque, 422</strong></li>
@@ -1425,9 +1659,9 @@
           <i data-lucide="check"></i>
           Confirmar minha visita
         </button>
-        <button class="button button-soft" type="button" data-back="2" style="width: 100%; margin-top: 0.7rem;">
+        <button class="button button-soft" type="button" data-back="4" style="width: 100%; margin-top: 0.7rem;">
           <i data-lucide="arrow-left"></i>
-          Voltar para horário
+          Voltar para carro
         </button>
       `;
     }
@@ -1438,7 +1672,7 @@
       }
 
       if (state.occupied.has(state.time)) {
-        transitionToStep(3);
+        transitionToStep(2);
         return;
       }
 
@@ -1455,6 +1689,8 @@
         await createAppointment({
           id: crypto.randomUUID(),
           clientName: state.clientName,
+          whatsapp: state.whatsapp,
+          carPreference: state.carPreference,
           date: state.date,
           time: state.time,
           status: "confirmado",
@@ -1469,11 +1705,13 @@
     }
 
     function renderSuccess() {
-      progress.innerHTML = ["Dia", "Horário", "Confirmação"].map((label, index) => `<div class="progress-item done"><span>${index + 1}</span>${label}</div>`).join("");
+      progress.innerHTML = ["Dia", "Horário", "WhatsApp", "Carro", "Confirmação"].map((label, index) => `<div class="progress-item done"><span>${index + 1}</span>${label}</div>`).join("");
       stepTitle.textContent = "Visita reservada";
       stepContent.innerHTML = `
         <ul class="summary-list">
           <li><span>Cliente</span><strong>${firstName(state.clientName)}</strong></li>
+          <li><span>WhatsApp</span><strong>${state.whatsapp}</strong></li>
+          <li><span>Carro</span><strong>${state.carPreference}</strong></li>
           <li><span>Data</span><strong>${friendlyDate(state.date)}</strong></li>
           <li><span>Horário</span><strong>${state.time}</strong></li>
         </ul>
@@ -1515,30 +1753,100 @@
     async function renderAdmin() {
       showOnly(adminScreen);
       const items = (await readAppointments()).sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+      const today = dateKey(new Date());
+      const tomorrowDate = new Date();
+      tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+      const tomorrow = dateKey(tomorrowDate);
+      const weekEnd = new Date();
+      weekEnd.setDate(weekEnd.getDate() + 7);
+      const weekEndKey = dateKey(weekEnd);
+      const upcomingItems = items.filter(item => item.date >= today);
+      const todayItems = items.filter(item => item.date === today);
+      const tomorrowItems = items.filter(item => item.date === tomorrow);
+      const weekItems = items.filter(item => item.date >= today && item.date <= weekEndKey);
+      const filteredItems = items.filter(item => {
+        const text = `${item.clientName} ${item.whatsapp} ${item.carPreference} ${item.date} ${item.time}`.toLowerCase();
+        const matchesSearch = !adminSearch || text.includes(adminSearch.toLowerCase());
+        const matchesFilter =
+          adminFilter === "all" ||
+          (adminFilter === "today" && item.date === today) ||
+          (adminFilter === "tomorrow" && item.date === tomorrow) ||
+          (adminFilter === "week" && item.date >= today && item.date <= weekEndKey);
+
+        return matchesSearch && matchesFilter;
+      });
+
+      const filterButton = (filter, label) => `
+        <button class="button button-soft filter-button ${adminFilter === filter ? "active" : ""}" type="button" data-admin-filter="${filter}">
+          ${label}
+        </button>
+      `;
 
       if (!items.length) {
-        adminList.innerHTML = `<div class="empty-state">Nenhuma visita marcada ainda.</div>`;
+        adminList.innerHTML = `
+          <div class="admin-dashboard">
+            <div class="admin-metrics">
+              <div class="metric-card"><span>Hoje</span><strong>0</strong></div>
+              <div class="metric-card"><span>Amanhã</span><strong>0</strong></div>
+              <div class="metric-card"><span>Semana</span><strong>0</strong></div>
+              <div class="metric-card"><span>Total ativo</span><strong>0</strong></div>
+            </div>
+            <div class="empty-state">Nenhuma visita marcada ainda.</div>
+          </div>
+        `;
         return;
       }
 
-      adminList.innerHTML = items.map(item => {
+      adminList.innerHTML = `
+        <div class="admin-dashboard">
+          <div class="admin-metrics">
+            <div class="metric-card"><span>Hoje</span><strong>${todayItems.length}</strong></div>
+            <div class="metric-card"><span>Amanhã</span><strong>${tomorrowItems.length}</strong></div>
+            <div class="metric-card"><span>Semana</span><strong>${weekItems.length}</strong></div>
+            <div class="metric-card"><span>Total ativo</span><strong>${upcomingItems.length}</strong></div>
+          </div>
+          <div class="admin-toolbar">
+            <div class="field">
+              <label for="adminSearchInput">Buscar cliente</label>
+              <input id="adminSearchInput" type="search" autocomplete="off" placeholder="Nome, WhatsApp ou carro" value="${adminSearch}">
+            </div>
+            <div class="admin-filters">
+              ${filterButton("all", "Todos")}
+              ${filterButton("today", "Hoje")}
+              ${filterButton("tomorrow", "Amanhã")}
+              ${filterButton("week", "7 dias")}
+            </div>
+          </div>
+          <div class="admin-list">
+            ${filteredItems.length ? filteredItems.map(item => {
         const date = shortDate(item.date);
         return `
-          <article class="appointment-card">
+          <article class="admin-appointment-card">
             <div class="date-badge">${date.day}<small>${date.month}</small></div>
-            <div>
-              <strong>${item.time}, ${item.clientName}</strong>
-              <p style="margin: 0.25rem 0 0; color: #596254;">${friendlyDate(item.date)}</p>
-              <div class="admin-actions">
-                <button class="button danger-button" type="button" data-delete-appointment="${item.id}">
-                  <i data-lucide="trash-2"></i>
-                  Excluir reserva
-                </button>
+            <div class="appointment-main">
+              <div class="appointment-title">
+                <strong>${item.time}, ${item.clientName}</strong>
+                <span class="status-pill">Confirmado</span>
               </div>
+              <div class="appointment-details">
+                <div class="detail-item"><span>Data</span><strong>${friendlyDate(item.date)}</strong></div>
+                <div class="detail-item"><span>WhatsApp</span><strong>${item.whatsapp || "Não informado"}</strong></div>
+                <div class="detail-item"><span>Carro de preferência</span><strong>${item.carPreference || "Não informado"}</strong></div>
+                <div class="detail-item"><span>Horário</span><strong>${item.time}</strong></div>
+              </div>
+            </div>
+            <div class="admin-actions">
+              <button class="button danger-button" type="button" data-delete-appointment="${item.id}">
+                <i data-lucide="trash-2"></i>
+                Excluir
+              </button>
             </div>
           </article>
         `;
-      }).join("");
+            }).join("") : `<div class="empty-state">Nenhuma visita encontrada com esse filtro.</div>`}
+          </div>
+        </div>
+      `;
       refreshIcons();
     }
 
@@ -1554,6 +1862,8 @@
       state.step = 1;
       state.date = "";
       state.time = "";
+      state.whatsapp = "";
+      state.carPreference = "";
       renderStep();
     });
 
@@ -1605,23 +1915,46 @@
       if (newButton) {
         state.date = "";
         state.time = "";
+        state.whatsapp = "";
+        state.carPreference = "";
         transitionToStep(1);
+      }
+    });
+
+    document.addEventListener("input", event => {
+      if (event.target.matches("#adminSearchInput")) {
+        adminSearch = event.target.value.trim();
+        renderAdmin();
       }
     });
 
     document.addEventListener("click", event => {
       const deleteButton = event.target.closest("[data-delete-appointment]");
+      const adminFilterButton = event.target.closest("[data-admin-filter]");
+
+      if (adminFilterButton) {
+        adminFilter = adminFilterButton.dataset.adminFilter;
+        renderAdmin();
+        return;
+      }
+
       if (deleteButton) {
-        const confirmed = confirm("Excluir esta reserva da agenda?");
-        if (!confirmed) {
-          return;
-        }
+        const appointmentCard = deleteButton.closest(".admin-appointment-card");
+        deleteButton.disabled = true;
+        deleteButton.classList.add("is-loading");
+        deleteButton.innerHTML = `<i data-lucide="loader-circle"></i> Excluindo...`;
+        refreshIcons();
+        appointmentCard?.remove();
 
         deleteAppointment(deleteButton.dataset.deleteAppointment)
           .then(renderAdmin)
           .catch(error => {
             console.error("Erro ao excluir reserva:", error);
-            alert("Não foi possível excluir esta reserva agora.");
+            const message = error.code === "permission-denied"
+              ? "O Firebase ainda não permite excluir reservas. Publique as regras do Firestore com allow delete."
+              : "Não foi possível excluir esta reserva agora.";
+            alert(message);
+            renderAdmin();
           });
         return;
       }
