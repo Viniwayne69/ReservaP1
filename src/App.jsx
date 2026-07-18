@@ -28,7 +28,9 @@ import {
   FileText,
   IdCard,
   LayoutDashboard,
+  LockKeyhole,
   LogOut,
+  Mail,
   Menu,
   Eye,
   MessageCircle,
@@ -265,6 +267,7 @@ function EmptyState({ title, text, icon: Icon }) {
 function LoginView({ onLogin, loading, error }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   function submit(event) {
     event.preventDefault();
@@ -273,25 +276,38 @@ function LoginView({ onLogin, loading, error }) {
 
   return (
     <main className="login-screen">
-      <section className="login-brand" aria-label="Imagem automotiva P1" />
+      <section className="login-brand" aria-label="Imagem automotiva P1">
+        <img className="login-brand-logo" src="/logop1veiculos.png" alt="P1 Sistemas" />
+        <div className="login-brand-copy">
+          <h1>Gestão de pré-vendas da P1</h1>
+          <p>Agendamentos, simulações e acompanhamento comercial em um só lugar.</p>
+        </div>
+      </section>
 
       <form className="login-card" onSubmit={submit}>
+        <div className="login-user-icon">
+          <UserRound size={24} />
+        </div>
+
         <div className="login-card-head">
-          <h2>Entrar no painel</h2>
-          <p>Use seu e-mail e senha cadastrados para acessar seu ambiente de trabalho.</p>
+          <h2>Bem-vindo ao P1 Sistemas</h2>
+          <p>Acesse sua conta para continuar no painel.</p>
         </div>
 
         <label>
           E-mail
-          <input
-            type="email"
-            autoComplete="email"
-            list="seller-logins"
-            value={email}
-            onChange={event => setEmail(event.target.value)}
-            placeholder="vendedor@email.com"
-            required
-          />
+          <span className="login-input-wrap">
+            <Mail size={19} />
+            <input
+              type="email"
+              autoComplete="email"
+              list="seller-logins"
+              value={email}
+              onChange={event => setEmail(event.target.value)}
+              placeholder="vendedor@email.com"
+              required
+            />
+          </span>
           <datalist id="seller-logins">
             {knownTeam.map(person => (
               <option key={person.email} value={person.email}>
@@ -303,26 +319,41 @@ function LoginView({ onLogin, loading, error }) {
 
         <label>
           Senha
-          <input
-            type="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={event => setPassword(event.target.value)}
-            placeholder="Digite sua senha"
-            required
-          />
+          <span className="login-input-wrap">
+            <LockKeyhole size={19} />
+            <input
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
+              value={password}
+              onChange={event => setPassword(event.target.value)}
+              placeholder="Digite sua senha"
+              required
+            />
+            <button
+              className="password-toggle"
+              type="button"
+              onClick={() => setShowPassword(current => !current)}
+              aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+            >
+              <Eye size={18} />
+            </button>
+          </span>
         </label>
+
+        <button className="forgot-password" type="button">
+          Esqueci minha senha
+        </button>
 
         {error ? <div className="form-error">{error}</div> : null}
 
         <button className="primary-button" type="submit" disabled={loading}>
-          {loading ? "Entrando..." : "Acessar painel"}
+          {loading ? "Entrando..." : "Entrar no painel"}
           <ChevronRight size={18} />
         </button>
 
         <div className="login-footnote">
           <ShieldCheck size={15} />
-          Acesso exclusivo para equipe autorizada da P1 Auto Recife
+          Ambiente seguro e exclusivo para colaboradores autorizados.
         </div>
       </form>
     </main>
