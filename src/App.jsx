@@ -472,65 +472,77 @@ function AppointmentCard({ item, profile, onEdit, onDelete, onStatus }) {
   const canManage = profile.role === "admin" || item.sellerId === profile.id;
 
   return (
-    <article className="record-card">
-      <div className="record-main">
-        <div className="record-icon">
-          <CalendarCheck size={20} />
-        </div>
-        <div>
-          <div className="record-title-line">
-            <h3>{item.clientName}</h3>
-            <StatusBadge status={item.status} map={APPOINTMENT_STATUS} />
+    <article className="record-card appointment-card">
+      <div className="appointment-content">
+        <div className="record-main">
+          <div className="record-icon">
+            <CalendarCheck size={18} />
           </div>
-          <p>{item.vehicle}</p>
-          <div className="record-meta">
-            <span>
-              <Clock3 size={14} />
-              {formatDate(item.date)} às {item.time}
-            </span>
-            <span>
-              <Phone size={14} />
-              {item.whatsapp}
-            </span>
-            <span>
-              <WalletCards size={14} />
-              {formatEntry(item.entryValue)}
-            </span>
-            {profile.role === "admin" ? (
-              <span>
-                <UserRound size={14} />
-                {item.sellerName || "Vendedor"}
-              </span>
-            ) : null}
-          </div>
-          {item.notes ? <p className="record-notes">{item.notes}</p> : null}
-        </div>
-      </div>
 
-      {canManage ? (
-        <div className="record-actions">
-          <button type="button" onClick={() => onStatus(item, "visited")}>
-            Visitou
-          </button>
-          <button type="button" onClick={() => onStatus(item, "sold")}>
-            Vendeu
-          </button>
-          <button type="button" onClick={() => onStatus(item, "no_show")}>
-            Não veio
-          </button>
-          <button className="icon-action" type="button" onClick={() => onEdit(item)} aria-label="Editar">
-            <Edit3 size={16} />
-          </button>
-          <button
-            className="icon-action danger"
-            type="button"
-            onClick={() => onDelete(item)}
-            aria-label="Excluir"
-          >
-            <Trash2 size={16} />
-          </button>
+          <div className="appointment-info">
+            <div className="record-title-line">
+              <div>
+                <h3>{item.clientName}</h3>
+                <p>{item.vehicle || "Não informado"}</p>
+              </div>
+              <StatusBadge status={item.status} map={APPOINTMENT_STATUS} />
+            </div>
+
+            <div className="record-meta">
+              <span>
+                <Clock3 size={14} />
+                {formatDate(item.date)} às {item.time}
+              </span>
+              <span>
+                <Phone size={14} />
+                {item.whatsapp}
+              </span>
+              <span>
+                <WalletCards size={14} />
+                {formatEntry(item.entryValue)}
+              </span>
+              {profile.role === "admin" ? (
+                <span>
+                  <UserRound size={14} />
+                  {item.sellerName || "Vendedor"}
+                </span>
+              ) : null}
+            </div>
+
+            {item.notes ? <p className="record-notes">{item.notes}</p> : null}
+          </div>
         </div>
-      ) : null}
+
+        {canManage ? (
+          <div className="record-actions appointment-actions">
+            <div className="status-actions" aria-label="Atualizar status">
+              <button type="button" onClick={() => onStatus(item, "visited")}>
+                Visitou
+              </button>
+              <button type="button" onClick={() => onStatus(item, "sold")}>
+                Vendeu
+              </button>
+              <button type="button" onClick={() => onStatus(item, "no_show")}>
+                Não veio
+              </button>
+            </div>
+
+            <div className="icon-actions">
+              <button className="icon-action" type="button" onClick={() => onEdit(item)} aria-label="Editar">
+                <Edit3 size={15} />
+              </button>
+              <button
+                className="icon-action danger"
+                type="button"
+                onClick={() => onDelete(item)}
+                aria-label="Excluir"
+              >
+                <Trash2 size={15} />
+              </button>
+            </div>
+          </div>
+        ) : null}
+      </div>
     </article>
   );
 }
