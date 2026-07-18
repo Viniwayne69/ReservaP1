@@ -5062,7 +5062,10 @@ body:has(.login-screen) {
 }
 
 /* Fundo xadrez preto e branco da tela inicial */
-body:has(.login-screen) {
+html:has(.login-screen),
+body:has(.login-screen),
+#root:has(.login-screen),
+.login-screen {
   background-color: #000000 !important;
   background-image:
     conic-gradient(
@@ -5073,7 +5076,15 @@ body:has(.login-screen) {
     ) !important;
   background-position: center center !important;
   background-size: 84px 84px !important;
+}
+
+body:has(.login-screen) {
   background-attachment: fixed !important;
+}
+
+#root:has(.login-screen),
+.login-screen {
+  background-attachment: scroll !important;
 }
 
 
