@@ -475,10 +475,6 @@ function AppointmentCard({ item, profile, onEdit, onDelete, onStatus }) {
     <article className="record-card appointment-card">
       <div className="appointment-content">
         <div className="record-main">
-          <div className="record-icon">
-            <CalendarCheck size={18} />
-          </div>
-
           <div className="appointment-info">
             <div className="record-title-line">
               <div className="appointment-heading">

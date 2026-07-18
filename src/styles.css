@@ -3376,9 +3376,9 @@ body {
 
 .appointment-card .record-main {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: start;
-  gap: 16px;
+  gap: 0;
 }
 
 .appointment-card .record-icon {
@@ -3513,8 +3513,8 @@ body {
   }
 
   .appointment-card .record-main {
-    grid-template-columns: 44px minmax(0, 1fr);
-    gap: 13px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
   }
 
   .appointment-card .record-icon {
