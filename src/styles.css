@@ -5061,4 +5061,41 @@ body:has(.login-screen) {
   }
 }
 
+/* Login preenchendo toda a coluna direita */
+.login-card {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 100% !important;
+  align-self: stretch !important;
+  justify-self: stretch !important;
+  margin: 0 !important;
+  border-radius: 0 24px 24px 0 !important;
+  padding: clamp(54px, 5vw, 78px) clamp(58px, 5.6vw, 92px) !important;
+  box-sizing: border-box !important;
+}
+
+.login-card-head,
+.login-card label,
+.login-input-wrap,
+.login-card .primary-button,
+.login-card .forgot-link,
+.login-footnote {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+@media (max-width: 1180px) {
+  .login-card {
+    border-radius: 0 0 24px 24px !important;
+    padding: clamp(38px, 7vw, 58px) clamp(28px, 7vw, 58px) !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .login-card {
+    width: 100% !important;
+    padding: 30px 22px !important;
+  }
+}
+
 
