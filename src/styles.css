@@ -5098,4 +5098,32 @@ body:has(.login-screen) {
   }
 }
 
+/* Logo real enviada pelo cliente */
+.login-brand-logo {
+  position: absolute !important;
+  z-index: 2 !important;
+  top: clamp(40px, 5vw, 72px) !important;
+  left: clamp(42px, 5.4vw, 76px) !important;
+  display: block !important;
+  width: clamp(142px, 12vw, 210px) !important;
+  height: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  object-fit: contain !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.46)) !important;
+}
+
+.login-brand-mark {
+  display: none !important;
+}
+
+@media (max-width: 560px) {
+  .login-brand-logo {
+    top: 28px !important;
+    left: 24px !important;
+    width: 128px !important;
+  }
+}
+
 
