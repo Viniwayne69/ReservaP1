@@ -3543,3 +3543,441 @@ body {
   }
 }
 
+/* Modelo visual premium inspirado na referência enviada */
+:root {
+  --p1-panel-bg: #0f151a;
+  --p1-panel-bg-soft: #151c22;
+  --p1-panel-bg-card: rgba(24, 31, 38, 0.82);
+  --p1-panel-bg-card-strong: rgba(27, 35, 42, 0.9);
+  --p1-panel-border: rgba(255, 255, 255, 0.12);
+  --p1-panel-border-strong: rgba(255, 255, 255, 0.18);
+  --p1-text-main: #f8faf5;
+  --p1-text-soft: rgba(248, 250, 245, 0.74);
+  --p1-text-muted: rgba(248, 250, 245, 0.56);
+  --p1-green: #baff00;
+  --p1-green-deep: #88b800;
+  --p1-green-soft: rgba(186, 255, 0, 0.14);
+}
+
+body {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.05), transparent 26%),
+    radial-gradient(circle at 82% 16%, rgba(186, 255, 0, 0.07), transparent 24%),
+    linear-gradient(145deg, #0c1116 0%, #151b20 48%, #0b1015 100%);
+  color: var(--p1-text-main);
+}
+
+.app-shell {
+  min-height: 100vh;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02), transparent 34%),
+    radial-gradient(circle at 48% 0%, rgba(255, 255, 255, 0.045), transparent 30%);
+}
+
+.sidebar {
+  width: 300px;
+  border-right: 1px solid var(--p1-panel-border);
+  background:
+    radial-gradient(circle at 30% 16%, rgba(186, 255, 0, 0.055), transparent 24%),
+    linear-gradient(180deg, rgba(17, 24, 30, 0.96), rgba(8, 13, 18, 0.98));
+  box-shadow: 18px 0 54px rgba(0, 0, 0, 0.24);
+}
+
+.sidebar-brand {
+  align-items: center;
+  gap: 14px;
+}
+
+.sidebar-brand img {
+  width: 84px;
+  height: auto;
+  max-height: 84px;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  object-fit: contain;
+}
+
+.sidebar-brand strong,
+.sidebar-profile strong {
+  color: var(--p1-text-main);
+  font-size: 1rem;
+  font-weight: 760;
+}
+
+.sidebar-brand span,
+.sidebar-profile span {
+  color: var(--p1-text-soft);
+  font-weight: 520;
+}
+
+.sidebar nav {
+  gap: 12px;
+}
+
+.sidebar nav button {
+  min-height: 64px;
+  justify-content: flex-start;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: rgba(248, 250, 245, 0.82);
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.sidebar nav button svg {
+  color: rgba(248, 250, 245, 0.82);
+}
+
+.sidebar nav button.active {
+  border-color: rgba(186, 255, 0, 0.78);
+  background: rgba(186, 255, 0, 0.08);
+  color: #ffffff;
+  box-shadow: inset 3px 0 0 var(--p1-green);
+}
+
+.sidebar nav button.active svg {
+  color: var(--p1-green);
+}
+
+.sidebar-profile,
+.logout-button {
+  border-radius: 12px;
+  border: 1px solid var(--p1-panel-border);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: none;
+}
+
+.avatar {
+  background: rgba(186, 255, 0, 0.14);
+  color: var(--p1-green);
+}
+
+.workspace {
+  padding: clamp(28px, 3vw, 42px) clamp(28px, 4vw, 58px);
+}
+
+.topbar {
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+
+.topbar h1 {
+  margin-top: 14px;
+  color: var(--p1-text-main);
+  font-size: clamp(3rem, 4.8vw, 4.8rem);
+  font-weight: 790;
+  line-height: 0.95;
+  letter-spacing: 0;
+}
+
+.section-eyebrow,
+.list-header > span,
+.status-badge {
+  border: 1px solid rgba(186, 255, 0, 0.32);
+  background: rgba(186, 255, 0, 0.095);
+  color: #dfff63;
+  box-shadow: none;
+}
+
+.section-eyebrow {
+  min-height: 42px;
+  border-radius: 999px;
+  padding: 0 18px;
+  font-size: 0.78rem;
+  font-weight: 760;
+}
+
+.topbar-controls label {
+  color: var(--p1-text-soft);
+  font-size: 0.84rem;
+  font-weight: 650;
+}
+
+.topbar-controls input,
+.topbar-controls select,
+.app-shell input,
+.app-shell select,
+.app-shell textarea {
+  min-height: 50px;
+  border: 1px solid var(--p1-panel-border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--p1-text-main);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.055);
+}
+
+.module-grid {
+  grid-template-columns: minmax(390px, 0.9fr) minmax(520px, 1.1fr);
+  align-items: start;
+  gap: 30px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.metric-card {
+  min-height: 126px;
+  align-items: center;
+  border: 1px solid var(--p1-panel-border);
+  border-radius: 16px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.026)),
+    rgba(18, 25, 31, 0.78);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 22px 42px rgba(0, 0, 0, 0.18);
+}
+
+.metric-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(186, 255, 0, 0.14);
+  color: var(--p1-green);
+}
+
+.metric-card strong {
+  color: var(--p1-text-main);
+  font-size: 2.35rem;
+  font-weight: 760;
+  line-height: 0.95;
+}
+
+.metric-card span {
+  color: var(--p1-text-main);
+  font-size: 0.95rem;
+  font-weight: 560;
+}
+
+.metric-card small {
+  color: var(--p1-text-soft);
+}
+
+.panel-card,
+.module-right,
+.record-card,
+.empty-state {
+  border: 1px solid var(--p1-panel-border);
+  border-radius: 16px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    rgba(18, 25, 31, 0.82);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 28px 60px rgba(0, 0, 0, 0.2);
+}
+
+.panel-card {
+  padding: 28px;
+}
+
+.module-right {
+  padding: 26px;
+}
+
+.panel-title-row h3,
+.list-header h2 {
+  color: var(--p1-text-main);
+  font-size: 1.55rem;
+  font-weight: 760;
+}
+
+.form-grid {
+  gap: 18px;
+}
+
+.app-shell label {
+  color: var(--p1-text-main);
+  font-size: 0.84rem;
+  font-weight: 650;
+}
+
+.primary-button {
+  min-height: 48px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, var(--p1-green), var(--p1-green-deep));
+  color: #0c1116;
+  font-size: 0.95rem;
+  font-weight: 760;
+  box-shadow: 0 18px 36px rgba(186, 255, 0, 0.16);
+}
+
+.record-list {
+  gap: 18px;
+}
+
+.appointment-card {
+  position: relative;
+  padding: 28px;
+  overflow: hidden;
+  border-radius: 16px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018)),
+    rgba(17, 24, 30, 0.9);
+}
+
+.appointment-card::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  content: "";
+  background: linear-gradient(180deg, var(--p1-green), rgba(186, 255, 0, 0.22));
+}
+
+.appointment-status-area {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+}
+
+.appointment-content {
+  gap: 20px;
+  padding-right: 0;
+}
+
+.appointment-card .record-main {
+  display: block;
+}
+
+.appointment-card .record-icon {
+  display: none;
+}
+
+.appointment-info {
+  max-width: none;
+  padding-right: 132px;
+  gap: 18px;
+}
+
+.appointment-card .record-title-line h3 {
+  font-size: clamp(1.18rem, 1.45vw, 1.42rem);
+  font-weight: 760;
+  line-height: 1.1;
+}
+
+.appointment-card .record-title-line p {
+  margin-top: 10px;
+  color: var(--p1-text-soft);
+  font-size: 0.96rem;
+}
+
+.appointment-card .record-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.appointment-card .record-meta span {
+  width: auto;
+  min-height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(248, 250, 245, 0.82);
+  font-size: 0.82rem;
+  font-weight: 610;
+}
+
+.appointment-card .record-notes {
+  display: grid;
+  gap: 4px;
+  width: fit-content;
+  max-width: 100%;
+  border-left: 2px solid var(--p1-green);
+  padding: 0 0 0 13px;
+  color: var(--p1-text-soft);
+}
+
+.appointment-card .record-notes strong {
+  color: var(--p1-text-main);
+  font-size: 0.88rem;
+  font-weight: 760;
+}
+
+.appointment-card .record-notes span {
+  color: rgba(248, 250, 245, 0.78);
+  font-size: 0.9rem;
+}
+
+.appointment-actions {
+  justify-content: flex-start;
+  padding-top: 6px;
+  border-top: 0;
+}
+
+.appointment-actions button {
+  min-height: 44px;
+  border-radius: 10px;
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(248, 250, 245, 0.9);
+  font-size: 0.84rem;
+}
+
+.appointment-actions .primary-status-action {
+  border-color: rgba(186, 255, 0, 0.82);
+  background: linear-gradient(135deg, var(--p1-green), var(--p1-green-deep));
+  color: #10161a;
+}
+
+.appointment-actions .icon-action {
+  width: 46px;
+}
+
+.appointment-actions .danger {
+  border-color: rgba(255, 111, 111, 0.2);
+  background: rgba(255, 83, 83, 0.14);
+  color: #ffb4b4;
+}
+
+@media (max-width: 1180px) {
+  .module-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .workspace {
+    padding: 22px 16px;
+  }
+
+  .topbar h1 {
+    font-size: clamp(2.3rem, 14vw, 3.2rem);
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .module-right,
+  .panel-card,
+  .appointment-card {
+    padding: 20px;
+  }
+
+  .appointment-status-area {
+    position: static;
+    margin-bottom: 14px;
+  }
+
+  .appointment-info {
+    padding-right: 0;
+  }
+
+  .appointment-actions,
+  .status-actions,
+  .icon-actions {
+    align-items: stretch;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .appointment-actions .icon-action {
+    width: 100%;
+  }
+}
+

@@ -30,6 +30,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  Eye,
   MessageCircle,
   Phone,
   RefreshCw,
@@ -473,6 +474,10 @@ function AppointmentCard({ item, profile, onEdit, onDelete, onStatus }) {
 
   return (
     <article className="record-card appointment-card">
+      <div className="appointment-status-area">
+        <StatusBadge status={item.status} map={APPOINTMENT_STATUS} />
+      </div>
+
       <div className="appointment-content">
         <div className="record-main">
           <div className="appointment-info">
@@ -480,7 +485,6 @@ function AppointmentCard({ item, profile, onEdit, onDelete, onStatus }) {
               <div className="appointment-heading">
                 <div className="client-name-row">
                   <h3>{item.clientName}</h3>
-                  <StatusBadge status={item.status} map={APPOINTMENT_STATUS} />
                 </div>
                 <p>{item.vehicle || "Não informado"}</p>
               </div>
@@ -507,14 +511,20 @@ function AppointmentCard({ item, profile, onEdit, onDelete, onStatus }) {
               ) : null}
             </div>
 
-            {item.notes ? <p className="record-notes">{item.notes}</p> : null}
+            {item.notes ? (
+              <div className="record-notes">
+                <strong>Veículo:</strong>
+                <span>{item.notes}</span>
+              </div>
+            ) : null}
           </div>
         </div>
 
         {canManage ? (
           <div className="record-actions appointment-actions">
             <div className="status-actions" aria-label="Atualizar status">
-              <button type="button" onClick={() => onStatus(item, "visited")}>
+              <button className="primary-status-action" type="button" onClick={() => onStatus(item, "visited")}>
+                <Eye size={15} />
                 Visitou
               </button>
               <button type="button" onClick={() => onStatus(item, "sold")}>
