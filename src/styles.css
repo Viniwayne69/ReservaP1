@@ -4040,3 +4040,113 @@ body {
   }
 }
 
+/* Ícones mais discretos para deixar os dados comandarem a leitura */
+.metric-icon {
+  width: 50px !important;
+  height: 50px !important;
+  min-width: 50px !important;
+}
+
+.metric-icon svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.metric-card {
+  gap: 18px;
+}
+
+.sidebar nav button svg,
+.section-eyebrow svg,
+.record-meta svg,
+.appointment-actions button svg,
+.primary-button svg,
+.ghost-button svg,
+.logout-button svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.avatar {
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+}
+
+.avatar svg {
+  width: 17px !important;
+  height: 17px !important;
+}
+
+.empty-state span {
+  width: 44px !important;
+  height: 44px !important;
+}
+
+.empty-state span svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+@media (max-width: 760px) {
+  .metric-icon {
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+  }
+}
+
+/* Métricas compactas como a referência */
+.metrics-grid {
+  gap: 14px !important;
+}
+
+.metric-card {
+  min-height: 76px !important;
+  padding: 16px 20px !important;
+  align-items: center !important;
+  gap: 14px !important;
+  border-radius: 10px !important;
+}
+
+.metric-icon {
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  border-radius: 50% !important;
+}
+
+.metric-icon svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+.metric-card strong {
+  font-size: 1.72rem !important;
+  line-height: 0.92 !important;
+}
+
+.metric-card span {
+  font-size: 0.78rem !important;
+  line-height: 1.18 !important;
+}
+
+.metric-card small {
+  margin-top: 2px !important;
+  font-size: 0.68rem !important;
+  line-height: 1.15 !important;
+}
+
+@media (max-width: 760px) {
+  .metric-card {
+    min-height: 72px !important;
+    padding: 14px 16px !important;
+  }
+
+  .metric-icon {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+  }
+}
+
