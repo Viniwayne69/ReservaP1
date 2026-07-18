@@ -481,11 +481,13 @@ function AppointmentCard({ item, profile, onEdit, onDelete, onStatus }) {
 
           <div className="appointment-info">
             <div className="record-title-line">
-              <div>
-                <h3>{item.clientName}</h3>
+              <div className="appointment-heading">
+                <div className="client-name-row">
+                  <h3>{item.clientName}</h3>
+                  <StatusBadge status={item.status} map={APPOINTMENT_STATUS} />
+                </div>
                 <p>{item.vehicle || "Não informado"}</p>
               </div>
-              <StatusBadge status={item.status} map={APPOINTMENT_STATUS} />
             </div>
 
             <div className="record-meta">

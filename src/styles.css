@@ -3362,3 +3362,184 @@ body {
   }
 }
 
+/* Correção final do card de agendamento: hierarquia clara e informações agrupadas */
+.appointment-card {
+  padding: 20px 22px;
+  border-radius: 14px;
+}
+
+.appointment-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.appointment-card .record-main {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+}
+
+.appointment-card .record-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+}
+
+.appointment-info {
+  display: grid;
+  gap: 13px;
+}
+
+.appointment-card .record-title-line {
+  display: block;
+}
+
+.appointment-heading {
+  min-width: 0;
+}
+
+.client-name-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.appointment-card .record-title-line h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(1.22rem, 1.4vw, 1.46rem);
+  font-weight: 780;
+  line-height: 1.08;
+}
+
+.appointment-card .record-title-line p {
+  margin: 8px 0 0;
+  color: rgba(250, 253, 246, 0.78);
+  font-size: 0.92rem;
+  font-weight: 520;
+}
+
+.appointment-card .status-badge {
+  min-height: 28px;
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+
+.appointment-card .record-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+  gap: 9px;
+  margin: 0;
+}
+
+.appointment-card .record-meta span {
+  width: 100%;
+  min-height: 38px;
+  justify-content: flex-start;
+  border-radius: 11px;
+  padding: 8px 11px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(250, 253, 246, 0.88);
+  font-size: 0.82rem;
+  font-weight: 640;
+}
+
+.appointment-card .record-meta svg {
+  flex: 0 0 auto;
+  color: rgba(191, 255, 20, 0.9);
+}
+
+.appointment-card .record-notes {
+  width: 100%;
+  margin: 0;
+  border-left: 3px solid rgba(191, 255, 20, 0.56);
+  padding: 2px 0 2px 11px;
+  color: rgba(250, 253, 246, 0.86);
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.appointment-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.status-actions,
+.icon-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.status-actions {
+  justify-content: flex-start;
+}
+
+.icon-actions {
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.appointment-actions button {
+  min-height: 38px;
+  border-radius: 10px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.075);
+  color: rgba(250, 253, 246, 0.9);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.appointment-actions .icon-action {
+  width: 38px;
+  padding: 0;
+}
+
+@media (max-width: 760px) {
+  .appointment-card {
+    padding: 18px;
+  }
+
+  .appointment-card .record-main {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 13px;
+  }
+
+  .appointment-card .record-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .appointment-card .record-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .appointment-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .status-actions,
+  .icon-actions {
+    width: 100%;
+    justify-content: flex-start;
+    margin-left: 0;
+  }
+
+  .status-actions button {
+    flex: 1 1 96px;
+  }
+}
+
