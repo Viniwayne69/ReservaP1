@@ -1,0 +1,16 @@
+{
+  "name": "Sistemas P1 Auto Recife",
+  "short_name": "Sistemas P1",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050706",
+  "theme_color": "#050706",
+  "icons": [
+    {
+      "src": "/logop1veiculos.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

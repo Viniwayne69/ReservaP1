@@ -1,0 +1,61 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userPath() {
+      return /databases/$(database)/documents/p1_users/$(request.auth.uid);
+    }
+
+    function hasProfile() {
+      return signedIn() && exists(userPath());
+    }
+
+    function bootAdmin() {
+      return signedIn() && request.auth.token.email in [
+        "admin@p1autorecife.com.br"
+      ];
+    }
+
+    function isAdmin() {
+      return bootAdmin() || (hasProfile() && get(userPath()).data.role == "admin");
+    }
+
+    function isOwnerSeller() {
+      return signedIn() && resource.data.sellerId == request.auth.uid;
+    }
+
+    function isCreatingOwnSellerRecord() {
+      return signedIn() && request.resource.data.sellerId == request.auth.uid;
+    }
+
+    match /p1_users/{userId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && userId == request.auth.uid
+        && (
+          request.resource.data.role == "seller"
+          || (request.resource.data.role == "admin" && bootAdmin())
+        );
+      allow update: if signedIn() && (userId == request.auth.uid || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    match /p1_appointments/{appointmentId} {
+      allow read: if isAdmin() || isOwnerSeller();
+      allow create: if isCreatingOwnSellerRecord() || isAdmin();
+      allow update: if isAdmin() || isOwnerSeller();
+      allow delete: if isAdmin() || isOwnerSeller();
+    }
+
+    match /p1_simulations/{simulationId} {
+      allow read: if isAdmin() || isOwnerSeller();
+      allow create: if isCreatingOwnSellerRecord() || isAdmin();
+      allow update: if isAdmin() || isOwnerSeller();
+      allow delete: if isAdmin() || isOwnerSeller();
+    }
+  }
+}
