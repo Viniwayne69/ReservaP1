@@ -4150,3 +4150,161 @@ body {
   }
 }
 
+/* Tela inicial refinada: identidade escura integrada, sem bloco branco pesado */
+.login-screen {
+  display: grid !important;
+  width: min(1080px, calc(100% - 44px)) !important;
+  min-height: min(760px, calc(100vh - 72px)) !important;
+  grid-template-columns: minmax(0, 1.22fr) minmax(360px, 0.78fr) !important;
+  align-items: stretch !important;
+  gap: 0 !important;
+  margin: 36px auto !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255, 255, 255, 0.13) !important;
+  border-radius: 24px !important;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018)),
+    rgba(12, 18, 24, 0.92) !important;
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.38) !important;
+}
+
+.login-brand {
+  min-height: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background:
+    linear-gradient(90deg, rgba(6, 10, 14, 0.12), rgba(6, 10, 14, 0.42)),
+    linear-gradient(180deg, transparent 58%, rgba(6, 10, 14, 0.4)),
+    url("/p1-login-car.png") center center / cover no-repeat !important;
+  box-shadow: none !important;
+}
+
+.login-card {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 18px !important;
+  min-height: auto !important;
+  border: 0 !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 0 !important;
+  background:
+    radial-gradient(circle at 78% 12%, rgba(186, 255, 0, 0.055), transparent 30%),
+    linear-gradient(180deg, rgba(21, 29, 36, 0.96), rgba(10, 15, 20, 0.98)) !important;
+  color: var(--p1-text-main) !important;
+  padding: clamp(38px, 5vw, 62px) clamp(34px, 4.4vw, 54px) !important;
+  box-shadow: none !important;
+}
+
+.login-card-head {
+  gap: 12px !important;
+  margin-bottom: 10px !important;
+}
+
+.login-card h2 {
+  color: #ffffff !important;
+  font-size: clamp(2rem, 2.7vw, 2.65rem) !important;
+  font-weight: 780 !important;
+  line-height: 1.02 !important;
+}
+
+.login-card p {
+  max-width: 360px !important;
+  color: rgba(248, 250, 245, 0.72) !important;
+  font-size: 0.98rem !important;
+  font-weight: 430 !important;
+  line-height: 1.58 !important;
+}
+
+.login-card label {
+  gap: 9px !important;
+  color: rgba(248, 250, 245, 0.88) !important;
+  font-size: 0.82rem !important;
+  font-weight: 650 !important;
+}
+
+.login-card input {
+  height: 52px !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.07) !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.055) !important;
+}
+
+.login-card input::placeholder {
+  color: rgba(248, 250, 245, 0.5) !important;
+}
+
+.login-card input:focus {
+  border-color: rgba(186, 255, 0, 0.72) !important;
+  background: rgba(255, 255, 255, 0.095) !important;
+  box-shadow: 0 0 0 4px rgba(186, 255, 0, 0.12) !important;
+}
+
+.login-card .primary-button {
+  min-height: 52px !important;
+  margin-top: 10px !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #baff00, #8fd700) !important;
+  color: #10161a !important;
+  font-size: 0.95rem !important;
+  font-weight: 780 !important;
+  box-shadow: 0 18px 36px rgba(153, 220, 0, 0.18) !important;
+}
+
+.login-footnote {
+  max-width: 330px !important;
+  margin: 8px auto 0 !important;
+  color: rgba(248, 250, 245, 0.58) !important;
+  font-size: 0.78rem !important;
+  font-weight: 620 !important;
+  line-height: 1.35 !important;
+}
+
+.login-footnote svg {
+  color: rgba(186, 255, 0, 0.78) !important;
+}
+
+.login-card .form-error {
+  border-color: rgba(255, 107, 107, 0.28) !important;
+  background: rgba(255, 80, 80, 0.1) !important;
+  color: #ffb6b6 !important;
+}
+
+@media (max-width: 980px) {
+  .login-screen {
+    width: min(680px, calc(100% - 28px)) !important;
+    min-height: auto !important;
+    grid-template-columns: 1fr !important;
+    margin: 22px auto !important;
+  }
+
+  .login-brand {
+    min-height: 360px !important;
+    background-position: center top !important;
+  }
+
+  .login-card {
+    border-left: 0 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+    padding: 34px 26px !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .login-screen {
+    width: calc(100% - 18px) !important;
+    border-radius: 18px !important;
+  }
+
+  .login-brand {
+    min-height: 280px !important;
+  }
+
+  .login-card h2 {
+    font-size: 1.85rem !important;
+  }
+}
+
