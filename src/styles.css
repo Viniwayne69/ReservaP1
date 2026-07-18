@@ -5098,20 +5098,23 @@ body:has(.login-screen) {
   }
 }
 
-/* Logo real enviada pelo cliente */
+/* Logo P1 redonda no login */
 .login-brand-logo {
   position: absolute !important;
   z-index: 2 !important;
   top: clamp(40px, 5vw, 72px) !important;
   left: clamp(42px, 5.4vw, 76px) !important;
   display: block !important;
-  width: clamp(142px, 12vw, 210px) !important;
-  height: auto !important;
+  width: clamp(86px, 7.3vw, 118px) !important;
+  height: clamp(86px, 7.3vw, 118px) !important;
   max-width: none !important;
   margin: 0 !important;
-  object-fit: contain !important;
+  border: 1px solid rgba(186, 255, 0, 0.24) !important;
+  border-radius: 999px !important;
+  object-fit: cover !important;
   opacity: 1 !important;
-  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.46)) !important;
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.42), 0 0 26px rgba(186, 255, 0, 0.1) !important;
+  filter: none !important;
 }
 
 .login-brand-mark {
@@ -5122,7 +5125,8 @@ body:has(.login-screen) {
   .login-brand-logo {
     top: 28px !important;
     left: 24px !important;
-    width: 128px !important;
+    width: 78px !important;
+    height: 78px !important;
   }
 }
 
