@@ -4709,15 +4709,13 @@ body:has(.login-screen) {
   pointer-events: none !important;
   content: "" !important;
   background: url("/p1-login-hero.png") center bottom / cover no-repeat !important;
-  filter: none !important;
+  filter: brightness(1.42) contrast(1.08) saturate(1.08) !important;
   transform: none !important;
 }
 
 .login-brand::after {
   z-index: 1 !important;
-  background:
-    radial-gradient(circle at 20% 22%, rgba(0, 0, 0, 0.28), transparent 32%),
-    linear-gradient(90deg, rgba(2, 6, 9, 0.18) 0%, rgba(2, 6, 9, 0.04) 44%, transparent 100%) !important;
+  background: transparent !important;
 }
 
 .login-brand-logo {
