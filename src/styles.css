@@ -4743,9 +4743,16 @@ body:has(.login-screen) {
 .login-hero-image {
   position: absolute !important;
   inset: 0 !important;
+  display: block !important;
   z-index: 0 !important;
   width: 100% !important;
   height: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
   object-fit: cover !important;
   object-position: center bottom !important;
   filter: none !important;

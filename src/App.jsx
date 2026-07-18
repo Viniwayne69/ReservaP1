@@ -277,7 +277,7 @@ function LoginView({ onLogin, loading, error }) {
   return (
     <main className="login-screen">
       <section className="login-brand" aria-label="Imagem automotiva P1">
-        <img className="login-hero-image" src="/p1-login-hero-final.png" alt="" aria-hidden="true" />
+        <img className="login-hero-image" src="/p1-login-hero.png" alt="" aria-hidden="true" />
         <img className="login-brand-logo" src="/logop1veiculos.png" alt="P1 Sistemas" />
         <div className="login-brand-copy">
           <h1>Gestão de pré-vendas da P1</h1>
