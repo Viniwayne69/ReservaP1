@@ -4709,7 +4709,7 @@ body:has(.login-screen) {
   pointer-events: none !important;
   content: "" !important;
   background: url("/p1-login-hero.png") center bottom / cover no-repeat !important;
-  filter: brightness(1.42) contrast(1.08) saturate(1.08) !important;
+  filter: none !important;
   transform: none !important;
 }
 
