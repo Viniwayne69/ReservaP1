@@ -4688,6 +4688,13 @@ body:has(.login-screen) {
 }
 
 /* Ajuste pedido: carro mais claro e texto visível por cima da imagem */
+.login-screen {
+  width: min(1500px, calc(100% - 56px)) !important;
+  min-height: min(680px, calc(100vh - 56px)) !important;
+  grid-template-columns: minmax(0, 1.65fr) minmax(390px, 0.72fr) !important;
+  margin: 28px auto !important;
+}
+
 .login-brand {
   isolation: isolate;
   overflow: hidden;
@@ -4701,16 +4708,16 @@ body:has(.login-screen) {
   display: block !important;
   pointer-events: none !important;
   content: "" !important;
-  background: url("/p1-login-hero.png") center center / cover no-repeat !important;
-  filter: brightness(1.24) contrast(1.08) saturate(1.05);
-  transform: scale(1.01);
+  background: url("/p1-login-hero.png") center bottom / cover no-repeat !important;
+  filter: none !important;
+  transform: none !important;
 }
 
 .login-brand::after {
   z-index: 1 !important;
   background:
-    linear-gradient(90deg, rgba(2, 6, 9, 0.42) 0%, rgba(2, 6, 9, 0.14) 44%, rgba(2, 6, 9, 0.05) 100%),
-    linear-gradient(180deg, rgba(2, 6, 9, 0.1) 0%, rgba(2, 6, 9, 0.04) 52%, rgba(2, 6, 9, 0.22) 100%) !important;
+    radial-gradient(circle at 20% 22%, rgba(0, 0, 0, 0.28), transparent 32%),
+    linear-gradient(90deg, rgba(2, 6, 9, 0.18) 0%, rgba(2, 6, 9, 0.04) 44%, transparent 100%) !important;
 }
 
 .login-brand-logo {
@@ -4725,7 +4732,7 @@ body:has(.login-screen) {
 .login-brand-copy {
   position: absolute !important;
   z-index: 2 !important;
-  top: clamp(190px, 18vw, 270px) !important;
+  top: clamp(168px, 13vw, 220px) !important;
   left: clamp(46px, 5.8vw, 82px) !important;
   max-width: min(430px, calc(100% - 96px)) !important;
   margin: 0 !important;
