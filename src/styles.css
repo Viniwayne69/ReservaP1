@@ -4841,3 +4841,154 @@ body:has(.login-screen) {
   }
 }
 
+/* Login final: painel preenchido e copy sobre a imagem */
+.login-screen {
+  width: min(1540px, calc(100% - 36px)) !important;
+  min-height: min(760px, calc(100vh - 36px)) !important;
+  grid-template-columns: minmax(0, 1.12fr) minmax(560px, 0.82fr) !important;
+  margin: 18px auto !important;
+}
+
+.login-card {
+  width: calc(100% - 56px) !important;
+  max-width: 680px !important;
+  padding: clamp(52px, 4.5vw, 72px) !important;
+}
+
+.login-card-head,
+.login-card label,
+.login-input-wrap,
+.login-card .primary-button,
+.login-card .forgot-link,
+.login-footnote {
+  width: 100% !important;
+}
+
+.login-card h2,
+.login-card p {
+  max-width: 100% !important;
+}
+
+.login-brand-logo {
+  display: block !important;
+  top: clamp(42px, 5vw, 72px) !important;
+  left: clamp(42px, 5.4vw, 76px) !important;
+  width: clamp(112px, 9vw, 154px) !important;
+}
+
+.login-brand-copy {
+  display: block !important;
+  top: auto !important;
+  bottom: clamp(72px, 10vh, 122px) !important;
+  left: clamp(42px, 5.4vw, 76px) !important;
+  max-width: min(460px, calc(100% - 92px)) !important;
+}
+
+.login-brand-copy h1 {
+  margin: 0 0 14px !important;
+  color: #f7faf4 !important;
+  font-size: clamp(1.42rem, 1.7vw, 2rem) !important;
+  font-weight: 760 !important;
+  line-height: 1.08 !important;
+  text-shadow: 0 12px 34px rgba(0, 0, 0, 0.55) !important;
+}
+
+.login-brand-copy p {
+  max-width: 390px !important;
+  margin: 0 !important;
+  color: rgba(248, 250, 245, 0.74) !important;
+  font-size: clamp(0.84rem, 0.95vw, 0.98rem) !important;
+  line-height: 1.52 !important;
+  text-shadow: 0 10px 26px rgba(0, 0, 0, 0.5) !important;
+}
+
+@media (max-width: 1180px) {
+  .login-screen {
+    width: min(820px, calc(100% - 28px)) !important;
+    min-height: auto !important;
+    grid-template-columns: 1fr !important;
+    margin: 22px auto !important;
+  }
+
+  .login-card {
+    width: min(620px, calc(100% - 44px)) !important;
+    max-width: 620px !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .login-screen {
+    width: calc(100% - 18px) !important;
+    margin: 9px auto !important;
+  }
+
+  .login-card {
+    width: calc(100% - 24px) !important;
+    padding: 30px 22px !important;
+  }
+
+  .login-brand-copy {
+    bottom: 36px !important;
+    left: 24px !important;
+    max-width: calc(100% - 48px) !important;
+  }
+}
+
+/* Marca textual sobre a imagem do login */
+.login-brand-logo {
+  display: none !important;
+}
+
+.login-brand-mark {
+  position: absolute !important;
+  z-index: 2 !important;
+  top: clamp(42px, 5vw, 72px) !important;
+  left: clamp(42px, 5.4vw, 76px) !important;
+  display: inline-grid !important;
+  gap: 5px !important;
+  color: #f7faf4 !important;
+  text-shadow: 0 14px 34px rgba(0, 0, 0, 0.62) !important;
+}
+
+.login-brand-mark strong {
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 2px !important;
+  margin: 0 !important;
+  color: #f7faf4 !important;
+  font-size: clamp(2.1rem, 4.2vw, 4.6rem) !important;
+  font-style: italic !important;
+  font-weight: 950 !important;
+  line-height: 0.85 !important;
+  letter-spacing: 0 !important;
+  transform: skewX(-10deg) !important;
+}
+
+.login-brand-mark strong::after {
+  content: "" !important;
+  display: block !important;
+  width: 0.42em !important;
+  height: 0.82em !important;
+  margin-left: -0.17em !important;
+  border-radius: 2px !important;
+  background: #baff00 !important;
+  transform: skewX(-7deg) !important;
+}
+
+.login-brand-mark small {
+  display: block !important;
+  margin-left: 0.1em !important;
+  color: rgba(248, 250, 245, 0.82) !important;
+  font-size: clamp(0.52rem, 0.85vw, 0.84rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.42em !important;
+  line-height: 1 !important;
+}
+
+@media (max-width: 560px) {
+  .login-brand-mark {
+    top: 28px !important;
+    left: 24px !important;
+  }
+}
+
