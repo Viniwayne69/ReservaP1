@@ -4992,3 +4992,30 @@ body:has(.login-screen) {
   }
 }
 
+/* Copy do login toda concentrada no topo, como na referência */
+.login-brand-copy {
+  top: clamp(150px, 11vw, 205px) !important;
+  bottom: auto !important;
+  left: clamp(42px, 5.4vw, 76px) !important;
+  max-width: min(450px, calc(100% - 92px)) !important;
+}
+
+.login-brand-copy h1 {
+  margin-bottom: 12px !important;
+  font-size: clamp(1.34rem, 1.55vw, 1.82rem) !important;
+}
+
+.login-brand-copy p {
+  max-width: 380px !important;
+  font-size: clamp(0.82rem, 0.9vw, 0.96rem) !important;
+}
+
+@media (max-width: 560px) {
+  .login-brand-copy {
+    top: 118px !important;
+    bottom: auto !important;
+    left: 24px !important;
+    max-width: calc(100% - 48px) !important;
+  }
+}
+
