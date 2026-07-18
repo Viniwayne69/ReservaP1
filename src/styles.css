@@ -5019,3 +5019,45 @@ body:has(.login-screen) {
   }
 }
 
+/* Centralização vertical final da tela de login */
+html:has(.login-screen),
+body:has(.login-screen),
+#root:has(.login-screen) {
+  min-height: 100vh !important;
+}
+
+body:has(.login-screen) {
+  display: grid !important;
+  place-items: center !important;
+  padding: clamp(18px, 2.8vh, 34px) 0 !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+}
+
+#root:has(.login-screen) {
+  display: grid !important;
+  width: 100% !important;
+  place-items: center !important;
+}
+
+.login-screen {
+  align-self: center !important;
+  justify-self: center !important;
+  margin: 0 auto !important;
+}
+
+@media (max-width: 1180px) {
+  body:has(.login-screen),
+  #root:has(.login-screen) {
+    display: block !important;
+  }
+
+  body:has(.login-screen) {
+    padding: 22px 0 !important;
+  }
+
+  .login-screen {
+    margin: 0 auto !important;
+  }
+}
+
