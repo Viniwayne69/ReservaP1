@@ -5061,3 +5061,19 @@ body:has(.login-screen) {
   }
 }
 
+/* Fundo xadrez preto e branco da tela inicial */
+body:has(.login-screen) {
+  background-color: #000000 !important;
+  background-image:
+    conic-gradient(
+      #ffffff 25%,
+      #000000 0 50%,
+      #ffffff 0 75%,
+      #000000 0
+    ) !important;
+  background-position: center center !important;
+  background-size: 84px 84px !important;
+  background-attachment: fixed !important;
+}
+
+
