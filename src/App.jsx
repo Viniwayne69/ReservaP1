@@ -35,7 +35,6 @@ import {
   Eye,
   MessageCircle,
   Phone,
-  RefreshCw,
   Search,
   ShieldCheck,
   Trash2,
@@ -278,7 +277,23 @@ function LoginView({ onLogin, loading, error }) {
     <main className="login-screen">
       <section className="login-brand" aria-label="Imagem automotiva P1">
         <img className="login-hero-image" src="/p1-login-hero.png" alt="" aria-hidden="true" />
-        <img className="login-brand-logo" src="/p1-logo-redonda.png" alt="P1 Sistemas" />
+        <div className="login-brand-mark" aria-label="P1 Sistemas">
+          <div className="login-brand-main">
+            <span className="login-speed-grid" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+            </span>
+            <span className="login-brand-p">P</span>
+            <span className="login-brand-one">1</span>
+          </div>
+          <span className="login-brand-system">SISTEMAS</span>
+        </div>
         <div className="login-brand-copy">
           <h1>Gestão de pré-vendas da P1</h1>
           <p>Agendamentos, simulações e acompanhamento comercial em um só lugar.</p>
@@ -1443,10 +1458,6 @@ export default function App() {
             <div className="module-right">
               <div className="list-header">
                 <div>
-                  <span className="section-eyebrow">
-                    <RefreshCw size={15} />
-                    Atualização automática
-                  </span>
                   <h2>Agenda do mês</h2>
                 </div>
                 <span>{visibleAppointments.length} registros</span>
