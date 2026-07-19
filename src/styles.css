@@ -5313,4 +5313,63 @@ input[type="month"]::-webkit-datetime-edit-year-field:focus {
   outline: none !important;
 }
 
+/* Páginas úteis da sidebar */
+.tool-page {
+  display: grid;
+  gap: 22px;
+}
+
+.tool-page .panel-card {
+  min-height: 420px;
+}
+
+.compact-tool-form {
+  align-self: start;
+}
+
+.tool-record-card {
+  gap: 18px;
+}
+
+.tool-record-card .record-main {
+  align-items: flex-start;
+}
+
+.tool-record-card .record-icon {
+  background: rgba(168, 255, 0, 0.12);
+  color: var(--p1-green);
+}
+
+.tool-record-card .record-title-line {
+  align-items: flex-start;
+}
+
+.tool-record-card .record-notes {
+  margin-top: 12px;
+  border-left: 2px solid rgba(168, 255, 0, 0.54);
+  padding: 0 0 0 12px;
+  color: rgba(248, 250, 245, 0.78);
+  line-height: 1.5;
+}
+
+.tool-record-card .record-actions {
+  justify-content: flex-end;
+}
+
+.tool-record-card .record-actions button:not(.danger) {
+  border-color: rgba(168, 255, 0, 0.24);
+  background: rgba(168, 255, 0, 0.12);
+  color: var(--p1-green);
+}
+
+.sidebar nav {
+  margin-bottom: auto !important;
+}
+
+@media (max-width: 760px) {
+  .tool-page .panel-card {
+    min-height: auto;
+  }
+}
+
 

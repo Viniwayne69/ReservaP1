@@ -57,5 +57,26 @@ service cloud.firestore {
       allow update: if isAdmin() || isOwnerSeller();
       allow delete: if isAdmin() || isOwnerSeller();
     }
+
+    match /p1_followups/{followupId} {
+      allow read: if isAdmin() || isOwnerSeller();
+      allow create: if isCreatingOwnSellerRecord() || isAdmin();
+      allow update: if isAdmin() || isOwnerSeller();
+      allow delete: if isAdmin() || isOwnerSeller();
+    }
+
+    match /p1_notes/{noteId} {
+      allow read: if isAdmin() || isOwnerSeller();
+      allow create: if isCreatingOwnSellerRecord() || isAdmin();
+      allow update: if isAdmin() || isOwnerSeller();
+      allow delete: if isAdmin() || isOwnerSeller();
+    }
+
+    match /p1_hot_clients/{clientId} {
+      allow read: if isAdmin() || isOwnerSeller();
+      allow create: if isCreatingOwnSellerRecord() || isAdmin();
+      allow update: if isAdmin() || isOwnerSeller();
+      allow delete: if isAdmin() || isOwnerSeller();
+    }
   }
 }

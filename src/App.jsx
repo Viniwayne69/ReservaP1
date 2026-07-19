@@ -25,6 +25,7 @@ import {
   Clock3,
   ClipboardList,
   Edit3,
+  Flame,
   FileText,
   IdCard,
   LayoutDashboard,
@@ -37,6 +38,7 @@ import {
   Phone,
   Search,
   ShieldCheck,
+  StickyNote,
   Trash2,
   UserCog,
   UserRound,
@@ -50,7 +52,10 @@ import { findKnownUserByEmail, knownTeam, sellerDisplayName } from "./team";
 const COLLECTIONS = {
   users: "p1_users",
   appointments: "p1_appointments",
-  simulations: "p1_simulations"
+  simulations: "p1_simulations",
+  followups: "p1_followups",
+  notes: "p1_notes",
+  hotClients: "p1_hot_clients"
 };
 
 const LOGIN_WELCOME_MESSAGES = {
@@ -163,6 +168,49 @@ function createSimulationForm(profile) {
     vehicle: "",
     notes: ""
   };
+}
+
+function createFollowupForm(profile) {
+  return {
+    sellerId: profile?.role === "seller" ? profile.id : "",
+    clientName: "",
+    whatsapp: "",
+    dueDate: localDateInput(),
+    note: ""
+  };
+}
+
+function createNoteForm(profile) {
+  return {
+    sellerId: profile?.role === "seller" ? profile.id : "",
+    title: "",
+    text: ""
+  };
+}
+
+function createHotClientForm(profile) {
+  return {
+    sellerId: profile?.role === "seller" ? profile.id : "",
+    clientName: "",
+    whatsapp: "",
+    vehicle: "",
+    note: ""
+  };
+}
+
+function appointmentDateTime(item) {
+  if (!item?.date) return null;
+  const [year, month, day] = item.date.split("-").map(Number);
+  const [hour = 23, minute = 59] = String(item.time || "23:59").split(":").map(Number);
+
+  if (![year, month, day, hour, minute].every(Number.isFinite)) return null;
+  return new Date(year, month - 1, day, hour, minute);
+}
+
+function isAutomaticPending(item) {
+  if (item?.status !== "scheduled") return false;
+  const date = appointmentDateTime(item);
+  return date ? date.getTime() < Date.now() : false;
 }
 
 async function ensureProfile(firebaseUser) {
@@ -843,6 +891,242 @@ function SimulationCard({ item, profile, onEdit, onDelete, onReview }) {
   );
 }
 
+function SellerSelectField({ form, setForm, sellers, profile }) {
+  const sellerOptions = sellers.filter(seller => seller.role !== "admin");
+
+  if (profile.role !== "admin") return null;
+
+  return (
+    <label>
+      Vendedor
+      <select
+        value={form.sellerId}
+        onChange={event => setForm(current => ({ ...current, sellerId: event.target.value }))}
+        required
+      >
+        <option value="">Selecione</option>
+        {sellerOptions.map(seller => (
+          <option key={seller.id} value={seller.id}>
+            {seller.name}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function FollowupForm({ form, setForm, sellers, profile, onSubmit }) {
+  return (
+    <form className="panel-card form-card compact-tool-form" onSubmit={onSubmit}>
+      <div className="panel-title-row">
+        <div>
+          <span className="section-eyebrow">
+            <MessageCircle size={15} />
+            Follow-up
+          </span>
+          <h3>Novo retorno</h3>
+        </div>
+      </div>
+
+      <div className="form-grid">
+        <SellerSelectField form={form} setForm={setForm} sellers={sellers} profile={profile} />
+
+        <label>
+          Nome do cliente
+          <input
+            value={form.clientName}
+            onChange={event => setForm(current => ({ ...current, clientName: event.target.value }))}
+            placeholder="Nome completo"
+            required
+          />
+        </label>
+
+        <label>
+          WhatsApp
+          <input
+            value={form.whatsapp}
+            onChange={event => setForm(current => ({ ...current, whatsapp: event.target.value }))}
+            placeholder="(81) 99999-9999"
+          />
+        </label>
+
+        <label>
+          Data do retorno
+          <input
+            type="date"
+            value={form.dueDate}
+            onChange={event => setForm(current => ({ ...current, dueDate: event.target.value }))}
+            required
+          />
+        </label>
+      </div>
+
+      <label className="full-label">
+        Observação
+        <textarea
+          value={form.note}
+          onChange={event => setForm(current => ({ ...current, note: event.target.value }))}
+          placeholder="O que precisa ser tratado no retorno"
+          rows={3}
+        />
+      </label>
+
+      <button className="primary-button" type="submit">
+        Salvar follow-up
+        <ChevronRight size={18} />
+      </button>
+    </form>
+  );
+}
+
+function InternalNoteForm({ form, setForm, sellers, profile, onSubmit }) {
+  return (
+    <form className="panel-card form-card compact-tool-form" onSubmit={onSubmit}>
+      <div className="panel-title-row">
+        <div>
+          <span className="section-eyebrow">
+            <StickyNote size={15} />
+            Notas internas
+          </span>
+          <h3>Nova nota</h3>
+        </div>
+      </div>
+
+      <div className="form-grid">
+        <SellerSelectField form={form} setForm={setForm} sellers={sellers} profile={profile} />
+
+        <label>
+          Título
+          <input
+            value={form.title}
+            onChange={event => setForm(current => ({ ...current, title: event.target.value }))}
+            placeholder="Exemplo: Retornos importantes"
+            required
+          />
+        </label>
+      </div>
+
+      <label className="full-label">
+        Nota
+        <textarea
+          value={form.text}
+          onChange={event => setForm(current => ({ ...current, text: event.target.value }))}
+          placeholder="Escreva uma anotação para organizar seu atendimento"
+          rows={5}
+          required
+        />
+      </label>
+
+      <button className="primary-button" type="submit">
+        Salvar nota
+        <ChevronRight size={18} />
+      </button>
+    </form>
+  );
+}
+
+function HotClientForm({ form, setForm, sellers, profile, onSubmit }) {
+  return (
+    <form className="panel-card form-card compact-tool-form" onSubmit={onSubmit}>
+      <div className="panel-title-row">
+        <div>
+          <span className="section-eyebrow">
+            <Flame size={15} />
+            Clientes quentes
+          </span>
+          <h3>Novo cliente quente</h3>
+        </div>
+      </div>
+
+      <div className="form-grid">
+        <SellerSelectField form={form} setForm={setForm} sellers={sellers} profile={profile} />
+
+        <label>
+          Nome do cliente
+          <input
+            value={form.clientName}
+            onChange={event => setForm(current => ({ ...current, clientName: event.target.value }))}
+            placeholder="Nome completo"
+            required
+          />
+        </label>
+
+        <label>
+          WhatsApp
+          <input
+            value={form.whatsapp}
+            onChange={event => setForm(current => ({ ...current, whatsapp: event.target.value }))}
+            placeholder="(81) 99999-9999"
+          />
+        </label>
+
+        <label>
+          Veículo de interesse
+          <input
+            value={form.vehicle}
+            onChange={event => setForm(current => ({ ...current, vehicle: event.target.value }))}
+            placeholder="Modelo desejado"
+          />
+        </label>
+      </div>
+
+      <label className="full-label">
+        Motivo da prioridade
+        <textarea
+          value={form.note}
+          onChange={event => setForm(current => ({ ...current, note: event.target.value }))}
+          placeholder="Exemplo: cliente já tem entrada, quer fechar ainda hoje"
+          rows={3}
+        />
+      </label>
+
+      <button className="primary-button" type="submit">
+        Marcar como quente
+        <ChevronRight size={18} />
+      </button>
+    </form>
+  );
+}
+
+function ToolRecordCard({ icon: Icon, title, subtitle, meta, note, sellerName, profile, onDelete, onDone }) {
+  return (
+    <article className="record-card tool-record-card">
+      <div className="record-main">
+        <div className="record-icon">
+          <Icon size={19} />
+        </div>
+        <div>
+          <div className="record-title-line">
+            <h3>{title}</h3>
+            {profile.role === "admin" && sellerName ? <StatusBadge status={sellerName} map={{}} /> : null}
+          </div>
+          {subtitle ? <p>{subtitle}</p> : null}
+          <div className="record-meta">
+            {meta.map(item => (
+              <span key={item}>
+                <Clock3 size={14} />
+                {item}
+              </span>
+            ))}
+          </div>
+          {note ? <p className="record-notes">{note}</p> : null}
+        </div>
+      </div>
+
+      <div className="record-actions">
+        {onDone ? (
+          <button type="button" onClick={onDone}>
+            Concluir
+          </button>
+        ) : null}
+        <button className="icon-action danger" type="button" onClick={onDelete} aria-label="Excluir">
+          <Trash2 size={16} />
+        </button>
+      </div>
+    </article>
+  );
+}
+
 export default function App() {
   const [booting, setBooting] = useState(true);
   const [user, setUser] = useState(null);
@@ -851,11 +1135,17 @@ export default function App() {
   const [users, setUsers] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [simulations, setSimulations] = useState([]);
+  const [followups, setFollowups] = useState([]);
+  const [internalNotes, setInternalNotes] = useState([]);
+  const [hotClients, setHotClients] = useState([]);
   const [section, setSection] = useState("appointments");
   const [selectedMonth, setSelectedMonth] = useState(currentMonth());
   const [sellerFilter, setSellerFilter] = useState("all");
   const [appointmentForm, setAppointmentForm] = useState(createAppointmentForm());
   const [simulationForm, setSimulationForm] = useState(createSimulationForm());
+  const [followupForm, setFollowupForm] = useState(createFollowupForm());
+  const [noteForm, setNoteForm] = useState(createNoteForm());
+  const [hotClientForm, setHotClientForm] = useState(createHotClientForm());
   const [editingAppointment, setEditingAppointment] = useState(null);
   const [editingSimulation, setEditingSimulation] = useState(null);
   const [loginLoading, setLoginLoading] = useState(false);
@@ -900,6 +1190,9 @@ export default function App() {
         setProfile(nextProfile);
         setAppointmentForm(createAppointmentForm(nextProfile));
         setSimulationForm(createSimulationForm(nextProfile));
+        setFollowupForm(createFollowupForm(nextProfile));
+        setNoteForm(createNoteForm(nextProfile));
+        setHotClientForm(createHotClientForm(nextProfile));
         setSelectedMonth(currentMonth());
         setSection("appointments");
         showLoginWelcome(nextProfile);
@@ -1017,10 +1310,88 @@ export default function App() {
       }
     );
 
+    const followupSource =
+      profile.role === "admin"
+        ? collection(db, COLLECTIONS.followups)
+        : query(collection(db, COLLECTIONS.followups), where("sellerId", "==", user.uid));
+
+    const followupsUnsubscribe = onSnapshot(
+      followupSource,
+      snapshot => {
+        setFollowups(
+          snapshot.docs.map(item => {
+            const data = item.data();
+            return {
+              id: item.id,
+              ...data,
+              sellerName: normalizeSellerName(data.sellerName)
+            };
+          })
+        );
+      },
+      error => {
+        setDataError("Não consegui carregar os follow-ups. Confira as regras do Firestore.");
+        console.error(error);
+      }
+    );
+
+    const notesSource =
+      profile.role === "admin"
+        ? collection(db, COLLECTIONS.notes)
+        : query(collection(db, COLLECTIONS.notes), where("sellerId", "==", user.uid));
+
+    const notesUnsubscribe = onSnapshot(
+      notesSource,
+      snapshot => {
+        setInternalNotes(
+          snapshot.docs.map(item => {
+            const data = item.data();
+            return {
+              id: item.id,
+              ...data,
+              sellerName: normalizeSellerName(data.sellerName)
+            };
+          })
+        );
+      },
+      error => {
+        setDataError("Não consegui carregar as notas internas. Confira as regras do Firestore.");
+        console.error(error);
+      }
+    );
+
+    const hotClientSource =
+      profile.role === "admin"
+        ? collection(db, COLLECTIONS.hotClients)
+        : query(collection(db, COLLECTIONS.hotClients), where("sellerId", "==", user.uid));
+
+    const hotClientsUnsubscribe = onSnapshot(
+      hotClientSource,
+      snapshot => {
+        setHotClients(
+          snapshot.docs.map(item => {
+            const data = item.data();
+            return {
+              id: item.id,
+              ...data,
+              sellerName: normalizeSellerName(data.sellerName)
+            };
+          })
+        );
+      },
+      error => {
+        setDataError("Não consegui carregar os clientes quentes. Confira as regras do Firestore.");
+        console.error(error);
+      }
+    );
+
     return () => {
       usersUnsubscribe();
       appointmentsUnsubscribe();
       simulationsUnsubscribe();
+      followupsUnsubscribe();
+      notesUnsubscribe();
+      hotClientsUnsubscribe();
     };
   }, [profile, user]);
 
@@ -1051,12 +1422,22 @@ export default function App() {
       }
     });
 
+    [...followups, ...internalNotes, ...hotClients].forEach(item => {
+      if (item.sellerId && !map.has(item.sellerId)) {
+        map.set(item.sellerId, {
+          id: item.sellerId,
+          name: item.sellerName || "Vendedor",
+          role: "seller"
+        });
+      }
+    });
+
     if (profile?.role === "seller" && !map.has(profile.id)) {
       map.set(profile.id, profile);
     }
 
     return Array.from(map.values()).sort((a, b) => clean(a.name).localeCompare(clean(b.name)));
-  }, [appointments, profile, simulations, users]);
+  }, [appointments, followups, hotClients, internalNotes, profile, simulations, users]);
 
   const visibleAppointments = useMemo(() => {
     return appointments
@@ -1071,6 +1452,36 @@ export default function App() {
       .filter(item => sellerFilter === "all" || item.sellerId === sellerFilter)
       .sort((a, b) => clean(b.createdDate).localeCompare(clean(a.createdDate)));
   }, [sellerFilter, selectedMonth, simulations]);
+
+  const automaticPendingAppointments = useMemo(() => {
+    return appointments
+      .filter(isAutomaticPending)
+      .filter(item => sellerFilter === "all" || item.sellerId === sellerFilter)
+      .sort((a, b) => {
+        const dateA = appointmentDateTime(a)?.getTime() || 0;
+        const dateB = appointmentDateTime(b)?.getTime() || 0;
+        return dateA - dateB;
+      });
+  }, [appointments, sellerFilter]);
+
+  const visibleFollowups = useMemo(() => {
+    return followups
+      .filter(item => item.status !== "done")
+      .filter(item => sellerFilter === "all" || item.sellerId === sellerFilter)
+      .sort((a, b) => clean(a.dueDate).localeCompare(clean(b.dueDate)));
+  }, [followups, sellerFilter]);
+
+  const visibleInternalNotes = useMemo(() => {
+    return internalNotes
+      .filter(item => sellerFilter === "all" || item.sellerId === sellerFilter)
+      .sort((a, b) => clean(b.createdDate).localeCompare(clean(a.createdDate)));
+  }, [internalNotes, sellerFilter]);
+
+  const visibleHotClients = useMemo(() => {
+    return hotClients
+      .filter(item => sellerFilter === "all" || item.sellerId === sellerFilter)
+      .sort((a, b) => clean(b.createdDate).localeCompare(clean(a.createdDate)));
+  }, [hotClients, sellerFilter]);
 
   const appointmentMetrics = useMemo(() => {
     const visits = visibleAppointments.filter(item => ["visited", "sold"].includes(item.status)).length;
@@ -1231,6 +1642,80 @@ export default function App() {
     setSimulationForm(createSimulationForm(profile));
   }
 
+  async function submitFollowup(event) {
+    event.preventDefault();
+    const sellerId = profile.role === "seller" ? profile.id : followupForm.sellerId;
+    const seller = resolveSeller(sellerId);
+
+    if (!sellerId || !seller) {
+      setDataError("Escolha um vendedor antes de salvar o follow-up.");
+      return;
+    }
+
+    await addDoc(collection(db, COLLECTIONS.followups), {
+      sellerId,
+      sellerName: seller.name,
+      clientName: clean(followupForm.clientName),
+      whatsapp: clean(followupForm.whatsapp),
+      dueDate: followupForm.dueDate,
+      note: clean(followupForm.note),
+      status: "open",
+      createdDate: localDateInput(),
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+
+    setFollowupForm(createFollowupForm(profile));
+  }
+
+  async function submitInternalNote(event) {
+    event.preventDefault();
+    const sellerId = profile.role === "seller" ? profile.id : noteForm.sellerId;
+    const seller = resolveSeller(sellerId);
+
+    if (!sellerId || !seller) {
+      setDataError("Escolha um vendedor antes de salvar a nota.");
+      return;
+    }
+
+    await addDoc(collection(db, COLLECTIONS.notes), {
+      sellerId,
+      sellerName: seller.name,
+      title: clean(noteForm.title),
+      text: clean(noteForm.text),
+      createdDate: localDateInput(),
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+
+    setNoteForm(createNoteForm(profile));
+  }
+
+  async function submitHotClient(event) {
+    event.preventDefault();
+    const sellerId = profile.role === "seller" ? profile.id : hotClientForm.sellerId;
+    const seller = resolveSeller(sellerId);
+
+    if (!sellerId || !seller) {
+      setDataError("Escolha um vendedor antes de salvar o cliente quente.");
+      return;
+    }
+
+    await addDoc(collection(db, COLLECTIONS.hotClients), {
+      sellerId,
+      sellerName: seller.name,
+      clientName: clean(hotClientForm.clientName),
+      whatsapp: clean(hotClientForm.whatsapp),
+      vehicle: clean(hotClientForm.vehicle),
+      note: clean(hotClientForm.note),
+      createdDate: localDateInput(),
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+
+    setHotClientForm(createHotClientForm(profile));
+  }
+
   function editAppointment(item) {
     setEditingAppointment(item);
     setAppointmentForm({
@@ -1287,6 +1772,26 @@ export default function App() {
     });
   }
 
+  async function completeFollowup(item) {
+    await updateDoc(doc(db, COLLECTIONS.followups, item.id), {
+      status: "done",
+      completedAt: new Date().toISOString(),
+      updatedAt: serverTimestamp()
+    });
+  }
+
+  async function deleteFollowup(item) {
+    await deleteDoc(doc(db, COLLECTIONS.followups, item.id));
+  }
+
+  async function deleteInternalNote(item) {
+    await deleteDoc(doc(db, COLLECTIONS.notes, item.id));
+  }
+
+  async function deleteHotClient(item) {
+    await deleteDoc(doc(db, COLLECTIONS.hotClients, item.id));
+  }
+
   function openSection(nextSection) {
     setSection(nextSection);
     setMobileNavOpen(false);
@@ -1324,6 +1829,26 @@ export default function App() {
       label: "Simulações",
       icon: FileText
     },
+    {
+      id: "pending",
+      label: "Pendências",
+      icon: Clock3
+    },
+    {
+      id: "followups",
+      label: "Follow-up",
+      icon: MessageCircle
+    },
+    {
+      id: "notes",
+      label: "Notas internas",
+      icon: StickyNote
+    },
+    {
+      id: "hot-clients",
+      label: "Clientes quentes",
+      icon: Flame
+    },
     ...(profile.role === "admin"
       ? [
           {
@@ -1338,6 +1863,10 @@ export default function App() {
   const sectionTitles = {
     appointments: "Agendamentos",
     simulations: "Simulações",
+    pending: "Pendências automáticas",
+    followups: "Follow-up",
+    notes: "Notas internas",
+    "hot-clients": "Clientes quentes",
     team: "Painel da equipe"
   };
 
@@ -1550,6 +2079,198 @@ export default function App() {
                     icon={Search}
                     title="Nenhuma simulação neste mês"
                     text="As solicitações enviadas pelos vendedores ficam reunidas aqui."
+                  />
+                )}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {section === "pending" ? (
+          <section className="tool-page section-view">
+            <div className="panel-card">
+              <div className="list-header">
+                <div>
+                  <span className="section-eyebrow">
+                    <Clock3 size={15} />
+                    Status ainda agendado
+                  </span>
+                  <h2>Clientes com horário já passado</h2>
+                </div>
+                <span>{automaticPendingAppointments.length} registros</span>
+              </div>
+
+              <div className="record-list">
+                {automaticPendingAppointments.length ? (
+                  automaticPendingAppointments.map(item => (
+                    <AppointmentCard
+                      key={item.id}
+                      item={item}
+                      profile={profile}
+                      onEdit={editAppointment}
+                      onDelete={deleteAppointment}
+                      onStatus={updateAppointmentStatus}
+                    />
+                  ))
+                ) : (
+                  <EmptyState
+                    icon={Clock3}
+                    title="Nenhuma pendência automática"
+                    text="Quando um atendimento passar do horário e continuar como agendado, ele aparece aqui."
+                  />
+                )}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {section === "followups" ? (
+          <section className="module-grid section-view">
+            <div className="module-left">
+              <FollowupForm
+                form={followupForm}
+                setForm={setFollowupForm}
+                sellers={sellers}
+                profile={profile}
+                onSubmit={submitFollowup}
+              />
+            </div>
+
+            <div className="module-right">
+              <div className="list-header">
+                <div>
+                  <span className="section-eyebrow">
+                    <MessageCircle size={15} />
+                    Retornos programados
+                  </span>
+                  <h2>Clientes para retornar</h2>
+                </div>
+                <span>{visibleFollowups.length} registros</span>
+              </div>
+
+              <div className="record-list">
+                {visibleFollowups.length ? (
+                  visibleFollowups.map(item => (
+                    <ToolRecordCard
+                      key={item.id}
+                      icon={MessageCircle}
+                      title={item.clientName}
+                      subtitle={item.whatsapp || "Sem WhatsApp informado"}
+                      meta={[`Retorno em ${formatDate(item.dueDate)}`]}
+                      note={item.note}
+                      sellerName={item.sellerName}
+                      profile={profile}
+                      onDone={() => completeFollowup(item)}
+                      onDelete={() => deleteFollowup(item)}
+                    />
+                  ))
+                ) : (
+                  <EmptyState
+                    icon={MessageCircle}
+                    title="Nenhum follow-up aberto"
+                    text="Salve clientes que precisam de retorno para não perder oportunidades."
+                  />
+                )}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {section === "notes" ? (
+          <section className="module-grid section-view">
+            <div className="module-left">
+              <InternalNoteForm
+                form={noteForm}
+                setForm={setNoteForm}
+                sellers={sellers}
+                profile={profile}
+                onSubmit={submitInternalNote}
+              />
+            </div>
+
+            <div className="module-right">
+              <div className="list-header">
+                <div>
+                  <span className="section-eyebrow">
+                    <StickyNote size={15} />
+                    Organização pessoal
+                  </span>
+                  <h2>Notas salvas</h2>
+                </div>
+                <span>{visibleInternalNotes.length} registros</span>
+              </div>
+
+              <div className="record-list">
+                {visibleInternalNotes.length ? (
+                  visibleInternalNotes.map(item => (
+                    <ToolRecordCard
+                      key={item.id}
+                      icon={StickyNote}
+                      title={item.title}
+                      subtitle={formatDate(item.createdDate)}
+                      meta={[]}
+                      note={item.text}
+                      sellerName={item.sellerName}
+                      profile={profile}
+                      onDelete={() => deleteInternalNote(item)}
+                    />
+                  ))
+                ) : (
+                  <EmptyState
+                    icon={StickyNote}
+                    title="Nenhuma nota interna"
+                    text="Use este espaço para lembretes e informações que ajudam no atendimento."
+                  />
+                )}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {section === "hot-clients" ? (
+          <section className="module-grid section-view">
+            <div className="module-left">
+              <HotClientForm
+                form={hotClientForm}
+                setForm={setHotClientForm}
+                sellers={sellers}
+                profile={profile}
+                onSubmit={submitHotClient}
+              />
+            </div>
+
+            <div className="module-right">
+              <div className="list-header">
+                <div>
+                  <span className="section-eyebrow">
+                    <Flame size={15} />
+                    Prioridade comercial
+                  </span>
+                  <h2>Clientes com maior chance</h2>
+                </div>
+                <span>{visibleHotClients.length} registros</span>
+              </div>
+
+              <div className="record-list">
+                {visibleHotClients.length ? (
+                  visibleHotClients.map(item => (
+                    <ToolRecordCard
+                      key={item.id}
+                      icon={Flame}
+                      title={item.clientName}
+                      subtitle={item.vehicle || "Veículo não informado"}
+                      meta={[item.whatsapp || "Sem WhatsApp informado"]}
+                      note={item.note}
+                      sellerName={item.sellerName}
+                      profile={profile}
+                      onDelete={() => deleteHotClient(item)}
+                    />
+                  ))
+                ) : (
+                  <EmptyState
+                    icon={Flame}
+                    title="Nenhum cliente quente"
+                    text="Marque clientes com maior chance de fechamento para acompanhar com prioridade."
                   />
                 )}
               </div>
