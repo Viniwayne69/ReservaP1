@@ -3899,7 +3899,7 @@ body {
   align-items: center !important;
   gap: 7px !important;
   min-height: 34px !important;
-  margin-top: 14px;
+  margin-top: 0;
   padding: 7px 11px !important;
   user-select: none;
   -webkit-user-select: none;
@@ -3912,7 +3912,7 @@ body {
 .copy-chip-label {
   position: absolute;
   left: 3px;
-  top: -14px;
+  top: -13px;
   display: block !important;
   color: var(--p1-green);
   font-size: 0.52rem !important;
