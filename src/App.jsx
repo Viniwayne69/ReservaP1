@@ -570,14 +570,26 @@ function AppointmentCard({ item, profile, onEdit, onDelete, onStatus }) {
         {canManage ? (
           <div className="record-actions appointment-actions">
             <div className="status-actions" aria-label="Atualizar status">
-              <button className="primary-status-action" type="button" onClick={() => onStatus(item, "visited")}>
+              <button
+                className={item.status === "visited" ? "primary-status-action" : ""}
+                type="button"
+                onClick={() => onStatus(item, "visited")}
+              >
                 <Eye size={15} />
                 Visitou
               </button>
-              <button type="button" onClick={() => onStatus(item, "sold")}>
+              <button
+                className={item.status === "sold" ? "primary-status-action" : ""}
+                type="button"
+                onClick={() => onStatus(item, "sold")}
+              >
                 Vendeu
               </button>
-              <button type="button" onClick={() => onStatus(item, "no_show")}>
+              <button
+                className={item.status === "no_show" ? "primary-status-action" : ""}
+                type="button"
+                onClick={() => onStatus(item, "no_show")}
+              >
                 Não veio
               </button>
             </div>
@@ -1251,12 +1263,10 @@ export default function App() {
   }
 
   async function deleteAppointment(item) {
-    if (!window.confirm(`Excluir o agendamento de ${item.clientName}?`)) return;
     await deleteDoc(doc(db, COLLECTIONS.appointments, item.id));
   }
 
   async function deleteSimulation(item) {
-    if (!window.confirm(`Excluir a simulação de ${item.clientName}?`)) return;
     await deleteDoc(doc(db, COLLECTIONS.simulations, item.id));
   }
 

@@ -5267,4 +5267,50 @@ body:has(.login-screen) {
   }
 }
 
+/* Remove cor visual de seleção dos campos */
+::selection {
+  background: transparent !important;
+  color: inherit !important;
+}
+
+input::selection,
+textarea::selection,
+select::selection {
+  background: transparent !important;
+  color: inherit !important;
+}
+
+input,
+textarea,
+select,
+button {
+  accent-color: var(--p1-green) !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+  outline: none !important;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 1px solid rgba(168, 255, 0, 0.72) !important;
+  outline-offset: 2px !important;
+}
+
+input[type="date"]::-webkit-datetime-edit-day-field:focus,
+input[type="date"]::-webkit-datetime-edit-month-field:focus,
+input[type="date"]::-webkit-datetime-edit-year-field:focus,
+input[type="month"]::-webkit-datetime-edit-month-field:focus,
+input[type="month"]::-webkit-datetime-edit-year-field:focus {
+  background: transparent !important;
+  color: inherit !important;
+  outline: none !important;
+}
+
 
