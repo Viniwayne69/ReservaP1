@@ -3872,14 +3872,31 @@ body {
   gap: 10px;
 }
 
-.appointment-card .record-meta span {
+.appointment-card .record-meta span,
+.appointment-card .record-meta button {
   width: auto;
   min-height: 36px;
   border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.055);
   color: rgba(248, 250, 245, 0.82);
   font-size: 0.82rem;
   font-weight: 610;
+}
+
+.appointment-card .record-meta button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 12px;
+  cursor: copy;
+  font-family: inherit;
+}
+
+.appointment-card .record-meta button:hover {
+  border-color: rgba(168, 255, 0, 0.42);
+  background: rgba(168, 255, 0, 0.1);
+  color: var(--p1-text-main);
 }
 
 .appointment-card .record-notes {
@@ -5461,6 +5478,16 @@ input[type="month"]::-webkit-datetime-edit-year-field:focus {
 
 .hot-client-actions .icon-actions {
   justify-content: flex-end;
+}
+
+.followup-record-actions {
+  align-items: center;
+}
+
+.followup-record-actions > button:not(.icon-action) {
+  border-color: rgba(168, 255, 0, 0.3);
+  background: rgba(168, 255, 0, 0.12);
+  color: var(--p1-green);
 }
 
 .sidebar nav {

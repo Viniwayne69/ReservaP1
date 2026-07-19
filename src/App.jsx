@@ -136,6 +136,12 @@ function formatEntry(value) {
   return moneyFormatter.format(Number(value));
 }
 
+function copyText(value) {
+  const text = clean(value);
+  if (!text || !navigator?.clipboard) return;
+  navigator.clipboard.writeText(text).catch(() => {});
+}
+
 function nameFromEmail(email) {
   return clean(email)
     .split("@")[0]
@@ -703,10 +709,10 @@ function HotClientRecordCard({ item, profile, onDelete }) {
                 </span>
               ) : null}
               {item.whatsapp ? (
-                <span>
+                <button className="meta-copy-chip" type="button" onClick={() => copyText(item.whatsapp)} title="Copiar WhatsApp">
                   <Phone size={14} />
                   {item.whatsapp}
-                </span>
+                </button>
               ) : null}
               <span>
                 <WalletCards size={14} />
@@ -722,7 +728,7 @@ function HotClientRecordCard({ item, profile, onDelete }) {
 
             {observation ? (
               <div className="record-notes">
-                <strong>Veículo:</strong>
+                <strong>Observações:</strong>
                 <span>{observation}</span>
               </div>
             ) : null}
@@ -730,6 +736,70 @@ function HotClientRecordCard({ item, profile, onDelete }) {
         </div>
 
         <div className="record-actions appointment-actions hot-client-actions">
+          <div className="icon-actions">
+            <button className="icon-action danger" type="button" onClick={() => onDelete(item)} aria-label="Excluir">
+              <Trash2 size={15} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function FollowupRecordCard({ item, profile, onDone, onDelete }) {
+  const observation = item.notes || item.note;
+
+  return (
+    <article className="record-card appointment-card hot-client-card followup-record-card">
+      <div className="appointment-content">
+        <div className="record-main">
+          <div className="appointment-info">
+            <div className="record-title-line">
+              <div className="appointment-heading">
+                <div className="client-name-row">
+                  <h3>{item.clientName}</h3>
+                </div>
+                <p>{item.vehicle || "Não informado"}</p>
+              </div>
+            </div>
+
+            <div className="record-meta">
+              <span>
+                <Clock3 size={14} />
+                {item.date && item.time ? `${formatDate(item.date)} às ${item.time}` : `Retorno em ${formatDate(item.dueDate)}`}
+              </span>
+              {item.whatsapp ? (
+                <button className="meta-copy-chip" type="button" onClick={() => copyText(item.whatsapp)} title="Copiar WhatsApp">
+                  <Phone size={14} />
+                  {item.whatsapp}
+                </button>
+              ) : null}
+              <span>
+                <WalletCards size={14} />
+                {formatEntry(item.entryValue)}
+              </span>
+              {profile.role === "admin" && item.sellerName ? (
+                <span>
+                  <UserRound size={14} />
+                  {item.sellerName}
+                </span>
+              ) : null}
+            </div>
+
+            {observation ? (
+              <div className="record-notes">
+                <strong>Observações:</strong>
+                <span>{observation}</span>
+              </div>
+            ) : null}
+          </div>
+        </div>
+
+        <div className="record-actions appointment-actions hot-client-actions followup-record-actions">
+          <button type="button" onClick={() => onDone(item)}>
+            Concluir
+          </button>
           <div className="icon-actions">
             <button className="icon-action danger" type="button" onClick={() => onDelete(item)} aria-label="Excluir">
               <Trash2 size={15} />
@@ -2142,20 +2212,9 @@ export default function App() {
               <div className="record-list">
                 {visibleFollowups.length ? (
                   visibleFollowups.map(item => (
-                    <ToolRecordCard
+                    <FollowupRecordCard
                       key={item.id}
-                      icon={MessageCircle}
-                      title={item.clientName}
-                      subtitle={item.vehicle || item.whatsapp || "Sem WhatsApp informado"}
-                      meta={[
-                        item.date && item.time
-                          ? `${formatDate(item.date)} às ${item.time}`
-                          : `Retorno em ${formatDate(item.dueDate)}`,
-                        item.whatsapp || "Sem WhatsApp informado",
-                        formatEntry(item.entryValue)
-                      ]}
-                      note={item.note}
-                      sellerName={item.sellerName}
+                      item={item}
                       profile={profile}
                       onDone={() => completeFollowup(item)}
                       onDelete={() => deleteFollowup(item)}
