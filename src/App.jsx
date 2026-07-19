@@ -1993,7 +1993,7 @@ export default function App() {
   const adminNavItems = [
     {
       id: "overview",
-      label: "Visao geral",
+      label: "Visão geral",
       icon: LayoutDashboard
     },
     {
@@ -2008,7 +2008,7 @@ export default function App() {
     },
     {
       id: "simulations",
-      label: "Simulacoes pendentes",
+      label: "Simulações pendentes",
       icon: FileText
     },
     {
@@ -2023,7 +2023,7 @@ export default function App() {
     },
     {
       id: "pending",
-      label: "Pendencias",
+      label: "Pendências",
       icon: Clock3
     },
     {
@@ -2033,7 +2033,7 @@ export default function App() {
     },
     {
       id: "history",
-      label: "Historico mensal",
+      label: "Histórico mensal",
       icon: ChartNoAxesCombined
     }
   ];
@@ -2041,7 +2041,7 @@ export default function App() {
   const navItems = isAdmin ? adminNavItems : sellerNavItems;
 
   const sectionTitles = {
-    overview: "Visao geral",
+    overview: "Visão geral",
     appointments: "Agendamentos",
     simulations: "Simulações",
     pending: "Pendências automáticas",
@@ -2050,7 +2050,7 @@ export default function App() {
     "hot-clients": "Clientes quentes",
     team: "Painel da equipe",
     sellers: "Vendedores",
-    history: "Historico mensal"
+    history: "Histórico mensal"
   };
   const simulationRecords = isAdmin ? visiblePendingSimulations : visibleSimulations;
 
@@ -2150,26 +2150,107 @@ export default function App() {
 
         {section === "overview" ? (
           <section className="admin-overview section-view">
-            <div className="metrics-grid admin-metrics-grid">
-              <MetricCard
-                icon={CalendarDays}
-                label="agendamentos da equipe"
-                value={metricValue(adminOverviewMetrics.appointments)}
-                tone="blue"
-              />
-              <MetricCard icon={CheckCircle2} label="visitas realizadas" value={metricValue(adminOverviewMetrics.visits)} tone="green" />
-              <MetricCard icon={CircleDollarSign} label="vendas fechadas" value={metricValue(adminOverviewMetrics.sold)} tone="lime" />
-              <MetricCard
-                icon={ChartNoAxesCombined}
-                label="conversao geral"
-                value={`${adminOverviewMetrics.conversion}%`}
-                hint="vendas sobre visitas"
-                tone="blue"
-              />
-              <MetricCard icon={XCircle} label="clientes que nao vieram" value={metricValue(adminOverviewMetrics.noShow)} tone="amber" />
-              <MetricCard icon={FileText} label="simulacoes pendentes" value={metricValue(adminOverviewMetrics.pendingSimulations)} tone="amber" />
-              <MetricCard icon={MessageCircle} label="follow-ups abertos" value={metricValue(adminOverviewMetrics.openFollowups)} tone="blue" />
-              <MetricCard icon={Flame} label="clientes quentes" value={metricValue(adminOverviewMetrics.hotClients)} tone="red" />
+            <div className="admin-summary-card panel-card">
+              <div className="admin-summary-copy">
+                <span className="section-eyebrow">
+                  <ShieldCheck size={15} />
+                  Resumo executivo
+                </span>
+                <h2>Olá, Alessandra</h2>
+                <p>Este é o desempenho da equipe em {formatMonth(selectedMonth)}, com foco no que precisa de acompanhamento comercial.</p>
+              </div>
+
+              <div className="admin-main-number">
+                <strong>{adminOverviewMetrics.appointments}</strong>
+                <span>{adminOverviewMetrics.appointments === 1 ? "agendamento no mês" : "agendamentos no mês"}</span>
+              </div>
+
+              <div className="admin-summary-stats">
+                <span>
+                  <strong>{adminOverviewMetrics.visits}</strong>
+                  visitas
+                </span>
+                <span>
+                  <strong>{adminOverviewMetrics.sold}</strong>
+                  vendas
+                </span>
+                <span>
+                  <strong>{adminOverviewMetrics.conversion}%</strong>
+                  conversão
+                </span>
+                <span>
+                  <strong>{adminOverviewMetrics.noShow}</strong>
+                  não vieram
+                </span>
+              </div>
+            </div>
+
+            <div className="admin-action-grid">
+              <button type="button" onClick={() => openSection("simulations")}>
+                <FileText size={18} />
+                <span>Simulações pendentes</span>
+                <strong>{adminOverviewMetrics.pendingSimulations}</strong>
+              </button>
+              <button type="button" onClick={() => openSection("followups")}>
+                <MessageCircle size={18} />
+                <span>Follow-ups abertos</span>
+                <strong>{adminOverviewMetrics.openFollowups}</strong>
+              </button>
+              <button type="button" onClick={() => openSection("hot-clients")}>
+                <Flame size={18} />
+                <span>Clientes quentes</span>
+                <strong>{adminOverviewMetrics.hotClients}</strong>
+              </button>
+            </div>
+
+            <div className="panel-card admin-seller-overview">
+              <div className="panel-title-row">
+                <div>
+                  <span className="section-eyebrow">
+                    <UsersRound size={15} />
+                    Equipe comercial
+                  </span>
+                  <h3>Desempenho por vendedor</h3>
+                </div>
+                <button className="ghost-button" type="button" onClick={() => openSection("sellers")}>
+                  Ver vendedores
+                  <ChevronRight size={17} />
+                </button>
+              </div>
+
+              <div className="admin-seller-list">
+                {teamRows.length ? (
+                  teamRows.map(row => (
+                    <button
+                      className="admin-seller-row"
+                      key={row.seller.id}
+                      type="button"
+                      onClick={() => {
+                        setSellerFilter(row.seller.id);
+                        openSection("appointments");
+                      }}
+                    >
+                      <span className="avatar">
+                        <UserRound size={18} />
+                      </span>
+                      <span className="admin-seller-name">
+                        <strong>{row.seller.name}</strong>
+                        <small>{row.appointments} agendamentos, {row.sold} vendas</small>
+                      </span>
+                      <span className="admin-seller-progress">
+                        <i style={{ width: `${Math.min(row.conversion, 100)}%` }} />
+                      </span>
+                      <span className="admin-seller-conversion">{row.conversion}%</span>
+                    </button>
+                  ))
+                ) : (
+                  <EmptyState
+                    icon={UsersRound}
+                    title="Nenhum vendedor encontrado"
+                    text="Assim que os logins forem usados, os vendedores aparecem neste painel."
+                  />
+                )}
+              </div>
             </div>
           </section>
         ) : null}
@@ -2497,7 +2578,7 @@ export default function App() {
                       </span>
                       <span>
                         <strong>{row.conversion}%</strong>
-                        conversao
+                        conversão
                       </span>
                     </div>
 
@@ -2539,7 +2620,7 @@ export default function App() {
                 <div>
                   <span className="section-eyebrow">
                     <ChartNoAxesCombined size={15} />
-                    Consulta por mes
+                    Consulta por mês
                   </span>
                   <h3>{formatMonth(selectedMonth)}</h3>
                 </div>
@@ -2552,7 +2633,7 @@ export default function App() {
                   <span>Visitas</span>
                   <span>Vendas</span>
                   <span>Conv.</span>
-                  <span>Simulacoes</span>
+                  <span>Simulações</span>
                   <span>Aprov.</span>
                 </div>
 
