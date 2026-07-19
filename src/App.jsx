@@ -185,10 +185,10 @@ function WhatsappCopyChip({ value }) {
       title="Copiar WhatsApp"
     >
       <Phone size={14} />
-      <span className="copy-chip-text">
+      <div className="copy-chip-text">
         <small>Copiar</small>
         <strong>{whatsapp}</strong>
-      </span>
+      </div>
     </button>
   );
 }
