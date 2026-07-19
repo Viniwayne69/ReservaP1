@@ -184,11 +184,9 @@ function WhatsappCopyChip({ value }) {
       onClick={handleCopy}
       title="Copiar WhatsApp"
     >
+      <small className="copy-chip-label">Copiar</small>
       <Phone size={14} />
-      <div className="copy-chip-text">
-        <small>Copiar</small>
-        <strong>{whatsapp}</strong>
-      </div>
+      <strong className="copy-chip-number">{whatsapp}</strong>
     </button>
   );
 }

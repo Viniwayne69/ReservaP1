@@ -3893,24 +3893,14 @@ body {
   font-family: inherit;
 }
 
-.copy-chip-text {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  justify-content: center !important;
-  gap: 3px !important;
-  line-height: 1.05;
-  text-align: left;
-  pointer-events: none;
-}
-
 .record-meta .meta-copy-chip {
-  display: inline-grid !important;
-  grid-template-columns: 16px auto;
+  position: relative;
+  display: inline-flex !important;
   align-items: center !important;
-  gap: 8px !important;
-  min-height: 42px !important;
-  padding: 6px 11px !important;
+  gap: 7px !important;
+  min-height: 34px !important;
+  margin-top: 14px;
+  padding: 7px 11px !important;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -3919,22 +3909,27 @@ body {
   pointer-events: none;
 }
 
-.copy-chip-text small {
+.copy-chip-label {
+  position: absolute;
+  left: 3px;
+  top: -14px;
   display: block !important;
   color: var(--p1-green);
   font-size: 0.52rem !important;
   font-weight: 800;
-  line-height: 0.85 !important;
+  line-height: 1 !important;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  pointer-events: none;
 }
 
-.copy-chip-text strong {
+.copy-chip-number {
   display: block !important;
   color: inherit;
   font-size: 0.82rem !important;
   font-weight: 680;
   line-height: 1 !important;
+  pointer-events: none;
 }
 
 .appointment-card .record-meta button:hover {
