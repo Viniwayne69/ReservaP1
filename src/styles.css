@@ -3924,6 +3924,17 @@ body {
   color: #10161a;
 }
 
+.appointment-actions .hot-status-action {
+  border-color: rgba(255, 190, 86, 0.42);
+  background: rgba(255, 190, 86, 0.14);
+  color: #ffd08a;
+}
+
+.appointment-actions button:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
 .appointment-actions .icon-action {
   width: 46px;
 }

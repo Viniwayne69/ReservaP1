@@ -564,7 +564,7 @@ function AppointmentForm({
   );
 }
 
-function AppointmentCard({ item, profile, onEdit, onDelete, onStatus }) {
+function AppointmentCard({ item, profile, hotClient, onEdit, onDelete, onStatus, onHotClient }) {
   const canManage = profile.role === "admin" || item.sellerId === profile.id;
 
   return (
@@ -639,6 +639,15 @@ function AppointmentCard({ item, profile, onEdit, onDelete, onStatus }) {
                 onClick={() => onStatus(item, "no_show")}
               >
                 Não veio
+              </button>
+              <button
+                className={hotClient ? "hot-status-action" : ""}
+                type="button"
+                onClick={() => onHotClient(item)}
+                disabled={Boolean(hotClient)}
+              >
+                <Flame size={15} />
+                {hotClient ? "Quente" : "Cliente quente"}
               </button>
             </div>
 
@@ -1716,6 +1725,24 @@ export default function App() {
     setHotClientForm(createHotClientForm(profile));
   }
 
+  async function markAppointmentAsHotClient(item) {
+    const existing = hotClients.find(client => client.appointmentId === item.id);
+    if (existing) return;
+
+    await addDoc(collection(db, COLLECTIONS.hotClients), {
+      sellerId: item.sellerId,
+      sellerName: item.sellerName || profile.name,
+      appointmentId: item.id,
+      clientName: clean(item.clientName),
+      whatsapp: clean(item.whatsapp),
+      vehicle: clean(item.vehicle),
+      note: clean(item.notes) || "Marcado como cliente quente pelo agendamento.",
+      createdDate: localDateInput(),
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+  }
+
   function editAppointment(item) {
     setEditingAppointment(item);
     setAppointmentForm({
@@ -2009,9 +2036,11 @@ export default function App() {
                       key={item.id}
                       item={item}
                       profile={profile}
+                      hotClient={hotClients.find(client => client.appointmentId === item.id)}
                       onEdit={editAppointment}
                       onDelete={deleteAppointment}
                       onStatus={updateAppointmentStatus}
+                      onHotClient={markAppointmentAsHotClient}
                     />
                   ))
                 ) : (
@@ -2107,9 +2136,11 @@ export default function App() {
                       key={item.id}
                       item={item}
                       profile={profile}
+                      hotClient={hotClients.find(client => client.appointmentId === item.id)}
                       onEdit={editAppointment}
                       onDelete={deleteAppointment}
                       onStatus={updateAppointmentStatus}
+                      onHotClient={markAppointmentAsHotClient}
                     />
                   ))
                 ) : (
