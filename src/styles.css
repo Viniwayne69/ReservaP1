@@ -3936,6 +3936,33 @@ body {
   color: rgba(248, 250, 245, 0.82);
 }
 
+.appointment-actions .followup-icon-action {
+  width: 46px;
+  min-width: 46px;
+  padding-inline: 0;
+  justify-content: center;
+  color: rgba(202, 222, 240, 0.86);
+}
+
+.appointment-actions .followup-icon-action svg {
+  color: rgba(202, 222, 240, 0.86);
+}
+
+.appointment-actions .followup-status-action {
+  border-color: rgba(77, 163, 255, 0.5);
+  background: rgba(37, 98, 166, 0.22);
+  color: #6db6ff;
+}
+
+.appointment-actions .followup-status-action svg {
+  color: #5fb1ff;
+  filter: drop-shadow(0 0 9px rgba(83, 169, 255, 0.34));
+}
+
+.followup-button-label {
+  color: #77bdff;
+}
+
 .appointment-actions .hot-status-action {
   border-color: rgba(255, 68, 68, 0.5);
   background: rgba(143, 20, 20, 0.24);

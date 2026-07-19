@@ -554,7 +554,17 @@ function AppointmentForm({
   );
 }
 
-function AppointmentCard({ item, profile, hotClient, onEdit, onDelete, onStatus, onHotClient }) {
+function AppointmentCard({
+  item,
+  profile,
+  hotClient,
+  appointmentFollowup,
+  onEdit,
+  onDelete,
+  onStatus,
+  onHotClient,
+  onFollowup
+}) {
   const canManage = profile.role === "admin" || item.sellerId === profile.id;
 
   return (
@@ -639,6 +649,16 @@ function AppointmentCard({ item, profile, hotClient, onEdit, onDelete, onStatus,
               >
                 <Flame size={15} />
                 {hotClient ? <span className="hot-button-label">Quente</span> : null}
+              </button>
+              <button
+                className={appointmentFollowup ? "followup-status-action" : "followup-icon-action"}
+                type="button"
+                onClick={() => onFollowup(item)}
+                aria-label={appointmentFollowup ? "Remover do follow-up" : "Marcar para follow-up"}
+                title={appointmentFollowup ? "Remover do follow-up" : "Marcar para follow-up"}
+              >
+                <MessageCircle size={15} />
+                {appointmentFollowup ? <span className="followup-button-label">Follow-up</span> : null}
               </button>
             </div>
 
@@ -1742,6 +1762,34 @@ export default function App() {
     });
   }
 
+  async function markAppointmentAsFollowup(item) {
+    const existing = followups.find(followup => followup.appointmentId === item.id);
+    if (existing) {
+      await deleteDoc(doc(db, COLLECTIONS.followups, existing.id));
+      return;
+    }
+
+    await addDoc(collection(db, COLLECTIONS.followups), {
+      sellerId: item.sellerId,
+      sellerName: item.sellerName || profile.name,
+      appointmentId: item.id,
+      clientName: clean(item.clientName),
+      whatsapp: clean(item.whatsapp),
+      dueDate: item.date || localDateInput(),
+      date: item.date || "",
+      time: item.time || "",
+      entryValue: item.entryValue || null,
+      vehicle: clean(item.vehicle),
+      appointmentStatus: item.status || "scheduled",
+      notes: clean(item.notes),
+      note: clean(item.notes) || "Follow-up criado pelo agendamento.",
+      status: "open",
+      createdDate: localDateInput(),
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+  }
+
   function editAppointment(item) {
     setEditingAppointment(item);
     setAppointmentForm({
@@ -2036,10 +2084,12 @@ export default function App() {
                       item={item}
                       profile={profile}
                       hotClient={hotClients.find(client => client.appointmentId === item.id)}
+                      appointmentFollowup={followups.find(followup => followup.appointmentId === item.id)}
                       onEdit={editAppointment}
                       onDelete={deleteAppointment}
                       onStatus={updateAppointmentStatus}
                       onHotClient={markAppointmentAsHotClient}
+                      onFollowup={markAppointmentAsFollowup}
                     />
                   ))
                 ) : (
@@ -2136,10 +2186,12 @@ export default function App() {
                       item={item}
                       profile={profile}
                       hotClient={hotClients.find(client => client.appointmentId === item.id)}
+                      appointmentFollowup={followups.find(followup => followup.appointmentId === item.id)}
                       onEdit={editAppointment}
                       onDelete={deleteAppointment}
                       onStatus={updateAppointmentStatus}
                       onHotClient={markAppointmentAsHotClient}
+                      onFollowup={markAppointmentAsFollowup}
                     />
                   ))
                 ) : (
