@@ -631,14 +631,14 @@ function AppointmentCard({ item, profile, hotClient, onEdit, onDelete, onStatus,
                 Não veio
               </button>
               <button
-                className={hotClient ? "hot-status-action" : ""}
+                className={hotClient ? "hot-status-action" : "hot-icon-action"}
                 type="button"
                 onClick={() => onHotClient(item)}
+                aria-label={hotClient ? "Desmarcar cliente quente" : "Marcar cliente quente"}
+                title={hotClient ? "Desmarcar cliente quente" : "Marcar cliente quente"}
               >
                 <Flame size={15} />
-                <span className={hotClient ? "hot-button-label" : ""}>
-                  {hotClient ? "Quente" : "Cliente quente"}
-                </span>
+                {hotClient ? <span className="hot-button-label">Quente</span> : null}
               </button>
             </div>
 

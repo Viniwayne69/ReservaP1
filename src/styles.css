@@ -3924,6 +3924,18 @@ body {
   color: #10161a;
 }
 
+.appointment-actions .hot-icon-action {
+  width: 46px;
+  min-width: 46px;
+  padding-inline: 0;
+  justify-content: center;
+  color: rgba(248, 250, 245, 0.82);
+}
+
+.appointment-actions .hot-icon-action svg {
+  color: rgba(248, 250, 245, 0.82);
+}
+
 .appointment-actions .hot-status-action {
   border-color: rgba(255, 68, 68, 0.5);
   background: rgba(143, 20, 20, 0.24);
