@@ -170,16 +170,6 @@ function createSimulationForm(profile) {
   };
 }
 
-function createFollowupForm(profile) {
-  return {
-    sellerId: profile?.role === "seller" ? profile.id : "",
-    clientName: "",
-    whatsapp: "",
-    dueDate: localDateInput(),
-    note: ""
-  };
-}
-
 function createNoteForm(profile) {
   return {
     sellerId: profile?.role === "seller" ? profile.id : "",
@@ -1004,70 +994,6 @@ function SellerSelectField({ form, setForm, sellers, profile }) {
   );
 }
 
-function FollowupForm({ form, setForm, sellers, profile, onSubmit }) {
-  return (
-    <form className="panel-card form-card compact-tool-form" onSubmit={onSubmit}>
-      <div className="panel-title-row">
-        <div>
-          <span className="section-eyebrow">
-            <MessageCircle size={15} />
-            Follow-up
-          </span>
-          <h3>Novo retorno</h3>
-        </div>
-      </div>
-
-      <div className="form-grid">
-        <SellerSelectField form={form} setForm={setForm} sellers={sellers} profile={profile} />
-
-        <label>
-          Nome do cliente
-          <input
-            value={form.clientName}
-            onChange={event => setForm(current => ({ ...current, clientName: event.target.value }))}
-            placeholder="Nome completo"
-            required
-          />
-        </label>
-
-        <label>
-          WhatsApp
-          <input
-            value={form.whatsapp}
-            onChange={event => setForm(current => ({ ...current, whatsapp: event.target.value }))}
-            placeholder="(81) 99999-9999"
-          />
-        </label>
-
-        <label>
-          Data do retorno
-          <input
-            type="date"
-            value={form.dueDate}
-            onChange={event => setForm(current => ({ ...current, dueDate: event.target.value }))}
-            required
-          />
-        </label>
-      </div>
-
-      <label className="full-label">
-        Observação
-        <textarea
-          value={form.note}
-          onChange={event => setForm(current => ({ ...current, note: event.target.value }))}
-          placeholder="O que precisa ser tratado no retorno"
-          rows={3}
-        />
-      </label>
-
-      <button className="primary-button" type="submit">
-        Salvar follow-up
-        <ChevronRight size={18} />
-      </button>
-    </form>
-  );
-}
-
 function InternalNoteForm({ form, setForm, sellers, profile, onSubmit }) {
   return (
     <form className="panel-card form-card compact-tool-form" onSubmit={onSubmit}>
@@ -1169,7 +1095,6 @@ export default function App() {
   const [sellerFilter, setSellerFilter] = useState("all");
   const [appointmentForm, setAppointmentForm] = useState(createAppointmentForm());
   const [simulationForm, setSimulationForm] = useState(createSimulationForm());
-  const [followupForm, setFollowupForm] = useState(createFollowupForm());
   const [noteForm, setNoteForm] = useState(createNoteForm());
   const [editingAppointment, setEditingAppointment] = useState(null);
   const [editingSimulation, setEditingSimulation] = useState(null);
@@ -1215,7 +1140,6 @@ export default function App() {
         setProfile(nextProfile);
         setAppointmentForm(createAppointmentForm(nextProfile));
         setSimulationForm(createSimulationForm(nextProfile));
-        setFollowupForm(createFollowupForm(nextProfile));
         setNoteForm(createNoteForm(nextProfile));
         setSelectedMonth(currentMonth());
         setSection("appointments");
@@ -1492,10 +1416,31 @@ export default function App() {
 
   const visibleFollowups = useMemo(() => {
     return followups
+      .map(item => {
+        const appointment = appointments.find(appointmentItem => appointmentItem.id === item.appointmentId);
+
+        if (!appointment) return item;
+
+        return {
+          ...item,
+          sellerId: appointment.sellerId || item.sellerId,
+          sellerName: appointment.sellerName || item.sellerName,
+          clientName: appointment.clientName || item.clientName,
+          whatsapp: appointment.whatsapp || item.whatsapp,
+          dueDate: appointment.date || item.dueDate,
+          date: appointment.date || item.date,
+          time: appointment.time || item.time,
+          entryValue: appointment.entryValue ?? item.entryValue,
+          vehicle: appointment.vehicle || item.vehicle,
+          appointmentStatus: appointment.status || item.appointmentStatus,
+          notes: appointment.notes || item.notes || item.note,
+          note: appointment.notes || item.note
+        };
+      })
       .filter(item => item.status !== "done")
       .filter(item => sellerFilter === "all" || item.sellerId === sellerFilter)
       .sort((a, b) => clean(a.dueDate).localeCompare(clean(b.dueDate)));
-  }, [followups, sellerFilter]);
+  }, [appointments, followups, sellerFilter]);
 
   const visibleInternalNotes = useMemo(() => {
     return internalNotes
@@ -1685,32 +1630,6 @@ export default function App() {
 
     setEditingSimulation(null);
     setSimulationForm(createSimulationForm(profile));
-  }
-
-  async function submitFollowup(event) {
-    event.preventDefault();
-    const sellerId = profile.role === "seller" ? profile.id : followupForm.sellerId;
-    const seller = resolveSeller(sellerId);
-
-    if (!sellerId || !seller) {
-      setDataError("Escolha um vendedor antes de salvar o follow-up.");
-      return;
-    }
-
-    await addDoc(collection(db, COLLECTIONS.followups), {
-      sellerId,
-      sellerName: seller.name,
-      clientName: clean(followupForm.clientName),
-      whatsapp: clean(followupForm.whatsapp),
-      dueDate: followupForm.dueDate,
-      note: clean(followupForm.note),
-      status: "open",
-      createdDate: localDateInput(),
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
-
-    setFollowupForm(createFollowupForm(profile));
   }
 
   async function submitInternalNote(event) {
@@ -2207,25 +2126,15 @@ export default function App() {
         ) : null}
 
         {section === "followups" ? (
-          <section className="module-grid section-view">
-            <div className="module-left">
-              <FollowupForm
-                form={followupForm}
-                setForm={setFollowupForm}
-                sellers={sellers}
-                profile={profile}
-                onSubmit={submitFollowup}
-              />
-            </div>
-
-            <div className="module-right">
+          <section className="tool-page section-view">
+            <div className="panel-card">
               <div className="list-header">
                 <div>
                   <span className="section-eyebrow">
                     <MessageCircle size={15} />
                     Retornos programados
                   </span>
-                  <h2>Clientes para retornar</h2>
+                  <h2>Clientes marcados nos agendamentos</h2>
                 </div>
                 <span>{visibleFollowups.length} registros</span>
               </div>
@@ -2237,8 +2146,14 @@ export default function App() {
                       key={item.id}
                       icon={MessageCircle}
                       title={item.clientName}
-                      subtitle={item.whatsapp || "Sem WhatsApp informado"}
-                      meta={[`Retorno em ${formatDate(item.dueDate)}`]}
+                      subtitle={item.vehicle || item.whatsapp || "Sem WhatsApp informado"}
+                      meta={[
+                        item.date && item.time
+                          ? `${formatDate(item.date)} às ${item.time}`
+                          : `Retorno em ${formatDate(item.dueDate)}`,
+                        item.whatsapp || "Sem WhatsApp informado",
+                        formatEntry(item.entryValue)
+                      ]}
                       note={item.note}
                       sellerName={item.sellerName}
                       profile={profile}
@@ -2250,7 +2165,7 @@ export default function App() {
                   <EmptyState
                     icon={MessageCircle}
                     title="Nenhum follow-up aberto"
-                    text="Salve clientes que precisam de retorno para não perder oportunidades."
+                    text="Marque o ícone azul no card do agendamento para enviar o cliente para cá."
                   />
                 )}
               </div>
