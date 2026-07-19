@@ -2171,33 +2171,6 @@ export default function App() {
               <MetricCard icon={MessageCircle} label="follow-ups abertos" value={metricValue(adminOverviewMetrics.openFollowups)} tone="blue" />
               <MetricCard icon={Flame} label="clientes quentes" value={metricValue(adminOverviewMetrics.hotClients)} tone="red" />
             </div>
-
-            <div className="panel-card admin-command-panel">
-              <div className="panel-title-row">
-                <div>
-                  <span className="section-eyebrow">
-                    <ShieldCheck size={15} />
-                    Central da administracao
-                  </span>
-                  <h3>Atalhos de acompanhamento</h3>
-                </div>
-              </div>
-
-              <div className="admin-shortcut-grid">
-                {adminNavItems
-                  .filter(item => !["overview", "history"].includes(item.id))
-                  .map(item => {
-                    const Icon = item.icon;
-                    return (
-                      <button key={item.id} type="button" onClick={() => openSection(item.id)}>
-                        <Icon size={18} />
-                        <span>{item.label}</span>
-                        <ChevronRight size={17} />
-                      </button>
-                    );
-                  })}
-              </div>
-            </div>
           </section>
         ) : null}
 
