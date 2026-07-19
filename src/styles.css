@@ -3893,6 +3893,28 @@ body {
   font-family: inherit;
 }
 
+.copy-chip-text {
+  display: grid;
+  gap: 2px;
+  line-height: 1.05;
+  text-align: left;
+}
+
+.copy-chip-text small {
+  color: var(--p1-green);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.copy-chip-text strong {
+  color: inherit;
+  font-size: 0.82rem;
+  font-weight: 680;
+  line-height: 1.05;
+}
+
 .appointment-card .record-meta button:hover {
   border-color: rgba(168, 255, 0, 0.42);
   background: rgba(168, 255, 0, 0.1);
@@ -5526,6 +5548,68 @@ input[type="month"]::-webkit-datetime-edit-year-field:focus {
 
   .hot-client-actions {
     justify-content: flex-start;
+  }
+}
+
+/* Login mobile: somente o formulário, sem imagem lateral */
+@media (max-width: 760px) {
+  html:has(.login-screen),
+  body:has(.login-screen),
+  #root:has(.login-screen) {
+    min-height: 100%;
+    overflow-x: hidden;
+  }
+
+  .login-screen {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    min-height: 100svh !important;
+    width: 100% !important;
+    padding: 18px !important;
+    place-items: center !important;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(168, 255, 0, 0.08), transparent 38%),
+      linear-gradient(145deg, #050a0e 0%, #0b131a 58%, #05080b 100%) !important;
+  }
+
+  .login-brand {
+    display: none !important;
+  }
+
+  .login-card {
+    width: min(100%, 430px) !important;
+    min-height: auto !important;
+    padding: clamp(28px, 8vw, 38px) !important;
+    border-radius: 22px !important;
+    transform: none !important;
+  }
+
+  .login-user-icon {
+    width: 58px !important;
+    height: 58px !important;
+  }
+
+  .login-card h2 {
+    font-size: clamp(2rem, 10vw, 2.7rem) !important;
+    line-height: 1.02 !important;
+  }
+
+  .login-card p {
+    font-size: 0.98rem !important;
+    line-height: 1.55 !important;
+  }
+
+  .login-input-wrap {
+    min-height: 58px !important;
+  }
+
+  .login-card .primary-button {
+    min-height: 58px !important;
+  }
+
+  .login-footnote {
+    align-items: flex-start !important;
+    text-align: left !important;
   }
 }
 

@@ -140,7 +140,7 @@ function copyText(value) {
   const text = clean(value);
   if (!text) return;
 
-  if (navigator?.clipboard?.writeText) {
+  if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
     navigator.clipboard.writeText(text).catch(() => fallbackCopyText(text));
     return;
   }
@@ -149,16 +149,48 @@ function copyText(value) {
 }
 
 function fallbackCopyText(text) {
+  if (typeof document === "undefined") return;
+
   const input = document.createElement("textarea");
   input.value = text;
   input.setAttribute("readonly", "");
   input.style.position = "fixed";
   input.style.left = "-9999px";
   input.style.top = "0";
+  input.style.opacity = "0";
   document.body.appendChild(input);
+  input.focus();
   input.select();
+  input.setSelectionRange(0, text.length);
   document.execCommand("copy");
   document.body.removeChild(input);
+}
+
+function WhatsappCopyChip({ value }) {
+  const whatsapp = clean(value);
+  if (!whatsapp) return null;
+
+  function handleCopy(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    copyText(whatsapp);
+  }
+
+  return (
+    <button
+      className="meta-copy-chip"
+      type="button"
+      onPointerDown={event => event.stopPropagation()}
+      onClick={handleCopy}
+      title="Copiar WhatsApp"
+    >
+      <Phone size={14} />
+      <span className="copy-chip-text">
+        <small>Copiar</small>
+        <strong>{whatsapp}</strong>
+      </span>
+    </button>
+  );
 }
 
 function nameFromEmail(email) {
@@ -605,10 +637,7 @@ function AppointmentCard({
                 <Clock3 size={14} />
                 {formatDate(item.date)} às {item.time}
               </span>
-              <button className="meta-copy-chip" type="button" onClick={() => copyText(item.whatsapp)} title="Copiar WhatsApp">
-                <Phone size={14} />
-                {item.whatsapp}
-              </button>
+              <WhatsappCopyChip value={item.whatsapp} />
               <span>
                 <WalletCards size={14} />
                 {formatEntry(item.entryValue)}
@@ -727,12 +756,7 @@ function HotClientRecordCard({ item, profile, onDelete }) {
                   {formatDate(item.date)}{item.time ? ` às ${item.time}` : ""}
                 </span>
               ) : null}
-              {item.whatsapp ? (
-                <button className="meta-copy-chip" type="button" onClick={() => copyText(item.whatsapp)} title="Copiar WhatsApp">
-                  <Phone size={14} />
-                  {item.whatsapp}
-                </button>
-              ) : null}
+              <WhatsappCopyChip value={item.whatsapp} />
               <span>
                 <WalletCards size={14} />
                 {formatEntry(item.entryValue)}
@@ -788,12 +812,7 @@ function FollowupRecordCard({ item, profile, onDone, onDelete }) {
                 <Clock3 size={14} />
                 {item.date && item.time ? `${formatDate(item.date)} às ${item.time}` : `Retorno em ${formatDate(item.dueDate)}`}
               </span>
-              {item.whatsapp ? (
-                <button className="meta-copy-chip" type="button" onClick={() => copyText(item.whatsapp)} title="Copiar WhatsApp">
-                  <Phone size={14} />
-                  {item.whatsapp}
-                </button>
-              ) : null}
+              <WhatsappCopyChip value={item.whatsapp} />
               <span>
                 <WalletCards size={14} />
                 {formatEntry(item.entryValue)}
