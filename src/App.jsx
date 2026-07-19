@@ -248,6 +248,10 @@ function isAutomaticPending(item) {
   return date ? date.getTime() < Date.now() : false;
 }
 
+function isActiveAppointment(item) {
+  return clean(item?.clientName) && item?.status !== "cancelled";
+}
+
 async function ensureProfile(firebaseUser) {
   const email = firebaseUser.email?.toLowerCase() || "";
   const profileRef = doc(db, COLLECTIONS.users, firebaseUser.uid);
@@ -1511,6 +1515,7 @@ export default function App() {
 
   const visibleAppointments = useMemo(() => {
     return appointments
+      .filter(isActiveAppointment)
       .filter(item => (item.month || item.date?.slice(0, 7)) === selectedMonth)
       .filter(item => sellerFilter === "all" || item.sellerId === sellerFilter)
       .sort((a, b) => `${a.date || ""}${a.time || ""}`.localeCompare(`${b.date || ""}${b.time || ""}`));
@@ -1529,6 +1534,7 @@ export default function App() {
 
   const automaticPendingAppointments = useMemo(() => {
     return appointments
+      .filter(isActiveAppointment)
       .filter(isAutomaticPending)
       .filter(item => sellerFilter === "all" || item.sellerId === sellerFilter)
       .sort((a, b) => {
@@ -1625,7 +1631,7 @@ export default function App() {
     return sellers.map(seller => {
       const sellerAppointments = appointments.filter(item => {
         const itemMonth = item.month || item.date?.slice(0, 7);
-        return item.sellerId === seller.id && itemMonth === selectedMonth;
+        return item.sellerId === seller.id && itemMonth === selectedMonth && isActiveAppointment(item);
       });
       const sellerSimulations = simulations.filter(item => {
         const itemMonth = item.month || item.createdDate?.slice(0, 7);
@@ -1648,7 +1654,9 @@ export default function App() {
   }, [appointments, selectedMonth, sellers, simulations]);
 
   const adminMonthAppointments = useMemo(() => {
-    return appointments.filter(item => (item.month || item.date?.slice(0, 7)) === selectedMonth);
+    return appointments
+      .filter(isActiveAppointment)
+      .filter(item => (item.month || item.date?.slice(0, 7)) === selectedMonth);
   }, [appointments, selectedMonth]);
 
   const adminMonthSimulations = useMemo(() => {
@@ -1670,7 +1678,7 @@ export default function App() {
       pendingSimulations: adminMonthSimulations.filter(item => item.status === "pending").length,
       openFollowups: followups.filter(item => item.status !== "done").length,
       hotClients: hotClients.length,
-      pendingAppointments: appointments.filter(isAutomaticPending).length
+      pendingAppointments: appointments.filter(isActiveAppointment).filter(isAutomaticPending).length
     };
   }, [adminMonthAppointments, adminMonthSimulations, appointments, followups, hotClients.length]);
 
