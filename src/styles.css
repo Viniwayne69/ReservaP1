@@ -5395,6 +5395,35 @@ input[type="month"]::-webkit-datetime-edit-year-field:focus {
   color: var(--p1-green);
 }
 
+.hot-client-card {
+  min-height: auto;
+}
+
+.hot-client-card .appointment-info {
+  padding-right: 150px;
+}
+
+.hot-client-card .appointment-content {
+  gap: 16px;
+}
+
+.hot-client-card .record-meta {
+  margin-top: 16px;
+}
+
+.hot-client-card .record-notes {
+  margin-top: 4px;
+}
+
+.hot-client-actions {
+  justify-content: flex-end;
+  padding-top: 0;
+}
+
+.hot-client-actions .icon-actions {
+  justify-content: flex-end;
+}
+
 .sidebar nav {
   margin-bottom: auto !important;
 }
@@ -5402,6 +5431,20 @@ input[type="month"]::-webkit-datetime-edit-year-field:focus {
 @media (max-width: 760px) {
   .tool-page .panel-card {
     min-height: auto;
+  }
+
+  .hot-client-card .appointment-info {
+    padding-right: 0;
+  }
+
+  .hot-client-card .appointment-status-area {
+    position: static;
+    width: fit-content;
+    margin-bottom: 14px;
+  }
+
+  .hot-client-actions {
+    justify-content: flex-start;
   }
 }
 

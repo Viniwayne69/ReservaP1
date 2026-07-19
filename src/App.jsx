@@ -662,6 +662,75 @@ function AppointmentCard({ item, profile, hotClient, onEdit, onDelete, onStatus,
   );
 }
 
+function HotClientRecordCard({ item, profile, onDelete }) {
+  const observation = item.notes || item.note;
+
+  return (
+    <article className="record-card appointment-card hot-client-card">
+      {item.status ? (
+        <div className="appointment-status-area">
+          <StatusBadge status={item.status} map={APPOINTMENT_STATUS} />
+        </div>
+      ) : null}
+
+      <div className="appointment-content">
+        <div className="record-main">
+          <div className="appointment-info">
+            <div className="record-title-line">
+              <div className="appointment-heading">
+                <div className="client-name-row">
+                  <h3>{item.clientName}</h3>
+                </div>
+                <p>{item.vehicle || "Não informado"}</p>
+              </div>
+            </div>
+
+            <div className="record-meta">
+              {item.date ? (
+                <span>
+                  <Clock3 size={14} />
+                  {formatDate(item.date)}{item.time ? ` às ${item.time}` : ""}
+                </span>
+              ) : null}
+              {item.whatsapp ? (
+                <span>
+                  <Phone size={14} />
+                  {item.whatsapp}
+                </span>
+              ) : null}
+              <span>
+                <WalletCards size={14} />
+                {formatEntry(item.entryValue)}
+              </span>
+              {profile.role === "admin" && item.sellerName ? (
+                <span>
+                  <UserRound size={14} />
+                  {item.sellerName}
+                </span>
+              ) : null}
+            </div>
+
+            {observation ? (
+              <div className="record-notes">
+                <strong>Veículo:</strong>
+                <span>{observation}</span>
+              </div>
+            ) : null}
+          </div>
+        </div>
+
+        <div className="record-actions appointment-actions hot-client-actions">
+          <div className="icon-actions">
+            <button className="icon-action danger" type="button" onClick={() => onDelete(item)} aria-label="Excluir">
+              <Trash2 size={15} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 function SimulationForm({
   form,
   setForm,
@@ -1149,6 +1218,8 @@ export default function App() {
 
   useEffect(() => {
     function animatePressedCard(event) {
+      if (event.target.closest("button, a, input, select, textarea, label")) return;
+
       const card = event.target.closest(".metric-card, .record-card, .team-row, .empty-state");
       if (!card) return;
       const rect = card.getBoundingClientRect();
@@ -1414,9 +1485,28 @@ export default function App() {
 
   const visibleHotClients = useMemo(() => {
     return hotClients
+      .map(item => {
+        const appointment = appointments.find(appointmentItem => appointmentItem.id === item.appointmentId);
+
+        if (!appointment) return item;
+
+        return {
+          ...item,
+          sellerId: appointment.sellerId || item.sellerId,
+          sellerName: appointment.sellerName || item.sellerName,
+          clientName: appointment.clientName || item.clientName,
+          whatsapp: appointment.whatsapp || item.whatsapp,
+          date: appointment.date || item.date,
+          time: appointment.time || item.time,
+          entryValue: appointment.entryValue ?? item.entryValue,
+          vehicle: appointment.vehicle || item.vehicle,
+          status: appointment.status || item.status,
+          notes: appointment.notes || item.notes || item.note
+        };
+      })
       .filter(item => sellerFilter === "all" || item.sellerId === sellerFilter)
       .sort((a, b) => clean(b.createdDate).localeCompare(clean(a.createdDate)));
-  }, [hotClients, sellerFilter]);
+  }, [appointments, hotClients, sellerFilter]);
 
   const appointmentMetrics = useMemo(() => {
     const visits = visibleAppointments.filter(item => ["visited", "sold"].includes(item.status)).length;
@@ -1639,7 +1729,12 @@ export default function App() {
       appointmentId: item.id,
       clientName: clean(item.clientName),
       whatsapp: clean(item.whatsapp),
+      date: item.date || "",
+      time: item.time || "",
+      entryValue: item.entryValue || null,
       vehicle: clean(item.vehicle),
+      status: item.status || "scheduled",
+      notes: clean(item.notes),
       note: clean(item.notes) || "Marcado como cliente quente pelo agendamento.",
       createdDate: localDateInput(),
       createdAt: serverTimestamp(),
@@ -2179,14 +2274,9 @@ export default function App() {
               <div className="record-list">
                 {visibleHotClients.length ? (
                   visibleHotClients.map(item => (
-                    <ToolRecordCard
+                    <HotClientRecordCard
                       key={item.id}
-                      icon={Flame}
-                      title={item.clientName}
-                      subtitle={item.vehicle || "Veículo não informado"}
-                      meta={[item.whatsapp || "Sem WhatsApp informado"]}
-                      note={item.note}
-                      sellerName={item.sellerName}
+                      item={item}
                       profile={profile}
                       onDelete={() => deleteHotClient(item)}
                     />
