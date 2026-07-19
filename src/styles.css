@@ -3925,14 +3925,36 @@ body {
 }
 
 .appointment-actions .hot-status-action {
-  border-color: rgba(255, 190, 86, 0.42);
-  background: rgba(255, 190, 86, 0.14);
-  color: #ffd08a;
+  border-color: rgba(255, 68, 68, 0.5);
+  background: rgba(143, 20, 20, 0.24);
+  color: #ff5f5f;
+}
+
+.appointment-actions .hot-status-action svg {
+  color: #ff4343;
+  filter: drop-shadow(0 0 9px rgba(255, 78, 42, 0.38));
+}
+
+.hot-button-label {
+  animation: soft-fire-text 1.45s ease-in-out infinite;
 }
 
 .appointment-actions button:disabled {
   cursor: default;
   opacity: 1;
+}
+
+@keyframes soft-fire-text {
+  0%,
+  100% {
+    color: #ff5f5f;
+    text-shadow: 0 0 0 rgba(255, 86, 34, 0);
+  }
+
+  50% {
+    color: #ff2f2f;
+    text-shadow: 0 0 10px rgba(255, 84, 36, 0.44);
+  }
 }
 
 .appointment-actions .icon-action {

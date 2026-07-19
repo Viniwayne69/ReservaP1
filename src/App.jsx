@@ -188,16 +188,6 @@ function createNoteForm(profile) {
   };
 }
 
-function createHotClientForm(profile) {
-  return {
-    sellerId: profile?.role === "seller" ? profile.id : "",
-    clientName: "",
-    whatsapp: "",
-    vehicle: "",
-    note: ""
-  };
-}
-
 function appointmentDateTime(item) {
   if (!item?.date) return null;
   const [year, month, day] = item.date.split("-").map(Number);
@@ -647,7 +637,9 @@ function AppointmentCard({ item, profile, hotClient, onEdit, onDelete, onStatus,
                 disabled={Boolean(hotClient)}
               >
                 <Flame size={15} />
-                {hotClient ? "Quente" : "Cliente quente"}
+                <span className={hotClient ? "hot-button-label" : ""}>
+                  {hotClient ? "Quente" : "Cliente quente"}
+                </span>
               </button>
             </div>
 
@@ -1034,69 +1026,6 @@ function InternalNoteForm({ form, setForm, sellers, profile, onSubmit }) {
   );
 }
 
-function HotClientForm({ form, setForm, sellers, profile, onSubmit }) {
-  return (
-    <form className="panel-card form-card compact-tool-form" onSubmit={onSubmit}>
-      <div className="panel-title-row">
-        <div>
-          <span className="section-eyebrow">
-            <Flame size={15} />
-            Clientes quentes
-          </span>
-          <h3>Novo cliente quente</h3>
-        </div>
-      </div>
-
-      <div className="form-grid">
-        <SellerSelectField form={form} setForm={setForm} sellers={sellers} profile={profile} />
-
-        <label>
-          Nome do cliente
-          <input
-            value={form.clientName}
-            onChange={event => setForm(current => ({ ...current, clientName: event.target.value }))}
-            placeholder="Nome completo"
-            required
-          />
-        </label>
-
-        <label>
-          WhatsApp
-          <input
-            value={form.whatsapp}
-            onChange={event => setForm(current => ({ ...current, whatsapp: event.target.value }))}
-            placeholder="(81) 99999-9999"
-          />
-        </label>
-
-        <label>
-          Veículo de interesse
-          <input
-            value={form.vehicle}
-            onChange={event => setForm(current => ({ ...current, vehicle: event.target.value }))}
-            placeholder="Modelo desejado"
-          />
-        </label>
-      </div>
-
-      <label className="full-label">
-        Motivo da prioridade
-        <textarea
-          value={form.note}
-          onChange={event => setForm(current => ({ ...current, note: event.target.value }))}
-          placeholder="Exemplo: cliente já tem entrada, quer fechar ainda hoje"
-          rows={3}
-        />
-      </label>
-
-      <button className="primary-button" type="submit">
-        Marcar como quente
-        <ChevronRight size={18} />
-      </button>
-    </form>
-  );
-}
-
 function ToolRecordCard({ icon: Icon, title, subtitle, meta, note, sellerName, profile, onDelete, onDone }) {
   return (
     <article className="record-card tool-record-card">
@@ -1154,7 +1083,6 @@ export default function App() {
   const [simulationForm, setSimulationForm] = useState(createSimulationForm());
   const [followupForm, setFollowupForm] = useState(createFollowupForm());
   const [noteForm, setNoteForm] = useState(createNoteForm());
-  const [hotClientForm, setHotClientForm] = useState(createHotClientForm());
   const [editingAppointment, setEditingAppointment] = useState(null);
   const [editingSimulation, setEditingSimulation] = useState(null);
   const [loginLoading, setLoginLoading] = useState(false);
@@ -1201,7 +1129,6 @@ export default function App() {
         setSimulationForm(createSimulationForm(nextProfile));
         setFollowupForm(createFollowupForm(nextProfile));
         setNoteForm(createNoteForm(nextProfile));
-        setHotClientForm(createHotClientForm(nextProfile));
         setSelectedMonth(currentMonth());
         setSection("appointments");
         showLoginWelcome(nextProfile);
@@ -1698,31 +1625,6 @@ export default function App() {
     });
 
     setNoteForm(createNoteForm(profile));
-  }
-
-  async function submitHotClient(event) {
-    event.preventDefault();
-    const sellerId = profile.role === "seller" ? profile.id : hotClientForm.sellerId;
-    const seller = resolveSeller(sellerId);
-
-    if (!sellerId || !seller) {
-      setDataError("Escolha um vendedor antes de salvar o cliente quente.");
-      return;
-    }
-
-    await addDoc(collection(db, COLLECTIONS.hotClients), {
-      sellerId,
-      sellerName: seller.name,
-      clientName: clean(hotClientForm.clientName),
-      whatsapp: clean(hotClientForm.whatsapp),
-      vehicle: clean(hotClientForm.vehicle),
-      note: clean(hotClientForm.note),
-      createdDate: localDateInput(),
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
-
-    setHotClientForm(createHotClientForm(profile));
   }
 
   async function markAppointmentAsHotClient(item) {
@@ -2259,25 +2161,15 @@ export default function App() {
         ) : null}
 
         {section === "hot-clients" ? (
-          <section className="module-grid section-view">
-            <div className="module-left">
-              <HotClientForm
-                form={hotClientForm}
-                setForm={setHotClientForm}
-                sellers={sellers}
-                profile={profile}
-                onSubmit={submitHotClient}
-              />
-            </div>
-
-            <div className="module-right">
+          <section className="tool-page section-view">
+            <div className="panel-card">
               <div className="list-header">
                 <div>
                   <span className="section-eyebrow">
                     <Flame size={15} />
                     Prioridade comercial
                   </span>
-                  <h2>Clientes com maior chance</h2>
+                  <h2>Clientes marcados nos agendamentos</h2>
                 </div>
                 <span>{visibleHotClients.length} registros</span>
               </div>
@@ -2301,7 +2193,7 @@ export default function App() {
                   <EmptyState
                     icon={Flame}
                     title="Nenhum cliente quente"
-                    text="Marque clientes com maior chance de fechamento para acompanhar com prioridade."
+                    text="Marque um cliente como quente direto no card do agendamento para ele aparecer aqui."
                   />
                 )}
               </div>
