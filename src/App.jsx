@@ -1476,57 +1476,35 @@ export default function App() {
       .filter(item => item.role !== "admin")
       .forEach(item => map.set(item.id, item));
 
-    appointments.forEach(item => {
-      if (item.sellerId && !map.has(item.sellerId)) {
-        map.set(item.sellerId, {
-          id: item.sellerId,
-          name: item.sellerName || "Vendedor",
-          role: "seller"
-        });
-      }
-    });
-
-    simulations.forEach(item => {
-      if (item.sellerId && !map.has(item.sellerId)) {
-        map.set(item.sellerId, {
-          id: item.sellerId,
-          name: item.sellerName || "Vendedor",
-          role: "seller"
-        });
-      }
-    });
-
-    [...followups, ...internalNotes, ...hotClients].forEach(item => {
-      if (item.sellerId && !map.has(item.sellerId)) {
-        map.set(item.sellerId, {
-          id: item.sellerId,
-          name: item.sellerName || "Vendedor",
-          role: "seller"
-        });
-      }
-    });
-
     if (profile?.role === "seller" && !map.has(profile.id)) {
       map.set(profile.id, profile);
     }
 
     return Array.from(map.values()).sort((a, b) => clean(a.name).localeCompare(clean(b.name)));
-  }, [appointments, followups, hotClients, internalNotes, profile, simulations, users]);
+  }, [profile, users]);
+
+  const sellerIds = useMemo(() => new Set(sellers.map(seller => seller.id)), [sellers]);
+
+  function belongsToKnownSeller(item) {
+    return profile?.role !== "admin" || sellerIds.has(item.sellerId);
+  }
 
   const visibleAppointments = useMemo(() => {
     return appointments
       .filter(isActiveAppointment)
+      .filter(belongsToKnownSeller)
       .filter(item => (item.month || item.date?.slice(0, 7)) === selectedMonth)
       .filter(item => sellerFilter === "all" || item.sellerId === sellerFilter)
       .sort((a, b) => `${a.date || ""}${a.time || ""}`.localeCompare(`${b.date || ""}${b.time || ""}`));
-  }, [appointments, selectedMonth, sellerFilter]);
+  }, [appointments, selectedMonth, sellerFilter, sellerIds, profile]);
 
   const visibleSimulations = useMemo(() => {
     return simulations
+      .filter(belongsToKnownSeller)
       .filter(item => (item.month || item.createdDate?.slice(0, 7)) === selectedMonth)
       .filter(item => sellerFilter === "all" || item.sellerId === sellerFilter)
       .sort((a, b) => clean(b.createdDate).localeCompare(clean(a.createdDate)));
-  }, [sellerFilter, selectedMonth, simulations]);
+  }, [sellerFilter, selectedMonth, sellerIds, simulations, profile]);
 
   const visiblePendingSimulations = useMemo(() => {
     return visibleSimulations.filter(item => item.status === "pending");
@@ -1535,6 +1513,7 @@ export default function App() {
   const automaticPendingAppointments = useMemo(() => {
     return appointments
       .filter(isActiveAppointment)
+      .filter(belongsToKnownSeller)
       .filter(isAutomaticPending)
       .filter(item => sellerFilter === "all" || item.sellerId === sellerFilter)
       .sort((a, b) => {
@@ -1542,7 +1521,7 @@ export default function App() {
         const dateB = appointmentDateTime(b)?.getTime() || 0;
         return dateA - dateB;
       });
-  }, [appointments, sellerFilter]);
+  }, [appointments, sellerFilter, sellerIds, profile]);
 
   const visibleFollowups = useMemo(() => {
     return followups
@@ -1568,15 +1547,17 @@ export default function App() {
         };
       })
       .filter(item => item.status !== "done")
+      .filter(belongsToKnownSeller)
       .filter(item => sellerFilter === "all" || item.sellerId === sellerFilter)
       .sort((a, b) => clean(a.dueDate).localeCompare(clean(b.dueDate)));
-  }, [appointments, followups, sellerFilter]);
+  }, [appointments, followups, sellerFilter, sellerIds, profile]);
 
   const visibleInternalNotes = useMemo(() => {
     return internalNotes
+      .filter(belongsToKnownSeller)
       .filter(item => sellerFilter === "all" || item.sellerId === sellerFilter)
       .sort((a, b) => clean(b.createdDate).localeCompare(clean(a.createdDate)));
-  }, [internalNotes, sellerFilter]);
+  }, [internalNotes, sellerFilter, sellerIds, profile]);
 
   const visibleHotClients = useMemo(() => {
     return hotClients
@@ -1599,9 +1580,10 @@ export default function App() {
           notes: appointment.notes || item.notes || item.note
         };
       })
+      .filter(belongsToKnownSeller)
       .filter(item => sellerFilter === "all" || item.sellerId === sellerFilter)
       .sort((a, b) => clean(b.createdDate).localeCompare(clean(a.createdDate)));
-  }, [appointments, hotClients, sellerFilter]);
+  }, [appointments, hotClients, sellerFilter, sellerIds, profile]);
 
   const appointmentMetrics = useMemo(() => {
     const visits = visibleAppointments.filter(item => ["visited", "sold"].includes(item.status)).length;
@@ -1656,12 +1638,15 @@ export default function App() {
   const adminMonthAppointments = useMemo(() => {
     return appointments
       .filter(isActiveAppointment)
+      .filter(belongsToKnownSeller)
       .filter(item => (item.month || item.date?.slice(0, 7)) === selectedMonth);
-  }, [appointments, selectedMonth]);
+  }, [appointments, selectedMonth, sellerIds, profile]);
 
   const adminMonthSimulations = useMemo(() => {
-    return simulations.filter(item => (item.month || item.createdDate?.slice(0, 7)) === selectedMonth);
-  }, [selectedMonth, simulations]);
+    return simulations
+      .filter(belongsToKnownSeller)
+      .filter(item => (item.month || item.createdDate?.slice(0, 7)) === selectedMonth);
+  }, [selectedMonth, sellerIds, simulations, profile]);
 
   const adminOverviewMetrics = useMemo(() => {
     const visits = adminMonthAppointments.filter(item => ["visited", "sold"].includes(item.status)).length;
@@ -1676,11 +1661,11 @@ export default function App() {
       noShow,
       conversion,
       pendingSimulations: adminMonthSimulations.filter(item => item.status === "pending").length,
-      openFollowups: followups.filter(item => item.status !== "done").length,
-      hotClients: hotClients.length,
-      pendingAppointments: appointments.filter(isActiveAppointment).filter(isAutomaticPending).length
+      openFollowups: followups.filter(belongsToKnownSeller).filter(item => item.status !== "done").length,
+      hotClients: hotClients.filter(belongsToKnownSeller).length,
+      pendingAppointments: appointments.filter(isActiveAppointment).filter(belongsToKnownSeller).filter(isAutomaticPending).length
     };
-  }, [adminMonthAppointments, adminMonthSimulations, appointments, followups, hotClients.length]);
+  }, [adminMonthAppointments, adminMonthSimulations, appointments, followups, hotClients, sellerIds, profile]);
 
   async function handleLogin(credentials) {
     setLoginLoading(true);
