@@ -5451,12 +5451,23 @@ input[type="month"]::-webkit-datetime-edit-year-field:focus {
   color: var(--p1-green);
 }
 
+.auto-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 18px;
+}
+
+.auto-card-grid .record-card {
+  height: 100%;
+}
+
 .hot-client-card {
   min-height: auto;
 }
 
 .hot-client-card .appointment-info {
-  padding-right: 150px;
+  padding-right: 112px;
 }
 
 .hot-client-card .appointment-content {
@@ -5497,6 +5508,10 @@ input[type="month"]::-webkit-datetime-edit-year-field:focus {
 @media (max-width: 760px) {
   .tool-page .panel-card {
     min-height: auto;
+  }
+
+  .auto-card-grid {
+    grid-template-columns: 1fr;
   }
 
   .hot-client-card .appointment-info {

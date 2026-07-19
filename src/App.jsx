@@ -138,8 +138,27 @@ function formatEntry(value) {
 
 function copyText(value) {
   const text = clean(value);
-  if (!text || !navigator?.clipboard) return;
-  navigator.clipboard.writeText(text).catch(() => {});
+  if (!text) return;
+
+  if (navigator?.clipboard?.writeText) {
+    navigator.clipboard.writeText(text).catch(() => fallbackCopyText(text));
+    return;
+  }
+
+  fallbackCopyText(text);
+}
+
+function fallbackCopyText(text) {
+  const input = document.createElement("textarea");
+  input.value = text;
+  input.setAttribute("readonly", "");
+  input.style.position = "fixed";
+  input.style.left = "-9999px";
+  input.style.top = "0";
+  document.body.appendChild(input);
+  input.select();
+  document.execCommand("copy");
+  document.body.removeChild(input);
 }
 
 function nameFromEmail(email) {
@@ -586,10 +605,10 @@ function AppointmentCard({
                 <Clock3 size={14} />
                 {formatDate(item.date)} às {item.time}
               </span>
-              <span>
+              <button className="meta-copy-chip" type="button" onClick={() => copyText(item.whatsapp)} title="Copiar WhatsApp">
                 <Phone size={14} />
                 {item.whatsapp}
-              </span>
+              </button>
               <span>
                 <WalletCards size={14} />
                 {formatEntry(item.entryValue)}
@@ -604,7 +623,7 @@ function AppointmentCard({
 
             {item.notes ? (
               <div className="record-notes">
-                <strong>Veículo:</strong>
+                <strong>Observações:</strong>
                 <span>{item.notes}</span>
               </div>
             ) : null}
@@ -1888,9 +1907,14 @@ export default function App() {
       icon: ClipboardList
     },
     {
-      id: "simulations",
-      label: "Simulações",
-      icon: FileText
+      id: "followups",
+      label: "Follow-up",
+      icon: MessageCircle
+    },
+    {
+      id: "hot-clients",
+      label: "Clientes quentes",
+      icon: Flame
     },
     {
       id: "pending",
@@ -1898,19 +1922,14 @@ export default function App() {
       icon: Clock3
     },
     {
-      id: "followups",
-      label: "Follow-up",
-      icon: MessageCircle
-    },
-    {
       id: "notes",
       label: "Notas internas",
       icon: StickyNote
     },
     {
-      id: "hot-clients",
-      label: "Clientes quentes",
-      icon: Flame
+      id: "simulations",
+      label: "Simulações",
+      icon: FileText
     },
     ...(profile.role === "admin"
       ? [
@@ -2209,7 +2228,7 @@ export default function App() {
                 <span>{visibleFollowups.length} registros</span>
               </div>
 
-              <div className="record-list">
+              <div className="record-list auto-card-grid">
                 {visibleFollowups.length ? (
                   visibleFollowups.map(item => (
                     <FollowupRecordCard
@@ -2297,7 +2316,7 @@ export default function App() {
                 <span>{visibleHotClients.length} registros</span>
               </div>
 
-              <div className="record-list">
+              <div className="record-list auto-card-grid">
                 {visibleHotClients.length ? (
                   visibleHotClients.map(item => (
                     <HotClientRecordCard
