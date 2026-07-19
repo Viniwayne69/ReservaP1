@@ -634,7 +634,6 @@ function AppointmentCard({ item, profile, hotClient, onEdit, onDelete, onStatus,
                 className={hotClient ? "hot-status-action" : ""}
                 type="button"
                 onClick={() => onHotClient(item)}
-                disabled={Boolean(hotClient)}
               >
                 <Flame size={15} />
                 <span className={hotClient ? "hot-button-label" : ""}>
@@ -1629,7 +1628,10 @@ export default function App() {
 
   async function markAppointmentAsHotClient(item) {
     const existing = hotClients.find(client => client.appointmentId === item.id);
-    if (existing) return;
+    if (existing) {
+      await deleteDoc(doc(db, COLLECTIONS.hotClients, existing.id));
+      return;
+    }
 
     await addDoc(collection(db, COLLECTIONS.hotClients), {
       sellerId: item.sellerId,
