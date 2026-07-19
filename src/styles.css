@@ -3894,25 +3894,47 @@ body {
 }
 
 .copy-chip-text {
-  display: grid;
-  gap: 2px;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 3px !important;
   line-height: 1.05;
   text-align: left;
+  pointer-events: none;
+}
+
+.record-meta .meta-copy-chip {
+  display: inline-grid !important;
+  grid-template-columns: 16px auto;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 42px !important;
+  padding: 6px 11px !important;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.record-meta .meta-copy-chip svg {
+  pointer-events: none;
 }
 
 .copy-chip-text small {
+  display: block !important;
   color: var(--p1-green);
-  font-size: 0.58rem;
+  font-size: 0.52rem !important;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  line-height: 0.85 !important;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .copy-chip-text strong {
+  display: block !important;
   color: inherit;
-  font-size: 0.82rem;
+  font-size: 0.82rem !important;
   font-weight: 680;
-  line-height: 1.05;
+  line-height: 1 !important;
 }
 
 .appointment-card .record-meta button:hover {
