@@ -257,16 +257,32 @@ async function ensureProfile(firebaseUser) {
   if (profileSnap.exists()) {
     const savedProfile = profileSnap.data();
     const displayName = knownUser?.displayName || savedProfile.displayName || savedProfile.name;
-
-    if (knownUser && savedProfile.name !== knownUser.displayName) {
-      await setDoc(
-        profileRef,
-        {
+    const normalizedProfile = knownUser
+      ? {
           name: knownUser.displayName,
           fullName: knownUser.name,
           displayName: knownUser.displayName,
           email,
-          role: knownUser.role,
+          role: knownUser.role
+        }
+      : {
+          name: displayName,
+          displayName,
+          email,
+          role: savedProfile.role || (adminEmails.includes(email) ? "admin" : "seller")
+        };
+
+    if (
+      knownUser &&
+      (savedProfile.name !== knownUser.displayName ||
+        savedProfile.displayName !== knownUser.displayName ||
+        savedProfile.fullName !== knownUser.name ||
+        savedProfile.role !== knownUser.role)
+    ) {
+      await setDoc(
+        profileRef,
+        {
+          ...normalizedProfile,
           updatedAt: serverTimestamp()
         },
         { merge: true }
@@ -276,9 +292,7 @@ async function ensureProfile(firebaseUser) {
     return {
       id: firebaseUser.uid,
       ...savedProfile,
-      name: displayName,
-      displayName,
-      email
+      ...normalizedProfile
     };
   }
 
