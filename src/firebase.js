@@ -21,7 +21,7 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID || fallbackConfig.appId
 };
 
-export const adminEmails = (import.meta.env.VITE_ADMIN_EMAILS || "admin@p1autorecife.com.br")
+export const adminEmails = (import.meta.env.VITE_ADMIN_EMAILS || "admin@p1autorecife.com.br,alecvilarim@gmail.com")
   .split(",")
   .map(email => email.trim().toLowerCase())
   .filter(Boolean);

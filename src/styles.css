@@ -5442,6 +5442,124 @@ input[type="month"]::-webkit-datetime-edit-year-field:focus {
 }
 
 /* Páginas úteis da sidebar */
+.admin-overview {
+  display: grid;
+  gap: 22px;
+}
+
+.admin-metrics-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.admin-command-panel {
+  min-height: auto;
+}
+
+.admin-shortcut-grid,
+.seller-card-grid,
+.seller-mini-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-shortcut-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.admin-shortcut-grid button {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 12px;
+  min-height: 76px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.045);
+  color: rgba(248, 250, 245, 0.86);
+  padding: 14px;
+  text-align: left;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-shortcut-grid button svg:first-child {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(168, 255, 0, 0.13);
+  color: var(--p1-green);
+}
+
+.admin-shortcut-grid button span {
+  font-size: 0.9rem;
+  font-weight: 850;
+}
+
+.admin-shortcut-grid button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(168, 255, 0, 0.38);
+  background: rgba(168, 255, 0, 0.08);
+}
+
+.seller-card-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.seller-performance-card {
+  display: grid;
+  gap: 18px;
+  min-height: 310px;
+}
+
+.seller-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.seller-card-head h3 {
+  margin: 0;
+  color: var(--p1-text-main);
+  font-size: 1.2rem;
+}
+
+.seller-card-head span {
+  display: block;
+  margin-top: 4px;
+  color: var(--p1-text-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.seller-mini-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.seller-mini-grid span {
+  display: grid;
+  gap: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 8px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(238, 244, 234, 0.62);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.seller-mini-grid strong {
+  color: var(--p1-text-main);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.seller-open-button {
+  align-self: end;
+}
+
 .tool-page {
   display: grid;
   gap: 22px;
@@ -5550,6 +5668,12 @@ input[type="month"]::-webkit-datetime-edit-year-field:focus {
   }
 
   .auto-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-metrics-grid,
+  .admin-shortcut-grid,
+  .seller-card-grid {
     grid-template-columns: 1fr;
   }
 

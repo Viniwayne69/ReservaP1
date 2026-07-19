@@ -1,5 +1,11 @@
 export const knownTeam = [
   {
+    name: "Alessandra",
+    displayName: "Alessandra",
+    email: "alecvilarim@gmail.com",
+    role: "admin"
+  },
+  {
     name: "Thayenne Clemente",
     displayName: "Thay",
     email: "thayanneclemente62@gmail.com",

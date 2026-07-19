@@ -1012,7 +1012,7 @@ function SimulationCard({ item, profile, onEdit, onDelete, onReview }) {
               <BadgeCheck size={14} />
               Habilitação: {item.licenseLabel}
             </span>
-            {profile.role === "admin" ? (
+            {isAdmin && sellerFilterSections.includes(section) ? (
               <span>
                 <UserRound size={14} />
                 {item.sellerName || "Vendedor"}
@@ -1248,7 +1248,7 @@ export default function App() {
         setSimulationForm(createSimulationForm(nextProfile));
         setNoteForm(createNoteForm(nextProfile));
         setSelectedMonth(currentMonth());
-        setSection("appointments");
+        setSection(nextProfile.role === "admin" ? "overview" : "appointments");
         showLoginWelcome(nextProfile);
       } catch (error) {
         setLoginError("Não foi possível carregar o perfil. Verifique as permissões do Firebase.");
@@ -1509,6 +1509,10 @@ export default function App() {
       .sort((a, b) => clean(b.createdDate).localeCompare(clean(a.createdDate)));
   }, [sellerFilter, selectedMonth, simulations]);
 
+  const visiblePendingSimulations = useMemo(() => {
+    return visibleSimulations.filter(item => item.status === "pending");
+  }, [visibleSimulations]);
+
   const automaticPendingAppointments = useMemo(() => {
     return appointments
       .filter(isAutomaticPending)
@@ -1628,6 +1632,33 @@ export default function App() {
       };
     });
   }, [appointments, selectedMonth, sellers, simulations]);
+
+  const adminMonthAppointments = useMemo(() => {
+    return appointments.filter(item => (item.month || item.date?.slice(0, 7)) === selectedMonth);
+  }, [appointments, selectedMonth]);
+
+  const adminMonthSimulations = useMemo(() => {
+    return simulations.filter(item => (item.month || item.createdDate?.slice(0, 7)) === selectedMonth);
+  }, [selectedMonth, simulations]);
+
+  const adminOverviewMetrics = useMemo(() => {
+    const visits = adminMonthAppointments.filter(item => ["visited", "sold"].includes(item.status)).length;
+    const sold = adminMonthAppointments.filter(item => item.status === "sold").length;
+    const noShow = adminMonthAppointments.filter(item => item.status === "no_show").length;
+    const conversion = visits ? Math.round((sold / visits) * 100) : 0;
+
+    return {
+      appointments: adminMonthAppointments.length,
+      visits,
+      sold,
+      noShow,
+      conversion,
+      pendingSimulations: adminMonthSimulations.filter(item => item.status === "pending").length,
+      openFollowups: followups.filter(item => item.status !== "done").length,
+      hotClients: hotClients.length,
+      pendingAppointments: appointments.filter(isAutomaticPending).length
+    };
+  }, [adminMonthAppointments, adminMonthSimulations, appointments, followups, hotClients.length]);
 
   async function handleLogin(credentials) {
     setLoginLoading(true);
@@ -1917,7 +1948,9 @@ export default function App() {
     );
   }
 
-  const navItems = [
+  const isAdmin = profile.role === "admin";
+  const sellerFilterSections = ["appointments", "simulations", "pending", "followups", "notes", "hot-clients"];
+  const sellerNavItems = [
     {
       id: "appointments",
       label: "Agendamentos",
@@ -1947,27 +1980,72 @@ export default function App() {
       id: "simulations",
       label: "Simulações",
       icon: FileText
-    },
-    ...(profile.role === "admin"
-      ? [
-          {
-            id: "team",
-            label: "Equipe",
-            icon: UsersRound
-          }
-        ]
-      : [])
+    }
   ];
 
+  const adminNavItems = [
+    {
+      id: "overview",
+      label: "Visao geral",
+      icon: LayoutDashboard
+    },
+    {
+      id: "sellers",
+      label: "Vendedores",
+      icon: UsersRound
+    },
+    {
+      id: "appointments",
+      label: "Agendamentos",
+      icon: ClipboardList
+    },
+    {
+      id: "simulations",
+      label: "Simulacoes pendentes",
+      icon: FileText
+    },
+    {
+      id: "followups",
+      label: "Follow-ups atrasados",
+      icon: MessageCircle
+    },
+    {
+      id: "hot-clients",
+      label: "Clientes quentes",
+      icon: Flame
+    },
+    {
+      id: "pending",
+      label: "Pendencias",
+      icon: Clock3
+    },
+    {
+      id: "notes",
+      label: "Notas internas",
+      icon: StickyNote
+    },
+    {
+      id: "history",
+      label: "Historico mensal",
+      icon: ChartNoAxesCombined
+    }
+  ];
+
+  const navItems = isAdmin ? adminNavItems : sellerNavItems;
+
   const sectionTitles = {
+    overview: "Visao geral",
     appointments: "Agendamentos",
     simulations: "Simulações",
     pending: "Pendências automáticas",
     followups: "Follow-up",
     notes: "Notas internas",
     "hot-clients": "Clientes quentes",
-    team: "Painel da equipe"
+    team: "Painel da equipe",
+    sellers: "Vendedores",
+    history: "Historico mensal"
   };
+  const simulationRecords = isAdmin ? visiblePendingSimulations : visibleSimulations;
 
   return (
     <div className="app-shell">
@@ -2063,6 +2141,59 @@ export default function App() {
           </div>
         ) : null}
 
+        {section === "overview" ? (
+          <section className="admin-overview section-view">
+            <div className="metrics-grid admin-metrics-grid">
+              <MetricCard
+                icon={CalendarDays}
+                label="agendamentos da equipe"
+                value={metricValue(adminOverviewMetrics.appointments)}
+                tone="blue"
+              />
+              <MetricCard icon={CheckCircle2} label="visitas realizadas" value={metricValue(adminOverviewMetrics.visits)} tone="green" />
+              <MetricCard icon={CircleDollarSign} label="vendas fechadas" value={metricValue(adminOverviewMetrics.sold)} tone="lime" />
+              <MetricCard
+                icon={ChartNoAxesCombined}
+                label="conversao geral"
+                value={`${adminOverviewMetrics.conversion}%`}
+                hint="vendas sobre visitas"
+                tone="blue"
+              />
+              <MetricCard icon={XCircle} label="clientes que nao vieram" value={metricValue(adminOverviewMetrics.noShow)} tone="amber" />
+              <MetricCard icon={FileText} label="simulacoes pendentes" value={metricValue(adminOverviewMetrics.pendingSimulations)} tone="amber" />
+              <MetricCard icon={MessageCircle} label="follow-ups abertos" value={metricValue(adminOverviewMetrics.openFollowups)} tone="blue" />
+              <MetricCard icon={Flame} label="clientes quentes" value={metricValue(adminOverviewMetrics.hotClients)} tone="red" />
+            </div>
+
+            <div className="panel-card admin-command-panel">
+              <div className="panel-title-row">
+                <div>
+                  <span className="section-eyebrow">
+                    <ShieldCheck size={15} />
+                    Central da administracao
+                  </span>
+                  <h3>Atalhos de acompanhamento</h3>
+                </div>
+              </div>
+
+              <div className="admin-shortcut-grid">
+                {adminNavItems
+                  .filter(item => !["overview", "history"].includes(item.id))
+                  .map(item => {
+                    const Icon = item.icon;
+                    return (
+                      <button key={item.id} type="button" onClick={() => openSection(item.id)}>
+                        <Icon size={18} />
+                        <span>{item.label}</span>
+                        <ChevronRight size={17} />
+                      </button>
+                    );
+                  })}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
         {section === "appointments" ? (
           <section className="module-grid section-view">
             <div className="module-left">
@@ -2130,8 +2261,8 @@ export default function App() {
         ) : null}
 
         {section === "simulations" ? (
-          <section className="module-grid section-view">
-            <div className="module-left">
+          <section className={isAdmin ? "tool-page section-view" : "module-grid section-view"}>
+            {!isAdmin ? <div className="module-left">
               <div className="metrics-grid">
                 <MetricCard icon={FileText} label="simulações" value={metricValue(simulationMetrics.total)} />
                 <MetricCard icon={Clock3} label="em análise" value={metricValue(simulationMetrics.pending)} tone="amber" />
@@ -2151,7 +2282,7 @@ export default function App() {
                   setSimulationForm(createSimulationForm(profile));
                 }}
               />
-            </div>
+            </div> : null}
 
             <div className="module-right">
               <div className="list-header">
@@ -2162,12 +2293,12 @@ export default function App() {
                   </span>
                   <h2>Solicitações do mês</h2>
                 </div>
-                <span>{visibleSimulations.length} registros</span>
+                <span>{simulationRecords.length} registros</span>
               </div>
 
               <div className="record-list">
-                {visibleSimulations.length ? (
-                  visibleSimulations.map(item => (
+                {simulationRecords.length ? (
+                  simulationRecords.map(item => (
                     <SimulationCard
                       key={item.id}
                       item={item}
@@ -2348,6 +2479,120 @@ export default function App() {
                     icon={Flame}
                     title="Nenhum cliente quente"
                     text="Marque um cliente como quente direto no card do agendamento para ele aparecer aqui."
+                  />
+                )}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {section === "sellers" ? (
+          <section className="team-panel section-view">
+            <div className="seller-card-grid">
+              {teamRows.length ? (
+                teamRows.map(row => (
+                  <article className="seller-performance-card panel-card" key={row.seller.id}>
+                    <div className="seller-card-head">
+                      <div className="avatar">
+                        <UserRound size={18} />
+                      </div>
+                      <div>
+                        <h3>{row.seller.name}</h3>
+                        <span>Desempenho de {formatMonth(selectedMonth)}</span>
+                      </div>
+                    </div>
+
+                    <div className="seller-mini-grid">
+                      <span>
+                        <strong>{metricValue(row.appointments)}</strong>
+                        agendamentos
+                      </span>
+                      <span>
+                        <strong>{metricValue(row.visits)}</strong>
+                        visitas
+                      </span>
+                      <span>
+                        <strong>{metricValue(row.sold)}</strong>
+                        vendas
+                      </span>
+                      <span>
+                        <strong>{row.conversion}%</strong>
+                        conversao
+                      </span>
+                    </div>
+
+                    <button
+                      className="primary-button seller-open-button"
+                      type="button"
+                      onClick={() => {
+                        setSellerFilter(row.seller.id);
+                        openSection("appointments");
+                      }}
+                    >
+                      Abrir agendamentos
+                      <ChevronRight size={18} />
+                    </button>
+                  </article>
+                ))
+              ) : (
+                <EmptyState
+                  icon={UsersRound}
+                  title="Nenhum vendedor encontrado"
+                  text="Assim que os logins forem usados, os vendedores aparecem neste painel."
+                />
+              )}
+            </div>
+          </section>
+        ) : null}
+
+        {section === "history" ? (
+          <section className="team-panel section-view">
+            <div className="metrics-grid">
+              <MetricCard icon={UsersRound} label="vendedores" value={metricValue(teamRows.length)} />
+              <MetricCard icon={CalendarDays} label="agendamentos" value={metricValue(adminOverviewMetrics.appointments)} tone="blue" />
+              <MetricCard icon={Car} label="visitas" value={metricValue(adminOverviewMetrics.visits)} tone="green" />
+              <MetricCard icon={CircleDollarSign} label="vendas" value={metricValue(adminOverviewMetrics.sold)} tone="lime" />
+            </div>
+
+            <div className="panel-card">
+              <div className="panel-title-row">
+                <div>
+                  <span className="section-eyebrow">
+                    <ChartNoAxesCombined size={15} />
+                    Consulta por mes
+                  </span>
+                  <h3>{formatMonth(selectedMonth)}</h3>
+                </div>
+              </div>
+
+              <div className="team-table">
+                <div className="team-row table-head">
+                  <span>Vendedor</span>
+                  <span>Agend.</span>
+                  <span>Visitas</span>
+                  <span>Vendas</span>
+                  <span>Conv.</span>
+                  <span>Simulacoes</span>
+                  <span>Aprov.</span>
+                </div>
+
+                {teamRows.length ? (
+                  teamRows.map(row => (
+                    <div className="team-row" key={row.seller.id}>
+                      <strong>{row.seller.name}</strong>
+                      <span>{row.appointments}</span>
+                      <span>{row.visits}</span>
+                      <span>{row.sold}</span>
+                      <span>{row.conversion}%</span>
+                      <span>{row.simulations}</span>
+                      <span>{row.approved}</span>
+                    </div>
+                  ))
+                ) : (
+                  <EmptyState
+                    icon={UsersRound}
+                    title="Nenhum vendedor encontrado"
+                    text="Assim que os logins forem usados, os vendedores aparecem neste painel."
                   />
                 )}
               </div>
