@@ -5911,4 +5911,561 @@ input[type="month"]::-webkit-datetime-edit-year-field:focus {
   }
 }
 
+/* Refinamento visual global: acabamento mais premium e consistente */
+:root {
+  --p1-surface: #0b1218;
+  --p1-surface-2: #101820;
+  --p1-surface-3: #151f27;
+  --p1-card: rgba(17, 26, 33, 0.86);
+  --p1-card-soft: rgba(255, 255, 255, 0.045);
+  --p1-line: rgba(230, 240, 236, 0.11);
+  --p1-line-strong: rgba(230, 240, 236, 0.18);
+  --p1-copy: #f6f8f2;
+  --p1-copy-soft: rgba(246, 248, 242, 0.72);
+  --p1-copy-muted: rgba(246, 248, 242, 0.52);
+  --p1-accent: #a8ff00;
+  --p1-accent-2: #7fc400;
+}
+
+html {
+  background: #070c11 !important;
+}
+
+body {
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(circle at 45% 0%, rgba(116, 132, 148, 0.11), transparent 34%),
+    linear-gradient(145deg, #070c11 0%, #0d141b 48%, #070c11 100%) !important;
+  color: var(--p1-copy) !important;
+}
+
+::selection {
+  background: transparent;
+  color: inherit;
+}
+
+.app-shell {
+  background:
+    radial-gradient(circle at 52% 0%, rgba(114, 130, 146, 0.12), transparent 35%),
+    linear-gradient(135deg, #071016 0%, #0d151c 50%, #070d12 100%) !important;
+}
+
+.workspace {
+  max-width: 1680px;
+  width: 100%;
+  background: transparent !important;
+}
+
+.topbar {
+  align-items: flex-end !important;
+  gap: 24px !important;
+  margin-bottom: 26px !important;
+}
+
+.topbar h1 {
+  color: var(--p1-copy) !important;
+  font-size: clamp(2.8rem, 4vw, 4.35rem) !important;
+  font-weight: 820 !important;
+  line-height: 0.98 !important;
+  letter-spacing: 0 !important;
+  text-shadow: 0 16px 34px rgba(0, 0, 0, 0.32);
+}
+
+.topbar-controls {
+  align-items: end;
+  gap: 14px !important;
+}
+
+.topbar-controls label,
+.app-shell label {
+  color: var(--p1-copy) !important;
+  font-size: 0.8rem !important;
+  font-weight: 760 !important;
+}
+
+.app-shell input,
+.app-shell select,
+.app-shell textarea,
+.login-input-wrap {
+  border-color: var(--p1-line) !important;
+  background: rgba(255, 255, 255, 0.045) !important;
+  color: var(--p1-copy) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045) !important;
+}
+
+.app-shell input:hover,
+.app-shell select:hover,
+.app-shell textarea:hover,
+.login-input-wrap:hover {
+  border-color: rgba(168, 255, 0, 0.25) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.app-shell input:focus,
+.app-shell select:focus,
+.app-shell textarea:focus,
+.login-input-wrap:focus-within {
+  border-color: rgba(168, 255, 0, 0.55) !important;
+  background: rgba(255, 255, 255, 0.07) !important;
+  box-shadow: 0 0 0 3px rgba(168, 255, 0, 0.08) !important;
+}
+
+.app-shell input::placeholder,
+.app-shell textarea::placeholder,
+.login-input-wrap input::placeholder {
+  color: rgba(246, 248, 242, 0.42) !important;
+}
+
+.section-eyebrow,
+.list-header > span,
+.status-badge {
+  border-color: rgba(168, 255, 0, 0.28) !important;
+  background: rgba(168, 255, 0, 0.09) !important;
+  color: #d8ff74 !important;
+  font-size: 0.68rem !important;
+  font-weight: 820 !important;
+  letter-spacing: 0.055em !important;
+}
+
+.sidebar {
+  width: 286px !important;
+  padding: 30px 22px !important;
+  border-right: 1px solid rgba(230, 240, 236, 0.1) !important;
+  background:
+    linear-gradient(180deg, rgba(13, 20, 27, 0.98), rgba(7, 12, 17, 0.99)) !important;
+  box-shadow: 18px 0 54px rgba(0, 0, 0, 0.26) !important;
+}
+
+.sidebar-brand {
+  min-height: 58px;
+  gap: 13px !important;
+}
+
+.sidebar-brand img {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 1px solid rgba(168, 255, 0, 0.32) !important;
+  background: rgba(255, 255, 255, 0.035) !important;
+}
+
+.sidebar-brand strong,
+.sidebar-profile strong {
+  color: var(--p1-copy) !important;
+  font-size: 0.95rem !important;
+  line-height: 1.15 !important;
+}
+
+.sidebar-brand span,
+.sidebar-profile span {
+  color: var(--p1-copy-soft) !important;
+  font-size: 0.78rem !important;
+}
+
+.sidebar nav {
+  gap: 8px !important;
+  padding-top: 22px !important;
+}
+
+.sidebar nav button {
+  min-height: 52px !important;
+  border-radius: 12px !important;
+  padding: 0 15px !important;
+  color: rgba(246, 248, 242, 0.78) !important;
+  font-size: 0.94rem !important;
+  font-weight: 720 !important;
+  background: transparent !important;
+}
+
+.sidebar nav button:hover {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: var(--p1-copy) !important;
+  transform: translateX(2px);
+}
+
+.sidebar nav button.active {
+  border-color: rgba(168, 255, 0, 0.72) !important;
+  background: linear-gradient(90deg, rgba(168, 255, 0, 0.14), rgba(168, 255, 0, 0.045)) !important;
+  color: #ffffff !important;
+  box-shadow: inset 3px 0 0 var(--p1-accent) !important;
+}
+
+.sidebar-profile,
+.logout-button {
+  border-radius: 12px !important;
+  border-color: var(--p1-line) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.panel-card,
+.module-right,
+.metric-card,
+.record-card,
+.empty-state,
+.team-row,
+.admin-action-grid button,
+.admin-seller-row {
+  border: 1px solid var(--p1-line) !important;
+  border-radius: 14px !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.052), rgba(255, 255, 255, 0.018)),
+    var(--p1-card) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 18px 42px rgba(0, 0, 0, 0.18) !important;
+}
+
+.panel-card:hover,
+.module-right:hover,
+.record-card:hover,
+.metric-card:hover,
+.empty-state:hover,
+.admin-action-grid button:hover,
+.admin-seller-row:hover {
+  border-color: rgba(168, 255, 0, 0.24) !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.062), rgba(255, 255, 255, 0.022)),
+    rgba(18, 28, 36, 0.9) !important;
+  transform: translateY(-1px);
+}
+
+.metric-card,
+.record-card,
+.panel-card,
+.admin-action-grid button,
+.admin-seller-row,
+.primary-button,
+.ghost-button,
+.sidebar nav button {
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease !important;
+}
+
+.metric-card {
+  grid-template-columns: 42px minmax(0, 1fr) !important;
+  min-height: 82px !important;
+  padding: 16px 18px !important;
+  gap: 14px !important;
+}
+
+.metric-icon,
+.record-icon,
+.empty-state span,
+.admin-action-grid button svg {
+  background: rgba(168, 255, 0, 0.12) !important;
+  color: var(--p1-accent) !important;
+  box-shadow: inset 0 0 0 1px rgba(168, 255, 0, 0.14) !important;
+}
+
+.metric-card strong {
+  color: var(--p1-copy) !important;
+  font-size: 1.8rem !important;
+  font-weight: 820 !important;
+}
+
+.metric-card span {
+  color: var(--p1-copy) !important;
+  font-size: 0.78rem !important;
+  font-weight: 720 !important;
+}
+
+.metric-card small {
+  color: var(--p1-copy-muted) !important;
+  font-weight: 560 !important;
+}
+
+.panel-card {
+  padding: clamp(22px, 2.2vw, 30px) !important;
+}
+
+.panel-title-row,
+.list-header {
+  align-items: center !important;
+  gap: 18px !important;
+  margin-bottom: 22px !important;
+}
+
+.panel-title-row h3,
+.list-header h2 {
+  color: var(--p1-copy) !important;
+  font-size: clamp(1.25rem, 1.5vw, 1.55rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0 !important;
+}
+
+.record-list {
+  gap: 16px !important;
+}
+
+.record-card {
+  padding: 22px !important;
+}
+
+.appointment-card {
+  min-height: auto !important;
+  padding: 24px !important;
+}
+
+.appointment-card::before {
+  width: 2px !important;
+  background: linear-gradient(180deg, var(--p1-accent), rgba(168, 255, 0, 0.16)) !important;
+}
+
+.appointment-info {
+  padding-right: 132px !important;
+}
+
+.appointment-card .record-title-line h3,
+.record-title-line h3 {
+  color: var(--p1-copy) !important;
+  font-size: clamp(1.08rem, 1.2vw, 1.32rem) !important;
+  font-weight: 820 !important;
+  line-height: 1.15 !important;
+}
+
+.appointment-card .record-title-line p,
+.record-card p {
+  color: var(--p1-copy-soft) !important;
+  font-size: 0.9rem !important;
+}
+
+.appointment-card .record-meta {
+  gap: 9px !important;
+  margin-top: 16px !important;
+}
+
+.appointment-card .record-meta span,
+.appointment-card .record-meta button,
+.record-meta span,
+.record-meta button {
+  border-color: rgba(255, 255, 255, 0.105) !important;
+  background: rgba(255, 255, 255, 0.045) !important;
+  color: rgba(246, 248, 242, 0.78) !important;
+  font-size: 0.76rem !important;
+}
+
+.record-meta .meta-copy-chip {
+  margin-top: 14px !important;
+}
+
+.copy-chip-label {
+  top: -15px !important;
+  left: 0 !important;
+  color: var(--p1-accent) !important;
+  font-size: 0.5rem !important;
+}
+
+.record-notes,
+.appointment-card .record-notes {
+  border-left-color: var(--p1-accent) !important;
+  color: var(--p1-copy-soft) !important;
+}
+
+.record-notes strong,
+.appointment-card .record-notes strong {
+  color: var(--p1-copy) !important;
+}
+
+.status-actions {
+  gap: 8px !important;
+}
+
+.appointment-actions button,
+.record-actions button,
+.ghost-button {
+  border-color: var(--p1-line) !important;
+  background: rgba(255, 255, 255, 0.045) !important;
+  color: rgba(246, 248, 242, 0.82) !important;
+  font-weight: 760 !important;
+}
+
+.appointment-actions button:hover,
+.record-actions button:hover,
+.ghost-button:hover {
+  border-color: rgba(168, 255, 0, 0.28) !important;
+  background: rgba(168, 255, 0, 0.09) !important;
+  color: var(--p1-copy) !important;
+}
+
+.appointment-actions .primary-status-action,
+.primary-button {
+  border-color: transparent !important;
+  background: linear-gradient(135deg, var(--p1-accent), var(--p1-accent-2)) !important;
+  color: #091016 !important;
+  box-shadow: 0 16px 32px rgba(168, 255, 0, 0.15) !important;
+}
+
+.primary-button:hover {
+  box-shadow: 0 18px 40px rgba(168, 255, 0, 0.22) !important;
+  transform: translateY(-1px);
+}
+
+.icon-action.danger,
+.appointment-actions .danger {
+  border-color: rgba(255, 102, 102, 0.28) !important;
+  background: rgba(255, 92, 92, 0.12) !important;
+  color: #ffb9b9 !important;
+}
+
+.empty-state {
+  min-height: 230px !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.empty-state strong {
+  color: var(--p1-copy) !important;
+  font-size: 1rem !important;
+}
+
+.empty-state p {
+  max-width: 420px;
+  color: var(--p1-copy-muted) !important;
+  line-height: 1.55 !important;
+}
+
+.simulation-card {
+  display: grid !important;
+  gap: 18px !important;
+}
+
+.simulation-card .record-main {
+  align-items: flex-start !important;
+}
+
+.review-box {
+  border-top: 1px solid var(--p1-line) !important;
+  padding-top: 18px !important;
+}
+
+.admin-summary-card {
+  min-height: 230px !important;
+  background:
+    radial-gradient(circle at 88% 0%, rgba(168, 255, 0, 0.075), transparent 32%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.058), rgba(255, 255, 255, 0.018)),
+    rgba(15, 23, 30, 0.9) !important;
+}
+
+.admin-summary-copy h2 {
+  font-size: clamp(2rem, 3.3vw, 3.6rem) !important;
+  line-height: 1.02 !important;
+}
+
+.admin-summary-copy p,
+.admin-seller-name small {
+  color: var(--p1-copy-soft) !important;
+}
+
+.admin-main-number strong {
+  font-size: clamp(3.4rem, 5.8vw, 5.7rem) !important;
+}
+
+.admin-action-grid button {
+  min-height: 76px !important;
+  border-radius: 12px !important;
+}
+
+.admin-action-grid button strong {
+  color: var(--p1-copy) !important;
+  font-size: 1.35rem !important;
+}
+
+.admin-seller-row {
+  min-height: 72px !important;
+}
+
+.admin-seller-conversion {
+  color: var(--p1-copy-soft) !important;
+}
+
+.team-row {
+  color: var(--p1-copy-soft) !important;
+}
+
+.team-row strong {
+  color: var(--p1-copy) !important;
+}
+
+@media (max-width: 1180px) {
+  .topbar {
+    align-items: flex-start !important;
+  }
+
+  .module-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .appointment-info {
+    padding-right: 0 !important;
+  }
+
+  .appointment-status-area {
+    position: static !important;
+    width: fit-content !important;
+    margin-bottom: 14px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .sidebar {
+    width: min(82vw, 310px) !important;
+  }
+
+  .workspace {
+    padding: 22px 16px !important;
+  }
+
+  .topbar h1 {
+    font-size: clamp(2.15rem, 12vw, 3.1rem) !important;
+  }
+
+  .topbar-controls {
+    width: 100%;
+  }
+
+  .topbar-controls label {
+    width: 100%;
+  }
+
+  .panel-title-row,
+  .list-header {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+  }
+
+  .appointment-card,
+  .record-card,
+  .panel-card,
+  .module-right {
+    padding: 18px !important;
+  }
+
+  .status-actions,
+  .icon-actions,
+  .appointment-actions {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+
+  .appointment-actions button,
+  .appointment-actions .icon-action,
+  .appointment-actions .hot-icon-action,
+  .appointment-actions .followup-icon-action {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .record-meta .meta-copy-chip {
+    margin-top: 16px !important;
+  }
+}
+
 
