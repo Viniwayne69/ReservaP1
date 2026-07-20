@@ -628,7 +628,7 @@ function AppointmentCard({
   onHotClient,
   onFollowup
 }) {
-  const canManage = profile.role === "admin" || item.sellerId === profile.id;
+  const canManage = profile.role !== "admin" && item.sellerId === profile.id;
 
   return (
     <article className="record-card appointment-card">
@@ -2256,7 +2256,8 @@ export default function App() {
         ) : null}
 
         {section === "appointments" ? (
-          <section className="module-grid section-view">
+          <section className={isAdmin ? "tool-page section-view" : "module-grid section-view"}>
+            {!isAdmin ? (
             <div className="module-left">
               <div className="metrics-grid">
                 <MetricCard icon={CalendarDays} label="agendamentos" value={metricValue(appointmentMetrics.total)} />
@@ -2284,8 +2285,9 @@ export default function App() {
                 }}
               />
             </div>
+            ) : null}
 
-            <div className="module-right">
+            <div className={isAdmin ? "panel-card appointments-admin-view" : "module-right"}>
               <div className="list-header">
                 <div>
                   <h2>Agenda do mês</h2>
