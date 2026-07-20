@@ -1030,7 +1030,7 @@ function SimulationCard({ item, profile, onEdit, onDelete, onReview }) {
               <BadgeCheck size={14} />
               Habilitação: {item.licenseLabel}
             </span>
-            {isAdmin && sellerFilterSections.includes(section) ? (
+            {profile.role === "admin" ? (
               <span>
                 <UserRound size={14} />
                 {item.sellerName || "Vendedor"}
