@@ -22,6 +22,18 @@ export const knownTeam = [
     displayName: "Vini",
     email: "viniciusribeironetwork@gmail.com",
     role: "seller"
+  },
+  {
+    name: "Italo Santos",
+    displayName: "Italo",
+    email: "italosantos6901@gmail.com",
+    role: "seller"
+  },
+  {
+    name: "Gabriel Vilarim",
+    displayName: "Gabriel",
+    email: "vilarimguilherme237@gmail.com",
+    role: "seller"
   }
 ];
 
